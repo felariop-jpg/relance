@@ -22,7 +22,7 @@ describe('pricing', () => {
     expect(costEur({ inputTokens: 1_000_000, outputTokens: 1_000_000 })).toBeCloseTo(12 * EUR_PER_USD);
   });
 
-  it('estimates well under one euro cent per draft', () => {
+  it('estimates less than one euro cent per draft', () => {
     const perDraft = estimateCostEur(1);
     expect(perDraft).toBeGreaterThan(0.004);
     expect(perDraft).toBeLessThan(0.01);

@@ -38,7 +38,7 @@ Other guides: [Getting an API key](docs/api-key.md) · [Editing templates](docs/
 
 ## What it costs
 
-Relance itself is free. Writing drafts with AI uses your own Anthropic API key, which you pay Anthropic for directly: well under **one euro cent per email** (about €0.006 at current prices). Relance shows an estimate before each batch, the real cost after, and a running total in Settings. Without a key, Relance runs in demo mode with example drafts, and you can still write emails from the template text at no cost.
+Relance itself is free. Writing drafts with AI uses your own Anthropic API key, which you pay Anthropic for directly: less than **one euro cent per email** (about €0.009 at current prices). Relance shows an estimate before each batch, the real cost after, and a running total in Settings. Without a key, Relance runs in demo mode with example drafts, and you can still write emails from the template text at no cost.
 
 | | |
 |---|---|

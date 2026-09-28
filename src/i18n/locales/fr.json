@@ -612,7 +612,7 @@
     },
     "key": {
       "title": "Connecter l'IA (facultatif)",
-      "body": "Pour écrire des brouillons personnels, Relance utilise Claude, une IA d'Anthropic. Il vous faut votre propre clé API. Cela coûte bien moins d'un centime d'euro par e-mail, et la clé reste dans ce navigateur.",
+      "body": "Pour écrire des brouillons personnels, Relance utilise Claude, une IA d'Anthropic. Il vous faut votre propre clé API. Cela coûte moins d'un centime d'euro par e-mail, et la clé reste dans ce navigateur.",
       "guide": "Guide pas à pas pour obtenir une clé",
       "later": "Vous pouvez passer cette étape. Relance fonctionne alors en mode démo, avec des brouillons d'exemple, et vous pourrez ajouter une clé plus tard dans les Réglages."
     },
