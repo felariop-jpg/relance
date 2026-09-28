@@ -1,6 +1,10 @@
 import type { Template } from './schema';
 
 /**
+ * Default schedules are a starting point, not advice: April (clients), August
+ * (clients and prospects), November (everyone), February (prospects).
+ * Users set their own months in Settings → Templates.
+ *
  * Built-in templates, one per family and language. Users can edit or delete
  * them; "Restore built-in templates" in Settings puts missing ones back.
  * Bodies are complete emails on their own (used as-is when no AI is used);
@@ -62,7 +66,7 @@ If it is easier, you can pick a time here: {{calendlyLink}}
 {{signature}}`,
     instructions:
       "Timed for when organisations plan next year's budget. Mention gently that you are available to help with next year's plans, tied to their situation where the notes allow. No pressure; make it easy to say not now.",
-    scheduleRule: { month: 9, minGapDays: 60 },
+    scheduleRule: { month: 8, minGapDays: 60 },
     appliesTo: ['client', 'prospect'],
     isBuiltIn: true,
   },
@@ -83,7 +87,7 @@ Si c'est plus simple, vous pouvez choisir un créneau ici : {{calendlyLink}}
 {{signature}}`,
     instructions:
       "Envoyé au moment où les organisations préparent le budget de l'année suivante. Indiquer avec légèreté que vous êtes disponible pour les projets de l'an prochain, en lien avec leur situation si les notes le permettent. Aucune pression ; il doit être facile de répondre « pas maintenant ». Vouvoiement.",
-    scheduleRule: { month: 9, minGapDays: 60 },
+    scheduleRule: { month: 8, minGapDays: 60 },
     appliesTo: ['client', 'prospect'],
     isBuiltIn: true,
   },
@@ -100,7 +104,7 @@ As the year comes to a close, warm wishes to you and those close to you for the 
 {{signature}}`,
     instructions:
       'A short holiday greeting. Do not mention services, work, offers or meetings at all. Warm and brief, under 80 words. A personal touch from the notes is welcome if it suits a greeting.',
-    scheduleRule: { month: 12, minGapDays: 0 },
+    scheduleRule: { month: 11, minGapDays: 0 },
     appliesTo: [],
     isBuiltIn: true,
   },
@@ -117,7 +121,7 @@ Alors que l'année se termine, je vous souhaite, à vous et à vos proches, de t
 {{signature}}`,
     instructions:
       "Des vœux de fin d'année courts. Ne mentionner ni les services, ni le travail, ni aucune offre ou rendez-vous. Chaleureux et bref, moins de 80 mots. Une touche personnelle tirée des notes est bienvenue si elle convient à des vœux. Vouvoiement.",
-    scheduleRule: { month: 12, minGapDays: 0 },
+    scheduleRule: { month: 11, minGapDays: 0 },
     appliesTo: [],
     isBuiltIn: true,
   },

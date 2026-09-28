@@ -8,9 +8,23 @@ Les modèles se trouvent dans **Réglages → Modèles**. Cliquez sur **Modifier
 
 ## Ce que contient un modèle
 
-- **Quand il est à envoyer.** Soit « jamais automatiquement » (vous choisissez les contacts vous-même), soit un mois et un nombre minimum de jours depuis votre dernier contact avec la personne. Par exemple : septembre, au moins 60 jours.
+- **Quand il est à envoyer.** Soit « jamais automatiquement » (vous choisissez les contacts vous-même), soit un mois et un nombre minimum de jours depuis votre dernier contact avec la personne. Par exemple : août, au moins 60 jours.
 - **Destiné aux.** Clients, prospects, pistes, ou tout le monde (ne cochez rien).
 - **Une version en anglais et une version en français.** Chacune a un nom, un objet, le texte de l'e-mail et des consignes pour l'IA. Vous pouvez omettre une langue ; les contacts de cette langue reçoivent alors l'autre version.
+
+## Les calendriers intégrés ne sont qu'un point de départ
+
+Relance propose ces mois :
+
+| Modèle | Mois | Pour | Seulement sans contact depuis |
+|---|---|---|---|
+| Nouvelles de printemps | avril | clients | 90 jours |
+| Préparer la rentrée | août | clients et prospects | 60 jours |
+| Vœux de fin d'année | novembre | tout le monde | (pas de minimum) |
+| Reprendre contact | février | prospects | 180 jours |
+| Suite à une rencontre | aucun | vous choisissez les contacts | |
+
+Ils ont été choisis comme valeurs par défaut raisonnables ; ce ne sont pas des recommandations. Le moment où vos contacts préparent leur budget, leurs périodes d'absence et le moment où un message est bienvenu dépendent de votre domaine et de votre pays. **Choisissez vos propres mois :** ouvrez **Réglages → Modèles**, cliquez sur **Modifier** à côté de chaque modèle, et changez **Quand est-il à envoyer ?**
 
 ## Comment le texte est utilisé
 

@@ -10,7 +10,7 @@
 
 Relance is a small tool for consultants and small business owners who keep in touch with clients, prospects and people they met at events, a few times a year.
 
-- **It tells you who is due.** Each template has a simple schedule, for example "September, clients not contacted for 60 days". The *Due now* page lists who that means today.
+- **It tells you who is due.** Each template has a simple schedule, for example "August, clients not contacted for 60 days". The *Due now* page lists who that means today.
 - **It writes a draft for each person**, in their language (English or French), using what you noted about them. Every email should read as if you wrote it to that one person, because that is what people respond to.
 - **You stay in charge.** You read and edit every draft, approve it, and export it. You send it yourself from Outlook or your usual email program.
 

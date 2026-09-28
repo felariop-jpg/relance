@@ -8,9 +8,23 @@ Templates are in **Settings → Templates**. Click **Edit** next to one.
 
 ## What a template contains
 
-- **When it is due.** Either "never on its own" (you choose the contacts yourself), or a month plus a minimum number of days since you last contacted the person. For example: September, at least 60 days.
+- **When it is due.** Either "never on its own" (you choose the contacts yourself), or a month plus a minimum number of days since you last contacted the person. For example: August, at least 60 days.
 - **Meant for.** Clients, prospects, leads, or everyone (leave all three unticked).
 - **An English version and a French version.** Each has a name, a subject, the email text, and instructions for the AI. You can leave one language out; contacts in that language then get the other version.
+
+## The built-in schedules are only a starting point
+
+Relance comes with these months:
+
+| Template | Month | For | Only if not contacted for |
+|---|---|---|---|
+| Spring check-in | April | clients | 90 days |
+| Late-summer planning | August | clients and prospects | 60 days |
+| Holiday greeting | November | everyone | (no minimum) |
+| Re-engagement | February | prospects | 180 days |
+| Post-event follow-up | none | you choose the contacts | |
+
+They were picked as a reasonable default and are not advice. When your contacts plan their budgets, when they are away, and when a message is welcome all depend on your field and your country. **Set your own months:** open **Settings → Templates**, click **Edit** next to each template, and change **When is it due?**
 
 ## How the email text is used
 

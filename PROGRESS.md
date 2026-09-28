@@ -252,3 +252,11 @@ notice and no way back. Code review found more multi-tab hazards of the
 - Settings, next to the running total: costs are estimates converted at a fixed
   rate, plus a link to Anthropic's pricing page.
 - Docs, first-run text, snapshot script and CONTRIBUTING updated; new pricing tests.
+
+### 3. Schedule defaults
+- Built-ins now: April (clients), August (clients + prospects), November
+  (everyone), February (prospects). Post-event stays manual.
+- Existing browsers: the v2 upgrade moves built-in templates still on the old
+  September/December defaults; templates the user edited are untouched.
+- docs/templates.md (+ .fr): a table of the defaults, stated plainly as a
+  starting point, with how to set your own months.

@@ -10,7 +10,7 @@
 
 Relance est un petit outil pour les consultants et les dirigeants de petites entreprises qui gardent le contact avec leurs clients, leurs prospects et les personnes rencontrées lors d'événements, quelques fois par an.
 
-- **Il vous dit qui relancer.** Chaque modèle a un calendrier simple, par exemple « septembre, clients sans contact depuis 60 jours ». La page *À relancer* indique qui cela concerne aujourd'hui.
+- **Il vous dit qui relancer.** Chaque modèle a un calendrier simple, par exemple « août, clients sans contact depuis 60 jours ». La page *À relancer* indique qui cela concerne aujourd'hui.
 - **Il rédige un brouillon pour chaque personne**, dans sa langue (français ou anglais), à partir de ce que vous avez noté sur elle. Chaque e-mail doit donner l'impression d'avoir été écrit pour cette seule personne.
 - **Vous gardez la main.** Vous relisez et modifiez chaque brouillon, vous le validez puis vous l'exportez. Vous l'envoyez vous-même depuis Outlook ou votre messagerie habituelle.
 

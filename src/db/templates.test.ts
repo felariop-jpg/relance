@@ -35,3 +35,25 @@ describe('templates', () => {
     expect(families.find((f) => f.family === 'holiday')!.name).toBe('Vœux de fin d’année');
   });
 });
+
+describe('schema upgrade to v2', () => {
+  it('moves unchanged built-in schedules to the new default months, and leaves edits alone', async () => {
+    const { default: Dexie } = await import('dexie');
+    const name = 'relance-upgrade-test';
+    const v1 = new Dexie(name);
+    v1.version(1).stores({ contacts: 'id', drafts: 'id', templates: 'id, family, language, isBuiltIn', settings: 'id' });
+    await v1.table('templates').bulkAdd([
+      { id: 'builtin-planning-en', family: 'planning', isBuiltIn: true, scheduleRule: { month: 9, minGapDays: 60 } },
+      { id: 'builtin-holiday-fr', family: 'holiday', isBuiltIn: true, scheduleRule: { month: 12, minGapDays: 0 } },
+      { id: 'builtin-planning-fr', family: 'planning', isBuiltIn: true, scheduleRule: { month: 10, minGapDays: 30 } },
+    ]);
+    v1.close();
+    const { RelanceDB } = await import('./db');
+    const v2 = new RelanceDB(name);
+    const rows = Object.fromEntries((await v2.templates.toArray()).map((t) => [t.id, t.scheduleRule]));
+    expect(rows['builtin-planning-en']).toEqual({ month: 8, minGapDays: 60 });
+    expect(rows['builtin-holiday-fr']).toEqual({ month: 11, minGapDays: 0 });
+    expect(rows['builtin-planning-fr']).toEqual({ month: 10, minGapDays: 30 }); // edited by the user: kept
+    v2.close();
+  });
+});
