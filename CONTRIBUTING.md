@@ -38,13 +38,28 @@ These are also in [CLAUDE.md](CLAUDE.md), with the reasons.
 
 ## Prompt changes need a new snapshot
 
-Any change to the shared prompt (`src/ai/prompt.ts`), the model (`src/ai/model.ts`) or the built-in templates (`src/db/seed.ts`) must regenerate the draft snapshot **in the same commit**:
+Any change to the shared prompt (`src/ai/prompt.ts`), the model or prices
+(`src/ai/model.ts`) or the built-in templates (`src/db/seed.ts`) must regenerate the
+draft snapshot **in the same commit**:
 
 ```sh
 ANTHROPIC_API_KEY=sk-ant-... npm run drafts:snapshot
 ```
 
-This writes `fixtures/drafts-snapshot.md`: ten fixture contacts (`fixtures/contacts.json`) × every built-in template, against the real API, about €0.35. Reviewers read the diff to judge whether the drafts got better or worse. The script is a developer tool; it is not part of the app or of `npm test`.
+- It writes `fixtures/drafts-snapshot.md`: the ten fixture contacts in
+  `fixtures/contacts.json` × every built-in template, against the real API.
+- Before calling the API it prints the number of drafts and an estimated cost
+  (about €0.35), then asks you to confirm. Add `-- --yes` to skip the question
+  (it also refuses to run without a terminal unless `--yes` is given).
+- With no `ANTHROPIC_API_KEY` it stops with a message and sends nothing.
+- Reviewers read the diff to judge whether the drafts got better or worse. It is a
+  developer tool, not part of the app or of `npm test`.
+
+**The snapshot is committed, so it must only ever contain fixture data.** Its only
+input is `fixtures/contacts.json`, which holds fictional people with emails at the
+reserved `example.com`/`.net`/`.org` domains. The script refuses to run if any
+fixture email is outside those domains. Never point it at real contacts, and never
+paste real notes into the fixtures.
 
 ## Email export
 

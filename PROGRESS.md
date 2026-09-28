@@ -274,3 +274,11 @@ notice and no way back. Code review found more multi-tab hazards of the
   and a results table to fill in per Outlook version.
 - New "Plain text files" export (one .txt per draft, named by contact).
 - Guides now say to "Extract All" on Windows first, and mention the text fallback.
+
+### 6. Snapshot readiness
+- `npm run drafts:snapshot` stops with a clear message if no key is set, prints
+  the draft count and estimated cost (≈ €0.32) before any call, and asks for
+  confirmation (`-- --yes` skips; it refuses without a terminal otherwise).
+- Decision: the output file is committed; it can only contain fixture data. The
+  script refuses to run if any fixture email is outside the reserved example
+  domains. Documented in CONTRIBUTING.md.

@@ -320,3 +320,9 @@ README notes that swapping models is a one-line change.
 - **.eml is unverified in Outlook**; docs/eml-compatibility.md holds the manual
   checklist and what to change in `buildEml` for each failure. Users are told
   to "Extract All" on Windows before opening.
+
+### Snapshot decision (after deploy)
+- `fixtures/drafts-snapshot.md` is **committed** and generated only from the
+  fictional `fixtures/contacts.json`; the script refuses fixtures with emails
+  outside example.com/.net/.org. It needs a key, prints the estimated cost,
+  and asks before calling the API (`-- --yes` to skip).

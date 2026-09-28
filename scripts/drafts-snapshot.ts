@@ -6,32 +6,66 @@
  * fixtures/drafts-snapshot.md. Commit the regenerated file together with any
  * prompt change: the git diff shows whether the drafts got better or worse.
  *
- *   ANTHROPIC_API_KEY=sk-ant-... npm run drafts:snapshot
+ *   ANTHROPIC_API_KEY=sk-ant-... npm run drafts:snapshot          (asks first)
+ *   ANTHROPIC_API_KEY=sk-ant-... npm run drafts:snapshot -- --yes (no question)
  *
- * Cost: 10 contacts × 5 templates = 50 drafts, roughly €0.35.
+ * The output is committed, so it must only ever come from the fictional
+ * contacts in fixtures/contacts.json. The script refuses to run if any fixture
+ * has an email outside the reserved example domains.
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
+import { createInterface } from 'node:readline/promises';
 import { anthropicSend } from '../src/ai/anthropic';
 import { generateWithRetries } from '../src/ai/engine';
-import { costEur, MODEL } from '../src/ai/model';
+import { costEur, costUsd, EST_TOKENS_PER_DRAFT, MODEL } from '../src/ai/model';
 import { buildRequest, SYSTEM_PROMPT } from '../src/ai/prompt';
 import type { Contact } from '../src/db/schema';
 import { BUILT_IN_TEMPLATES } from '../src/db/seed';
 import { defaultSettings } from '../src/db/settings-defaults';
 import { resolveLanguage } from '../src/lib/language';
 
-const apiKey = process.env.ANTHROPIC_API_KEY;
-if (!apiKey) {
-  console.error('Set ANTHROPIC_API_KEY to run the snapshot. It calls the real API (about €0.35).');
+function fail(message: string): never {
+  console.error(`\n${message}\n`);
   process.exit(1);
+}
+
+const apiKey = process.env.ANTHROPIC_API_KEY?.trim();
+if (!apiKey) {
+  fail(
+    'No API key set, so nothing was run.\n' +
+      'This script calls the real Anthropic API. Run it like this:\n' +
+      '  ANTHROPIC_API_KEY=sk-ant-... npm run drafts:snapshot',
+  );
 }
 
 type FixtureContact = Contact & { case: string };
 const contacts: FixtureContact[] = JSON.parse(readFileSync('fixtures/contacts.json', 'utf8'));
+const notFictional = contacts.filter((c) => c.email && !/@example\.(com|net|org)$/i.test(c.email));
+if (notFictional.length > 0) {
+  fail(
+    'fixtures/contacts.json must contain fictional contacts only (emails at example.com/.net/.org),\n' +
+      'because the snapshot is committed. Offending ids: ' +
+      notFictional.map((c) => c.id).join(', '),
+  );
+}
 const settings = defaultSettings('en');
 const send = anthropicSend(apiKey);
 const families = [...new Set(BUILT_IN_TEMPLATES.map((t) => t.family))];
+
+const drafts = contacts.length * families.length;
+const estimate = { inputTokens: EST_TOKENS_PER_DRAFT.input * drafts, outputTokens: EST_TOKENS_PER_DRAFT.output * drafts };
+console.log(
+  `\nThis will write ${drafts} drafts (${contacts.length} fixture contacts × ${families.length} templates) with ${MODEL}.\n` +
+    `Estimated cost: about $${costUsd(estimate).toFixed(2)} (≈ €${costEur(estimate).toFixed(2)}), billed to the key in ANTHROPIC_API_KEY.`,
+);
+if (!process.argv.includes('--yes')) {
+  if (!process.stdin.isTTY) fail('Not running without confirmation. Re-run in a terminal, or add -- --yes.');
+  const rl = createInterface({ input: process.stdin, output: process.stdout });
+  const answer = (await rl.question('Continue? [y/N] ')).trim().toLowerCase();
+  rl.close();
+  if (answer !== 'y' && answer !== 'yes') fail('Cancelled. Nothing was sent.');
+}
 const promptHash = createHash('sha256')
   .update(SYSTEM_PROMPT + JSON.stringify(BUILT_IN_TEMPLATES))
   .digest('hex')
@@ -78,4 +112,4 @@ for (const contact of contacts) {
 }
 
 writeFileSync('fixtures/drafts-snapshot.md', lines.join('\n'));
-console.log(`\nWrote fixtures/drafts-snapshot.md. Approximate cost: €${total.toFixed(2)}`);
+console.log(`\nWrote fixtures/drafts-snapshot.md. Actual cost: about €${total.toFixed(2)}.`);
