@@ -29,7 +29,7 @@ Use no other {{...}} tokens. The recipient's surname, email address and phone nu
 
 Voice samples. If "voiceSamples" is present, they are emails the sender actually wrote. Match their sentence length, warmth, greeting and sign-off habits, and level of formality. Never copy content, facts, names or phrases from them.
 
-Output: call the ${TOOL_NAME} tool once. personalizationUsed is written in "reportLanguage" and must quote, in double quotation marks and exactly as written (in their original language), every phrase from "notes" or "serviceHistory" that the email draws on, for example: Used "promoted to head of operations" and "rethink how new managers are onboarded". If the email uses no such phrase, say so plainly.`;
+Output: call the ${TOOL_NAME} tool once. personalizationUsed is written in "reportLanguage" and must quote, in double quotation marks and exactly as written (in their original language), every phrase from "notes", "serviceHistory", "whereMet" or "openThread" that the email draws on (quote only from those fields: never from your own email, and not the company name or other plain contact details), for example: Used "promoted to head of operations" and "rethink how new managers are onboarded". If the email uses no such phrase, say so plainly.`;
 
 /**
  * Ways to open when there are no notes. The code picks one per contact and

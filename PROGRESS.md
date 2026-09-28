@@ -431,3 +431,16 @@ notice and no way back. Code review found more multi-tab hazards of the
   was a great feeling", « a dû demander beaucoup d'énergie », « la voile reste,
   j'imagine, une belle façon de décrocher », …) and 1 feeling stated back (fx-09's
   « l'appréhension »). All nine checked by reading them: each is a real guess.
+
+### 5. Source check noise
+- Contact fields (company, first name, country, contact type, today's date) count as
+  data, not quotes to check; whereMet and openThread count as sources.
+- Only quoted text is checked; the "no quote" flag applies only to contacts with
+  notes; for contacts without notes, quotes of the email's own wording are ignored.
+- Matching ignores punctuation and ellipses, and accepts a quote whose words all
+  appear in the source in order (a trimmed quote adds nothing).
+- The model is told to quote only from notes, serviceHistory, whereMet or openThread.
+- On the second snapshot: 13 → 6 flags, all real: fx-07 ×2 (quotes adding "now on
+  board" and the inferred "settling in well"), fx-08 ×2 (the invented project, and a
+  quote of the template's own brief), fx-09 (an English source quoted as a French
+  paraphrase), fx-12 (the invented book title).

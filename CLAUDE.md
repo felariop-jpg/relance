@@ -397,3 +397,6 @@ README notes that swapping models is a one-line change.
 - `src/lib/needsInput.ts` finds them. A draft containing one shows "Needs your
   input", can't be approved (button, bulk, `a` key), is un-approved if edited to
   contain one, and is never exported. The batch summary and the snapshot count them.
+- **Source check** treats contact fields as data, skips no-notes self-quotes, and
+  accepts in-order word subsequences; any remaining flag is a quote containing
+  words that are not in the contact's notes, serviceHistory, whereMet or openThread.

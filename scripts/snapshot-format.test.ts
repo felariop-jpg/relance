@@ -165,3 +165,26 @@ describe('inference check', () => {
     expect(lines.some((l) => l.startsWith('- fx-09 clean'))).toBe(false);
   });
 });
+
+describe('source check noise', () => {
+  const e = (personalization: string, body = 'Hello.'): Entry => ({ kind: 'ok', body: okBody({ subject: 's', body, personalizationUsed: personalization }) });
+  it('does not flag contact fields, trailing punctuation, trimmed quotes or no-notes self-quotes', () => {
+    const lines = sourceCheck([
+      { label: 'company', entry: e('Used "Price Logistics".'), sources: 'Advisory session in 2023.', data: ['Price Logistics'], hasNotes: false },
+      { label: 'comma', entry: e('Used "the most useful thing the company did that year,"'), sources: 'Says the leadership programme was the most useful thing the company did that year.', hasNotes: true },
+      { label: 'trimmed', entry: e('Used "managing across two sites".'), sources: 'Now managing 30 people across two sites.', hasNotes: true },
+      { label: 'greeting', entry: e('The opening ("Hope this finds you well") is plain.', 'Hi,\nHope this finds you well.'), sources: '', hasNotes: false },
+      { label: 'today', entry: e('Worked out from "today".'), sources: 'Left the partnership.', data: ['today', '2026-09-28'], hasNotes: true },
+      { label: 'no-notes prose', entry: e('No notes were available, so nothing personal was used.'), sources: 'Advisory session.', hasNotes: false },
+    ]);
+    expect(lines).toEqual(['**Source check:** all 6 drafts quote only phrases found in their contact\'s data.']);
+  });
+  it('still flags invented quotes, including in a no-notes draft when the quote is not the email itself', () => {
+    const lines = sourceCheck([
+      { label: 'book', entry: e('Used "The Culture Code".', 'Le livre, The Culture Code.'), sources: 'Asked for the name of the book I mentioned.', hasNotes: true },
+      { label: 'project', entry: e('Used « votre projet avec Studio Martin ».'), sources: 'Aime le vélo.', data: ['Studio Martin'], hasNotes: true },
+      { label: 'added words', entry: e('Used "your daughter settling in well as finance director".'), sources: 'His daughter joined as finance director.', hasNotes: true },
+    ]);
+    expect(lines[0]).toContain('3 problem(s)');
+  });
+});

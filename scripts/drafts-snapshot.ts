@@ -135,6 +135,8 @@ const checks = () => {
     label: `${p.job.contactId} ${p.job.heading}`,
     entry: entries.get(key(p.job.contactId, p.job.heading)) ?? { kind: 'pending' as const, body: [] },
     sources: `${p.contact.notes}\n${p.contact.serviceHistory}\n${p.contact.whereMet ?? ''}\n${p.contact.openThread ?? ''}`,
+    data: [p.contact.company, p.contact.firstName, p.contact.country, p.contact.contactType, 'today', snapshotDate],
+    hasNotes: Boolean(p.contact.notes.trim()),
   }));
   const openings = plan.map((p, i) => ({
     ...items[i],

@@ -148,36 +148,75 @@ export function readDraft(entry: Entry): { subject: string; personalization: str
   return { subject, personalization, body };
 }
 
-const squash = (s: string) => s.toLowerCase().replace(/\s+/g, ' ').trim();
+const squash = (s: string) =>
+  s
+    .toLowerCase()
+    .replace(/[’‘]/g, "'")
+    .replace(/…|\.\.\./g, ' ')
+    .replace(/[^\p{L}\p{N}'\s-]/gu, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 
 /** Phrases quoted in personalizationUsed ("…", “…”, « … »). */
 export function quotedPhrases(text: string): string[] {
   return [...text.matchAll(/"([^"]+)"|“([^”]+)”|«\s*([^»]+?)\s*»/g)].map((m) => (m[1] ?? m[2] ?? m[3]).trim());
 }
 
+/** True if every word of the quote appears in the source, in the same order (a trimmed quote adds nothing). */
+function inOrder(quote: string, source: string): boolean {
+  const words = source.split(' ');
+  let i = 0;
+  for (const w of quote.split(' ')) {
+    while (i < words.length && words[i] !== w) i++;
+    if (i === words.length) return false;
+    i++;
+  }
+  return true;
+}
+
+export interface SourceItem {
+  label: string;
+  entry: Entry;
+  /** notes, serviceHistory, whereMet, openThread: what personalisation may quote. */
+  sources: string;
+  /** Plain contact data (company, first name, country, today...), never flagged when quoted. */
+  data?: string[];
+  /** The contact has notes (only then is a quote required). */
+  hasNotes?: boolean;
+}
+
 /**
  * Check 1: does each draft cite its sources, and do those quotes exist?
- * A quote that isn't in the contact's own data means the self-report (or the
- * draft) drifted from the facts.
+ * Only text presented as a quotation is checked. Contact fields (company,
+ * name, country...) are data, not personalisation, so quoting them is fine.
+ * Without notes, the model's quotes of its own wording are not sources, so
+ * they are ignored; with notes, any quote not in the contact's data is flagged.
  */
-export function sourceCheck(
-  items: { label: string; entry: Entry; sources: string }[],
-): string[] {
+export function sourceCheck(items: SourceItem[]): string[] {
   const problems: string[] = [];
   let checked = 0;
-  for (const { label, entry, sources } of items) {
+  for (const { label, entry, sources, data = [], hasNotes = Boolean(sources.trim()) } of items) {
     const draft = readDraft(entry);
     if (!draft) continue;
     checked++;
+    const source = squash(sources);
+    const values = data.map(squash).filter(Boolean);
+    const ownText = squash(`${draft.subject} ${draft.body}`);
     const quotes = quotedPhrases(draft.personalization);
-    const haystack = squash(sources);
-    if (haystack && quotes.length === 0 && !/no notes|aucune note|not use|n'utilise|pas utilisé/i.test(draft.personalization)) {
+    if (hasNotes && quotes.length === 0 && !/no notes|aucune note|not use|n'utilise|pas utilisé/i.test(draft.personalization)) {
       problems.push(`- ${label}: no source phrase quoted`);
     }
-    for (const q of quotes) if (!haystack.includes(squash(q))) problems.push(`- ${label}: quote not in the contact's data: "${q}"`);
+    for (const raw of quotes) {
+      const q = squash(raw);
+      if (!q) continue;
+      if (source.includes(q) || inOrder(q, source)) continue;
+      if (values.some((v) => v.includes(q))) continue; // the quote is (part of) a contact field
+      if (!hasNotes && ownText.includes(q)) continue;
+      problems.push(`- ${label}: quote not in the contact's data: "${raw}"`);
+    }
   }
   return [
-    `**Source check:** ${problems.length === 0 ? `all ${checked} drafts quote only phrases found in their contact's notes or work history.` : `${problems.length} problem(s) in ${checked} drafts:`}`,
+    `**Source check:** ${problems.length === 0 ? `all ${checked} drafts quote only phrases found in their contact's data.` : `${problems.length} problem(s) in ${checked} drafts:`}`,
     ...problems,
   ];
 }
