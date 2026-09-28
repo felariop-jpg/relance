@@ -13,7 +13,7 @@ import {
 } from './engine';
 import { buildRequest } from './prompt';
 
-const request = buildRequest({
+const request = buildRequest({ today: '2026-09-28',
   contact: { ...emptyContact(), id: 'c', firstName: 'Anne', createdAt: '', updatedAt: '' },
   template: BUILT_IN_TEMPLATES[0],
   settings: defaultSettings('en'),

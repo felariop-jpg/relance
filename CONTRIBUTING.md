@@ -52,6 +52,8 @@ ANTHROPIC_API_KEY=sk-ant-... npm run drafts:snapshot
   (about €0.35), then asks you to confirm. Add `-- --yes` to skip the question
   (it also refuses to run without a terminal unless `--yes` is given).
 - With no `ANTHROPIC_API_KEY` it stops with a message and sends nothing.
+- The model is given a pinned date (`DEFAULT_SNAPSHOT_DATE` in the script, or
+  `-- --date=YYYY-MM-DD`), recorded in the file header, so reruns are comparable.
 - The file is saved after every draft. If a draft can't be written (for example
   the laptop sleeps and the connection drops), it appears as **Not generated**
   with the reason, so a gap is never mistaken for a bad draft. Network failures

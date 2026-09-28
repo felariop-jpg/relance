@@ -4,6 +4,7 @@ import { SETTINGS_ID, type Contact, type Draft, type Settings } from '../db/sche
 import { getSettings } from '../db/settings';
 import { pickVersion, type TemplateFamily } from '../db/templates';
 import { resolveLanguage } from '../lib/language';
+import { todayIso } from '../lib/dates';
 import { fillPlaceholders, placeholderValues } from '../lib/placeholders';
 import { anthropicSend } from './anthropic';
 import { demoOutput } from './demo';
@@ -53,7 +54,7 @@ export async function generateDraft(draftId: string, deps: GenerateDeps = {}): P
     return { ok: false, code: 'unknown', costEur: 0 };
   }
 
-  const request = buildRequest({ contact, template, settings, instruction: draft.instruction });
+  const request = buildRequest({ contact, template, settings, instruction: draft.instruction, today: todayIso() });
   const language = resolveLanguage(contact, settings);
   const demo = !settings.apiKey.trim() && !deps.send;
   await updateDraft(draftId, { status: 'pending', error: null, payloadJson: JSON.stringify(request) });

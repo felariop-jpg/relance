@@ -55,8 +55,14 @@ export function pendingBody(): string[] {
   return ['**Not generated (not run yet).** The run stopped before reaching this draft.', '', RETRY_HINT];
 }
 
-export function parseSnapshot(markdown: string): { model: string | null; hash: string | null; entries: Map<string, Entry> } {
+export function parseSnapshot(markdown: string): {
+  model: string | null;
+  hash: string | null;
+  date: string | null;
+  entries: Map<string, Entry>;
+} {
   const model = /^Model: `([^`]+)`/m.exec(markdown)?.[1] ?? null;
+  const date = /^Date given to the model: `([^`]+)`/m.exec(markdown)?.[1] ?? null;
   const hash = /hash: `([0-9a-f]+)`/.exec(markdown)?.[1] ?? null;
   const entries = new Map<string, Entry>();
   let contact: string | null = null;
@@ -90,7 +96,7 @@ export function parseSnapshot(markdown: string): { model: string | null; hash: s
     } else if (heading) body.push(line);
   }
   flush();
-  return { model, hash, entries };
+  return { model, hash, date, entries };
 }
 
 export function renderSnapshot(

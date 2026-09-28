@@ -101,3 +101,11 @@ describe('source check', () => {
     expect([...parseSnapshot(md).entries.keys()]).toEqual(['fx-01|T (en)']);
   });
 });
+
+describe('snapshot date', () => {
+  it('records the date given to the model in the header, and reads it back', () => {
+    const out = renderSnapshot('m', 'h', jobs, new Map(), [], ['Date given to the model: `2026-09-28`', '']);
+    expect(out).toContain('Date given to the model: `2026-09-28`');
+    expect(parseSnapshot(out).date).toBe('2026-09-28');
+  });
+});

@@ -17,6 +17,7 @@ Rules:
 7. Follow the template's purpose and instructions. The template's reference text shows the purpose and tone; do not copy it word for word.
 8. In French, use "vous". Where you can, avoid wording that assumes the gender of the recipient or the sender.
 9. If "extraInstruction" is present, apply it, as long as it does not break the rules above.
+10. Dates. "today" is today's date (YYYY-MM-DD); your own sense of the current year is not reliable. Work out every relative time reference ("last year", "this spring", "next year", "recently") from "today" and from dates written in the contact's data. Do not name a specific year unless that year is written in the contact's data. Never call something "last year", "this year" or "recent" unless a date in the data, compared with "today", shows it; otherwise leave the time reference out. For wishes about the coming year, write "the year ahead" rather than a year number.
 
 Placeholders. The sender's own details are added later on the sender's computer. Use these tokens exactly, and never write or guess the real values:
 - {{signature}}: the sign-off, on its own last line. Write nothing after it, and no name before it.
@@ -37,10 +38,13 @@ export interface PromptInput {
   >;
   /** Optional regeneration instruction ("shorter", "plus formel"). */
   instruction?: string;
+  /** Today's date, YYYY-MM-DD, in the user's time zone. The model can't know it. */
+  today: string;
 }
 
 /** The data part of the request: everything contact-related goes through redactForApi. */
 export interface PromptData {
+  today: string;
   language: Lang;
   reportLanguage: Lang;
   notesAvailable: boolean;
@@ -51,10 +55,11 @@ export interface PromptData {
   extraInstruction?: string;
 }
 
-export function buildPromptData({ contact, template, settings, instruction }: PromptInput): PromptData {
+export function buildPromptData({ contact, template, settings, instruction, today }: PromptInput): PromptData {
   const samples = settings.voiceSamples.map((s) => s.trim()).filter(Boolean);
   // Contact first: it is what a user checks in "What was sent to the AI".
   const data: PromptData = {
+    today,
     contact: redactForApi(contact, settings),
     notesAvailable: notesAvailable(contact, settings),
     withheldByUser: [...settings.withheldFields],

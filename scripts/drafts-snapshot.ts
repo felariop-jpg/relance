@@ -55,6 +55,14 @@ if (notFictional.length > 0) {
   );
 }
 const OUTPUT = 'fixtures/drafts-snapshot.md';
+/**
+ * The date given to the model. Pinned (not "today") so reruns are comparable:
+ * change it deliberately, or pass --date=YYYY-MM-DD. Recorded in the file header.
+ */
+const DEFAULT_SNAPSHOT_DATE = '2026-09-28';
+const dateArg = process.argv.find((a) => a.startsWith('--date='))?.slice(7);
+if (dateArg && !/^\d{4}-\d{2}-\d{2}$/.test(dateArg)) fail('--date must look like --date=2026-09-28');
+const snapshotDate = dateArg ?? DEFAULT_SNAPSHOT_DATE;
 const retryFailed = process.argv.includes('--retry-failed');
 const settings = defaultSettings('en');
 const send = anthropicSend(apiKey);
@@ -81,9 +89,9 @@ let entries = new Map<string, Entry>();
 if (retryFailed) {
   if (!existsSync(OUTPUT)) fail(`--retry-failed needs an existing ${OUTPUT}. Run a full snapshot first.`);
   const existing = parseSnapshot(readFileSync(OUTPUT, 'utf8'));
-  if (existing.hash !== promptHash || existing.model !== MODEL) {
+  if (existing.hash !== promptHash || existing.model !== MODEL || existing.date !== snapshotDate) {
     fail(
-      'The prompt, templates or model changed since this snapshot was written, so filling only the gaps\n' +
+      'The prompt, templates, model or date changed since this snapshot was written, so filling only the gaps\n' +
         'would mix old and new drafts. Run a full snapshot instead (without --retry-failed).',
     );
   }
@@ -122,7 +130,8 @@ const checks = () =>
       sources: `${p.contact.notes}\n${p.contact.serviceHistory}`,
     })),
   );
-const save = () => writeFileSync(OUTPUT, renderSnapshot(MODEL, promptHash, jobs, entries, checks()));
+const save = () =>
+  writeFileSync(OUTPUT, renderSnapshot(MODEL, promptHash, jobs, entries, checks(), [`Date given to the model: \`${snapshotDate}\``, '']));
 save();
 
 let total = 0;
@@ -130,7 +139,7 @@ let failed = 0;
 for (const { job, contact, template, language } of todo) {
   process.stdout.write(`${job.contactId} ${job.heading}… `);
   try {
-    const request = buildRequest({ contact, template, settings });
+    const request = buildRequest({ contact, template, settings, today: snapshotDate });
     const { output, usage } = await generateWithRetries(request, language, send, { connectivity: alwaysOnline });
     total += costEur(usage);
     entries.set(key(job.contactId, job.heading), { kind: 'ok', body: okBody(output) });

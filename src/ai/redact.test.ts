@@ -97,22 +97,22 @@ describe('the full API request', () => {
   };
 
   it('contains none of the private contact fields or the sender details', () => {
-    const json = JSON.stringify(buildRequest({ contact: sensitiveContact(), template, settings: privateSettings }));
+    const json = JSON.stringify(buildRequest({ today: '2026-09-28', contact: sensitiveContact(), template, settings: privateSettings }));
     for (const value of Object.values(SECRET)) expect(json).not.toContain(value);
     expect(json).not.toContain('SENTINEL');
   });
 
   it('tells the model when notes are unavailable', () => {
-    const request = buildRequest({ contact: sensitiveContact({ notes: '' }), template, settings });
+    const request = buildRequest({ today: '2026-09-28', contact: sensitiveContact({ notes: '' }), template, settings });
     expect(JSON.parse(request.messages[0].content).notesAvailable).toBe(false);
   });
 
   it('includes voice samples and an extra instruction only when present', () => {
-    const plain = JSON.parse(buildRequest({ contact: sensitiveContact(), template, settings }).messages[0].content);
+    const plain = JSON.parse(buildRequest({ today: '2026-09-28', contact: sensitiveContact(), template, settings }).messages[0].content);
     expect(plain).not.toHaveProperty('voiceSamples');
     expect(plain).not.toHaveProperty('extraInstruction');
     const withExtras = JSON.parse(
-      buildRequest({
+      buildRequest({ today: '2026-09-28',
         contact: sensitiveContact(),
         template,
         settings: { ...settings, voiceSamples: ['Hi there, Sam', '  '] },
@@ -124,7 +124,7 @@ describe('the full API request', () => {
   });
 
   it('forces the save_draft tool', () => {
-    const request = buildRequest({ contact: sensitiveContact(), template, settings });
+    const request = buildRequest({ today: '2026-09-28', contact: sensitiveContact(), template, settings });
     expect(request.tool_choice).toEqual({ type: 'tool', name: 'save_draft' });
     expect(request.model).toBe('claude-sonnet-5');
   });
@@ -133,11 +133,19 @@ describe('the full API request', () => {
 describe('the payload panel', () => {
   it('shows the message (contact data) first and keeps every field', async () => {
     const { readablePayload } = await import('../screens/review/PayloadPanel');
-    const request = buildRequest({ contact: sensitiveContact(), template: BUILT_IN_TEMPLATES[0], settings });
+    const request = buildRequest({ today: '2026-09-28', contact: sensitiveContact(), template: BUILT_IN_TEMPLATES[0], settings });
     const readable = readablePayload(JSON.stringify(request));
     expect(readable.trimStart().startsWith('{\n  "messages"')).toBe(true);
     const parsed = JSON.parse(readable);
     expect(parsed.messages[0].content.contact.firstName).toBe('Anne');
     expect(Object.keys(parsed).sort()).toEqual(Object.keys(request).sort());
+  });
+});
+
+describe('dates', () => {
+  it('tells the model today\'s date, because it cannot know it', () => {
+    const request = buildRequest({ contact: sensitiveContact(), template: BUILT_IN_TEMPLATES[0], settings, today: '2026-09-28' });
+    expect(JSON.parse(request.messages[0].content).today).toBe('2026-09-28');
+    expect(request.system).toContain('Do not name a specific year unless that year is written in the contact');
   });
 });

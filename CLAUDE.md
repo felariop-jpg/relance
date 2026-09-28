@@ -87,6 +87,10 @@ README notes that swapping models is a one-line change.
 - No pressure, no artificial urgency, no "just following up" / "circling back" /
   "I wanted to reach out".
 - End with a low-commitment invitation, not a meeting request.
+- The model gets `today` (YYYY-MM-DD). All relative time references are worked out
+  from it; no year number unless the year is in the contact's data; no "last
+  year"/"this year" without a dated fact to anchor it. The snapshot uses a pinned
+  date, recorded in its header.
 - Strict JSON `{subject, body, language, personalizationUsed}`, zod-validated.
 
 ## Batch generation is per-card fault tolerant (build in Phase 3, not later)

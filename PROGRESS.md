@@ -334,3 +334,10 @@ notice and no way back. Code review found more multi-tab hazards of the
   the contact's notes or work history. Baseline on the first run: 44 of 50 drafts
   flagged (the old prompt never asked for quotes).
 - Bait fixture fx-11: "Moved to Lisbon in June. Left the partnership."
+
+### 3. The model didn't know today's date
+- Every generation now receives `today`; new rule 10: relative times computed from it,
+  no year number unless written in the contact's data, no "last year"/"this year"
+  without a dated fact, "the year ahead" instead of a year number in wishes.
+- Snapshot: pinned `DEFAULT_SNAPSHOT_DATE` (2026-09-28, or `--date=`), shown in the
+  header; `--retry-failed` refuses if the date differs.
