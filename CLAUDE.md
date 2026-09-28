@@ -85,8 +85,12 @@ README notes that swapping models is a one-line change.
   circumstance or context. `personalizationUsed` quotes, exactly and in double
   quotes, every source phrase used. The snapshot's "Source check" verifies each
   quote exists in the contact's data; fixture fx-11 is bait for embellishment.
-- No stated or implied consequence of a fact, hedged or not ("I imagine…",
-  « cela doit… »): acknowledge and ask, never narrate what it led to.
+- No stated or implied claim that a fact caused, changed or will change the
+  contact's plans, priorities, situation, work or circumstances, hedged or not.
+  Mild remarks about a fact's ordinary character ("that must be a busy time") are
+  allowed: cold drafts fail the tool's purpose. The prompt shows the line with
+  permitted/forbidden examples in EN and FR. The snapshot separates "Inferred
+  consequences" (should be 0) from "Mild acknowledgements" (reported only).
 - Feelings recorded in notes guide tone and subject only; never stated back,
   paraphrased or alluded to. Snapshot checks "Hedged guesses" and "Feelings
   stated back" measure both.

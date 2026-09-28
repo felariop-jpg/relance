@@ -148,21 +148,23 @@ describe('placeholder check', () => {
 });
 
 describe('inference check', () => {
-  it('flags hedged consequences and feelings stated back, and passes clean drafts', async () => {
+  it('separates inferred consequences from mild acknowledgements, and flags feelings stated back', async () => {
     const { inferenceCheck } = await import('./snapshot-format');
     const e = (body: string): Entry => ({ kind: 'ok', body: okBody({ subject: 's', personalizationUsed: 'p', body }) });
     const lines = inferenceCheck([
-      { label: 'fx-11 planning', notes: 'Left the partnership.', entry: e('I imagine leaving the partnership means your plans look different.') },
-      { label: 'fx-09 reengage', notes: 'A bit nervous about the four-day week.', entry: e("Surtout avec l'appréhension que cela suscitait.") },
-      { label: 'fx-09 clean', notes: 'A bit nervous about the four-day week.', entry: e('Comment se passe la semaine de quatre jours ?') },
-      { label: 'fr hedge', notes: '', entry: e('Cela doit être un grand changement.') },
+      // Third snapshot, fx-11: claims her plans changed. Forbidden.
+      { label: 'fx-11', notes: 'Left the partnership.', entry: e("Since you've left the partnership, I imagine next year's plans might look quite different.") },
+      // Third snapshot, fx-03: the ordinary character of a stated fact. Permitted.
+      { label: 'fx-03', notes: 'Son fils prépare le bac.', entry: e('Et avec le bac de votre fils cette année, ça doit être une période bien remplie à la maison aussi.') },
+      { label: 'mild-sans-doute', notes: 'Aime le vélo.', entry: e("C'est sans doute une belle saison pour le vélo.") },
+      { label: 'fx-09-feeling', notes: 'A bit nervous about the four-day week.', entry: e("Surtout avec l'appréhension que cela suscitait.") },
     ]);
-    expect(lines[0]).toContain('2:');
-    expect(lines).toContain('- fx-11 planning: "I imagine"');
-    expect(lines.find((l) => l.startsWith('- fr hedge'))).toContain('Cela doit');
-    expect(lines.find((l) => l.startsWith('**Feelings'))).toContain('1:');
-    expect(lines.some((l) => l.startsWith('- fx-09 reengage'))).toBe(true);
-    expect(lines.some((l) => l.startsWith('- fx-09 clean'))).toBe(false);
+    const at = (prefix: string) => lines.findIndex((l) => l.startsWith(prefix));
+    expect(lines[at('**Inferred consequences**')]).toContain('1:');
+    expect(lines[at('**Inferred consequences**') + 1]).toContain('fx-11');
+    expect(lines[at('Mild acknowledgements')]).toContain(': 2:');
+    expect(lines.some((l) => l.startsWith('- fx-03'))).toBe(true);
+    expect(lines[at('**Feelings stated back**')]).toContain('1:');
   });
 });
 

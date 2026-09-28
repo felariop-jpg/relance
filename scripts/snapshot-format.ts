@@ -301,24 +301,49 @@ const FEELINGS = [
 ];
 const feelingIn = (text: string) => FEELINGS.find((f) => text.toLowerCase().includes(f)) ?? null;
 
-/** Check: guesses at consequences, and feelings from the notes stated back. */
+/**
+ * Words that turn a hedge into a claim about consequences or circumstances
+ * (plans, priorities, situation, work changing), as opposed to a mild remark
+ * about a fact's ordinary character ("that must be a busy time").
+ */
+export const CONSEQUENCE =
+  /\b(plans?|priorit|situation|circumstance|different|chang|next year|the year ahead|mean[st]?\b|lead|result|impact|affect|now that|hiring|recruit|projets?|priorités?|situation|différent|chang|l'an prochain|l'année prochaine|l'année à venir|signifie|veut dire|amener|entraîn|conséquen|recrut|désormais)/iu;
+
+/** The sentence around a match. */
+function sentenceAt(text: string, index: number): string {
+  const start = Math.max(text.lastIndexOf('.', index), text.lastIndexOf('!', index), text.lastIndexOf('?', index), text.lastIndexOf('\n', index)) + 1;
+  const ends = ['.', '!', '?', '\n'].map((c) => text.indexOf(c, index)).filter((i) => i >= 0);
+  return text.slice(start, ends.length ? Math.min(...ends) + 1 : text.length).trim();
+}
+
+/**
+ * Check: hedges split into inferred consequences (should be zero) and mild
+ * acknowledgements (reported, not a failure), plus feelings stated back.
+ */
 export function inferenceCheck(items: { label: string; entry: Entry; notes: string }[]): string[] {
-  const hedges: string[] = [];
+  const consequences: string[] = [];
+  const mild: string[] = [];
   const feelings: string[] = [];
   for (const { label, entry, notes } of items) {
     const d = readDraft(entry);
     if (!d) continue;
     const text = `${d.subject}\n${d.body}`;
-    const hedge = HEDGED_GUESS.exec(text)?.[0];
-    if (hedge) hedges.push(`- ${label}: "${hedge}"`);
+    const hedge = HEDGED_GUESS.exec(text);
+    if (hedge) {
+      const sentence = sentenceAt(text, hedge.index);
+      (CONSEQUENCE.test(sentence) ? consequences : mild).push(`- ${label}: "${sentence}"`);
+    }
     if (feelingIn(notes)) {
       const echoed = feelingIn(text);
       if (echoed) feelings.push(`- ${label}: the notes record a feeling and the email mentions one ("${echoed}…")`);
     }
   }
   return [
-    `**Hedged guesses** ("I imagine", « cela doit »…): ${hedges.length === 0 ? 'none.' : `${hedges.length}:`}`,
-    ...hedges,
+    `**Inferred consequences** (a hedge claiming a fact changed their plans, work or situation; should be none): ${consequences.length === 0 ? 'none.' : `${consequences.length}:`}`,
+    ...consequences,
+    '',
+    `Mild acknowledgements (for information, not a failure; e.g. « ça doit être une période chargée »): ${mild.length}${mild.length ? ':' : '.'}`,
+    ...mild,
     '',
     `**Feelings stated back** (a feeling from the notes echoed in the email): ${feelings.length === 0 ? 'none.' : `${feelings.length}:`}`,
     ...feelings,

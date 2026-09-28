@@ -444,3 +444,19 @@ notice and no way back. Code review found more multi-tab hazards of the
   board" and the inferred "settling in well"), fx-08 ×2 (the invented project, and a
   quote of the template's own brief), fx-09 (an English source quoted as a French
   paraphrase), fx-12 (the invented book title).
+
+## Third snapshot review
+
+### 1. Hedge rule narrowed to consequence and circumstance
+- The rule now forbids only claims (plain or hedged) that a fact caused, changed or
+  will change the contact's plans, priorities, situation, work or circumstances.
+  Mild remarks about a fact's ordinary character are explicitly allowed. The prompt
+  shows two worked examples, each with a permitted and a forbidden version, in EN
+  and FR, because the model couldn't locate the line from a description alone.
+- Snapshot: "Inferred consequences" (should be 0) and "Mild acknowledgements"
+  (information only). A hedge counts as a consequence when its sentence talks about
+  plans, priorities, situation, change, next year, recruiting and similar.
+- On the third run: fx-11 → consequence, fx-03 → mild (as the owner judged). fx-09's
+  « pourrait sans doute prendre un relief particulier avec ce changement à venir »
+  is classified as a consequence: it says the upcoming change makes past coaching
+  more relevant, an implied effect on her work. Left for the owner to judge.
