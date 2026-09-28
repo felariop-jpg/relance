@@ -4,7 +4,7 @@ import { addContact, emptyContact } from '../db/contacts';
 import { ensureSettings, getSettings, updateSettings } from '../db/settings';
 import { ensureTemplatesSeeded, groupFamilies } from '../db/templates';
 import { enqueueDrafts, getBatchState, resetBatch, setBatchDeps } from './batch';
-import type { Send } from './engine';
+import type { Connectivity, Send } from './engine';
 import { createPendingDrafts, generateDraft } from './generate';
 
 const good = (language: string) => ({
@@ -64,12 +64,14 @@ describe('generateDraft', () => {
 describe('batch', () => {
   it('keeps going when one draft fails, and loses nothing', async () => {
     const drafts = await setup(6);
-    let call = 0;
     setBatchDeps({
       sleep: async () => {},
-      send: async () => {
-        call++;
-        if (call === 3) throw Object.assign(new Error('socket hang up'), { name: 'APIConnectionError' });
+      connectivity: { isOnline: () => true, waitForOnline: async () => {} },
+      send: async (req) => {
+        // P2's requests keep failing on the network, past all three retries.
+        if (JSON.parse(req.messages[0].content).contact.firstName === 'P2') {
+          throw Object.assign(new Error('socket hang up'), { name: 'APIConnectionError' });
+        }
         return { toolInput: good('en'), usage };
       },
     });
@@ -118,5 +120,52 @@ describe('batch', () => {
     expect(saved.filter((d) => d.error?.code === 'auth')).toHaveLength(7);
     expect(calls).toBeLessThanOrEqual(4); // only calls already in flight
     expect(getBatchState().authFailed).toBe(true);
+  });
+
+  it('pauses while offline and finishes every draft after reconnecting', async () => {
+    const drafts = await setup(5);
+    let online = false;
+    const waiters: (() => void)[] = [];
+    const connectivity: Connectivity = {
+      isOnline: () => online,
+      waitForOnline: () => (online ? Promise.resolve() : new Promise<void>((r) => waiters.push(r))),
+    };
+    let calls = 0;
+    setBatchDeps({
+      sleep: async () => {},
+      connectivity,
+      send: async () => {
+        calls++;
+        return { toolInput: good('en'), usage };
+      },
+    });
+    enqueueDrafts(drafts.map((d) => d.id));
+    await new Promise((r) => setTimeout(r, 20));
+    expect(getBatchState()).toMatchObject({ running: true, offline: true, failed: 0 });
+    expect(calls).toBe(0);
+    expect((await db.drafts.toArray()).every((d) => d.status === 'pending')).toBe(true);
+
+    online = true;
+    waiters.splice(0).forEach((resume) => resume());
+    await settled();
+    expect(getBatchState()).toMatchObject({ running: false, offline: false, done: 5, failed: 0 });
+    expect((await db.drafts.toArray()).every((d) => d.status === 'generated')).toBe(true);
+  });
+
+  it('a connection that drops mid-batch recovers within the retries', async () => {
+    const drafts = await setup(4);
+    let call = 0;
+    setBatchDeps({
+      sleep: async () => {},
+      connectivity: { isOnline: () => true, waitForOnline: async () => {} },
+      send: async () => {
+        call++;
+        if (call === 2 || call === 3) throw new Error('Request timed out.');
+        return { toolInput: good('en'), usage };
+      },
+    });
+    enqueueDrafts(drafts.map((d) => d.id));
+    await settled();
+    expect(getBatchState()).toMatchObject({ done: 4, failed: 0 });
   });
 });

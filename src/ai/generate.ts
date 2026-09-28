@@ -7,7 +7,7 @@ import { resolveLanguage } from '../lib/language';
 import { fillPlaceholders, placeholderValues } from '../lib/placeholders';
 import { anthropicSend } from './anthropic';
 import { demoOutput } from './demo';
-import { classifyError, generateWithRetries, realSleep, type Send, type Sleep } from './engine';
+import { classifyError, generateWithRetries, realSleep, type Connectivity, type Send, type Sleep } from './engine';
 import { costEur } from './model';
 import { buildRequest } from './prompt';
 import { notesAvailable } from './redact';
@@ -19,6 +19,8 @@ export interface GenerateDeps {
   /** Pause before a demo draft appears, so demo mode feels like the real thing. */
   demoDelayMs?: number;
   onWaiting?: (waiting: boolean) => void;
+  connectivity?: Connectivity;
+  onOffline?: (offline: boolean) => void;
 }
 
 export type GenerateOutcome = { ok: true; costEur: number } | { ok: false; code: string; costEur: number };
@@ -67,7 +69,12 @@ export async function generateDraft(draftId: string, deps: GenerateDeps = {}): P
       await sleep(deps.demoDelayMs ?? 350 + Math.floor(Math.random() * 500));
     } else {
       const send = deps.send ?? anthropicSend(settings.apiKey.trim());
-      const result = await generateWithRetries(request, language, send, sleep, deps.onWaiting);
+      const result = await generateWithRetries(request, language, send, {
+        sleep,
+        connectivity: deps.connectivity,
+        onWaiting: deps.onWaiting,
+        onOffline: deps.onOffline,
+      });
       output = result.output;
       usage = result.usage;
     }

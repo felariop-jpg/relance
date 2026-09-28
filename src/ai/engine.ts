@@ -22,6 +22,7 @@ interface ErrorLike {
   status?: number;
   name?: string;
   message?: string;
+  cause?: { code?: string; message?: string };
   headers?: { get?: (name: string) => string | null } | Record<string, string>;
 }
 
@@ -47,13 +48,45 @@ export function classifyError(error: unknown): GenerationError {
     return new GenerationError('overloaded', message, retryAfter(err));
   }
   if (status === 400 && /credit balance|billing/i.test(message)) return new GenerationError('billing', message);
-  if (status === undefined && (/connection|network|fetch|timeout/i.test(`${err.name} ${message}`) || error instanceof TypeError)) {
-    return new GenerationError('network', message);
+  // No HTTP status means the request never got an answer: offline, timed out
+  // (the SDK's timeout is a plain Error "Request timed out."), reset, DNS...
+  const transport = `${err.name ?? ''} ${message} ${err.cause?.code ?? ''} ${err.cause?.message ?? ''}`;
+  if (
+    status === undefined &&
+    (error instanceof TypeError ||
+      /connection|network|fetch|timed? ?out|socket|offline|ECONNRESET|ECONNREFUSED|ETIMEDOUT|ENOTFOUND|EAI_AGAIN|EPIPE|aborted/i.test(transport))
+  ) {
+    return new GenerationError('network', message || err.cause?.code || '');
   }
   return new GenerationError('unknown', message);
 }
 
 export const MAX_BUSY_RETRIES = 4;
+/** Transient network failures (timeout, reset, dropped connection) are retried this many times. */
+export const MAX_NETWORK_RETRIES = 3;
+
+/** Whether the device has a connection, and a way to wait for one. Injected so tests control it. */
+export interface Connectivity {
+  isOnline(): boolean;
+  waitForOnline(): Promise<void>;
+}
+
+export const browserConnectivity: Connectivity = {
+  isOnline: () => typeof navigator === 'undefined' || navigator.onLine !== false,
+  waitForOnline: () =>
+    new Promise<void>((resolve) => {
+      if (typeof window === 'undefined' || browserConnectivity.isOnline()) return resolve();
+      window.addEventListener('online', () => resolve(), { once: true });
+    }),
+};
+
+/** Node (the snapshot script) has no offline signal; retries cover dropped connections. */
+export const alwaysOnline: Connectivity = { isOnline: () => true, waitForOnline: async () => {} };
+
+/** Waits before retrying a network failure: about 2s, 4s, 8s. */
+export function networkBackoffMs(attempt: number): number {
+  return 2000 * 2 ** attempt + Math.floor(Math.random() * 400);
+}
 
 /** Waits before retrying a 429/529: the server's Retry-After if given, else 2s, 4s, 8s, 16s. */
 export function backoffMs(attempt: number, suggested?: number): number {
@@ -66,20 +99,33 @@ export interface GenerateResult {
   usage: TokenUsage;
 }
 
+export interface RetryOptions {
+  sleep?: Sleep;
+  connectivity?: Connectivity;
+  /** True while waiting out a rate limit or overload. */
+  onWaiting?: (waiting: boolean) => void;
+  /** True while paused because the device is offline. */
+  onOffline?: (offline: boolean) => void;
+}
+
 /**
- * Calls the model with automatic back-off on rate limits and overload, and one
- * retry for a malformed or wrong-language reply. Anything else throws a
- * GenerationError for that single draft.
+ * Calls the model, retrying what is likely to succeed on a second try:
+ * - rate limits and overload: back off (Retry-After if given), up to 4 times;
+ * - network failures (timeout, reset, dropped connection): back off, up to 3 times;
+ *   if the device is offline, wait for the connection without using up a retry;
+ * - a malformed or wrong-language reply: once.
+ * Anything else (a rejected key, no credit...) throws at once for this draft.
  */
 export async function generateWithRetries(
   request: DraftRequest,
   expectedLanguage: Lang,
   send: Send,
-  sleep: Sleep = realSleep,
-  onWaiting?: (waiting: boolean) => void,
+  options: RetryOptions = {},
 ): Promise<GenerateResult> {
+  const { sleep = realSleep, connectivity = browserConnectivity, onWaiting, onOffline } = options;
   const usage: TokenUsage = { inputTokens: 0, outputTokens: 0 };
   let busyRetries = 0;
+  let networkRetries = 0;
   let malformed = 0;
   for (;;) {
     let reply: Awaited<ReturnType<Send>>;
@@ -87,6 +133,19 @@ export async function generateWithRetries(
       reply = await send(request);
     } catch (error) {
       const failure = classifyError(error);
+      if (failure.code === 'network') {
+        if (!connectivity.isOnline()) {
+          onOffline?.(true);
+          await connectivity.waitForOnline();
+          onOffline?.(false);
+          continue;
+        }
+        if (networkRetries < MAX_NETWORK_RETRIES) {
+          await sleep(networkBackoffMs(networkRetries));
+          networkRetries++;
+          continue;
+        }
+      }
       const busy = failure.code === 'rate_limit' || failure.code === 'overloaded';
       if (busy && busyRetries < MAX_BUSY_RETRIES) {
         onWaiting?.(true);

@@ -234,7 +234,7 @@
     "retry": "Try again",
     "cost": "Cost {{cost}}",
     "errors": {
-      "network": "Couldn't reach the AI service. Check your internet connection, then try again.",
+      "network": "Couldn't reach the AI service, even after trying again three times. Check your internet connection, then click Try again.",
       "auth": "Your API key was not accepted. Check it in Settings, then try again.",
       "rate_limit": "The AI service is receiving too many requests. Relance waited and retried, but it is still busy. Try again in a few minutes.",
       "overloaded": "The AI service is overloaded right now. Try again in a few minutes.",
@@ -429,7 +429,8 @@
     "cost": "Cost: {{cost}}.",
     "demoCost": "Demo mode: no cost.",
     "authFailed": "Your API key was not accepted, so Relance stopped. Check the key in Settings, then use Try again on each card.",
-    "dismiss": "Hide"
+    "dismiss": "Hide",
+    "offline": "You are offline, so Relance has paused. It will carry on by itself when the connection is back. Nothing is lost."
   },
   "shortcuts": {
     "title": "Keyboard shortcuts",

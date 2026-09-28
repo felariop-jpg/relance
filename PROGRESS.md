@@ -296,3 +296,15 @@ notice and no way back. Code review found more multi-tab hazards of the
   404 for users once the repo is private. The guides are now built into the site as
   pages (`/docs/*.html`) and the app links there.
 - The repo is still public at the time of this commit; the owner flips it.
+
+### Network resilience (after the first snapshot run)
+- Bug found in the snapshot output: request timeouts were classified "unknown",
+  because the SDK's timeout error is a plain `Error("Request timed out.")`.
+  Timeouts, resets and other transport errors are now "network".
+- The app retries network failures up to 3 times with backoff before a card
+  fails, and pauses the batch while the browser is offline, resuming on
+  reconnect (banner: "You are offline, so Relance has paused…"). A rejected
+  key still stops the batch. Tests cover retries, the offline pause, and a
+  batch that loses its connection mid-run.
+- Not verified in a real browser: the tools used here can't switch the browser
+  offline. Worth one manual check (DevTools → Network → Offline during a batch).

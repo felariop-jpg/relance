@@ -252,7 +252,7 @@
     "retry": "Réessayer",
     "cost": "Coût {{cost}}",
     "errors": {
-      "network": "Impossible de joindre le service d'IA. Vérifiez votre connexion internet, puis réessayez.",
+      "network": "Impossible de joindre le service d'IA, même après trois nouvelles tentatives. Vérifiez votre connexion internet, puis cliquez sur Réessayer.",
       "auth": "Votre clé API n'a pas été acceptée. Vérifiez-la dans les Réglages, puis réessayez.",
       "rate_limit": "Le service d'IA reçoit trop de demandes. Relance a patienté et réessayé, mais il est toujours occupé. Réessayez dans quelques minutes.",
       "overloaded": "Le service d'IA est surchargé en ce moment. Réessayez dans quelques minutes.",
@@ -452,7 +452,8 @@
     "cost": "Coût : {{cost}}.",
     "demoCost": "Mode démo : aucun coût.",
     "authFailed": "Votre clé API n'a pas été acceptée, Relance s'est donc arrêté. Vérifiez la clé dans les Réglages, puis utilisez Réessayer sur chaque carte.",
-    "dismiss": "Masquer"
+    "dismiss": "Masquer",
+    "offline": "Vous êtes hors ligne : Relance a fait une pause. Il reprendra tout seul dès le retour de la connexion. Rien n'est perdu."
   },
   "shortcuts": {
     "title": "Raccourcis clavier",

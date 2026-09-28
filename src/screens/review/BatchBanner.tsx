@@ -23,6 +23,7 @@ export function BatchBanner() {
     return (
       <Banner tone="info">
         <p className="font-medium">{t('batch.writing', { done: batch.done + batch.failed, total: batch.total })}</p>
+        {batch.offline && <p className="font-medium">{t('batch.offline')}</p>}
         {batch.waiting && <p>{t('batch.waiting')}</p>}
         <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-sky-200">
           <div

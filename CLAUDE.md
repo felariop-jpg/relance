@@ -210,6 +210,13 @@ README notes that swapping models is a one-line change.
 - **SDK retries off** (`maxRetries: 0`); the engine owns retries so they are
   tested. 429/529/5xx: up to 4 automatic retries, Retry-After honoured, else
   2 s → 4 s → 8 s → 16 s (+ jitter), capped at 30 s.
+- **Network failures** (timeout, reset, dropped connection, DNS; any error with
+  no HTTP status) are retried up to 3 times, about 2 s → 4 s → 8 s, before the card
+  fails. The SDK's timeout is a plain `Error("Request timed out.")`, so the classifier
+  matches the message and `cause.code`, not the class name.
+- **Offline pauses the batch.** If `navigator.onLine` is false, queued drafts
+  don't start and in-flight ones wait for the `online` event without using up
+  retries; the batch banner says so. A rejected key still stops the batch.
 - **Concurrency 3.** A 401/403 stops further calls in the batch; remaining cards
   are marked "key not accepted" with Retry. A 400 about credit → "billing".
 - **SDK is lazy-loaded** on first generation, so it never slows the first page.

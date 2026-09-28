@@ -1,5 +1,6 @@
 import { useSyncExternalStore } from 'react';
 import { updateDraft } from '../db/drafts';
+import { browserConnectivity } from './engine';
 import { generateDraft, type GenerateDeps } from './generate';
 
 /** How many drafts are written at the same time. */
@@ -15,13 +16,16 @@ export interface BatchState {
   authFailed: boolean;
   /** Waiting out a rate limit before retrying automatically. */
   waiting: boolean;
+  /** Paused because the device is offline; resumes by itself on reconnect. */
+  offline: boolean;
 }
 
-const idle: BatchState = { running: false, total: 0, done: 0, failed: 0, costEur: 0, authFailed: false, waiting: false };
+const idle: BatchState = { running: false, total: 0, done: 0, failed: 0, costEur: 0, authFailed: false, waiting: false, offline: false };
 let state: BatchState = idle;
 let queue: string[] = [];
 let active = 0;
 let waitingCount = 0;
+let offlineCount = 0;
 let deps: GenerateDeps = {};
 const listeners = new Set<() => void>();
 
@@ -39,6 +43,7 @@ export function resetBatch(): void {
   queue = [];
   active = 0;
   waitingCount = 0;
+  offlineCount = 0;
   set(idle);
 }
 
@@ -67,7 +72,20 @@ function pump() {
   }
 }
 
+function trackOffline(offline: boolean) {
+  offlineCount += offline ? 1 : -1;
+  set({ offline: offlineCount > 0 });
+}
+
 async function work(id: string) {
+  // Offline (a laptop that went to sleep, Wi-Fi dropped): pause here rather
+  // than starting a request that is bound to fail. Resumes on reconnect.
+  const connectivity = deps.connectivity ?? browserConnectivity;
+  if (!connectivity.isOnline()) {
+    trackOffline(true);
+    await connectivity.waitForOnline();
+    trackOffline(false);
+  }
   if (state.authFailed) {
     await updateDraft(id, { status: 'failed', error: { code: 'auth', detail: '' } });
     set({ failed: state.failed + 1 });
@@ -75,6 +93,8 @@ async function work(id: string) {
   }
   const outcome = await generateDraft(id, {
     ...deps,
+    connectivity,
+    onOffline: trackOffline,
     onWaiting: (waiting) => {
       waitingCount += waiting ? 1 : -1;
       set({ waiting: waitingCount > 0 });
