@@ -308,3 +308,12 @@ notice and no way back. Code review found more multi-tab hazards of the
   batch that loses its connection mid-run.
 - Not verified in a real browser: the tools used here can't switch the browser
   offline. Worth one manual check (DevTools → Network → Offline during a batch).
+
+### Snapshot gaps
+- `scripts/snapshot-format.ts` (tested) reads and writes the snapshot. Gaps say
+  "Not generated (reason). Error: …" plus the command to fill them; a run that is
+  cut off leaves "not run yet" gaps, because the file is saved after every draft.
+- `--retry-failed` regenerates only gaps (old `**FAILED:**` lines included), keeps
+  existing drafts unchanged, and refuses if the prompt hash or model differs.
+- Checked against the owner's real file: it parses as 50 entries with the same hash;
+  gaps injected into a copy (old and new format) are detected.
