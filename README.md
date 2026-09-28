@@ -60,7 +60,7 @@ npm test           # unit tests, including the privacy and no-send guards
 npm run build      # static site in dist/, deployable anywhere
 ```
 
-- **Deploying:** `.github/workflows/deploy.yml` tests, builds and publishes `dist/` to GitHub Pages on every push to `main`. The build is plain static files with relative paths, so any static host works.
+- **Deploying:** `.github/workflows/deploy.yml` tests, builds and publishes `dist/` to GitHub Pages on every push to `main`. The build is plain static files with relative paths (one `BASE_PATH` constant), so any static host works. The user guides are built into the site under `docs/`. See [docs/deployment.md](docs/deployment.md), including hosting from a private repository and moving to Cloudflare Pages.
 - **Changing the AI model** is a one-line change: `MODEL` in [`src/ai/model.ts`](src/ai/model.ts). Update the price constants next to it, and regenerate the prompt snapshot (see CONTRIBUTING).
 - **Privacy is enforced in code:** [`redactForApi`](src/ai/redact.ts) builds the payload from an allowlist, so a new contact field is never sent unless someone adds it on purpose. The production build ships a Content-Security-Policy that lets the browser connect only to the site itself and `api.anthropic.com`.
 - **Project rules** for contributors (and AI assistants) are in [CLAUDE.md](CLAUDE.md). How to contribute: [CONTRIBUTING.md](CONTRIBUTING.md).

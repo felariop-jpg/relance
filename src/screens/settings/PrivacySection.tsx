@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Checkbox } from '../../components/Checkbox';
 import { WarningIcon } from '../../components/icons';
-import { REPO_URL } from '../../config';
+import { docUrl } from '../../config';
 import { API_FIELDS, type ApiField } from '../../db/schema';
 import { modifySettings, useSettings } from '../../db/settings';
 import { Section } from './Section';
@@ -10,7 +10,7 @@ export function PrivacySection() {
   const { t, i18n } = useTranslation();
   const settings = useSettings();
   const withheld = new Set(settings.withheldFields);
-  const privacyUrl = `${REPO_URL}/blob/main/${i18n.language === 'fr' ? 'PRIVACY.fr.md' : 'PRIVACY.md'}`;
+  const privacyUrl = docUrl('privacy', i18n.language === 'fr' ? 'fr' : 'en');
 
   const toggle = (field: ApiField, sent: boolean) =>
     void modifySettings((s) => {

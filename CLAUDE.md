@@ -326,3 +326,13 @@ README notes that swapping models is a one-line change.
   fictional `fixtures/contacts.json`; the script refuses fixtures with emails
   outside example.com/.net/.org. It needs a key, prints the estimated cost,
   and asks before calling the API (`-- --yes` to skip).
+
+### Deployment decisions (after deploy)
+- **Private repo, GitHub Pages kept.** Needs GitHub Pro (Student Developer Pack);
+  when that lapses the site stops. Fallbacks in docs/deployment.md: make the repo
+  public again, or Cloudflare Pages (free, builds from private repos).
+- **`BASE_PATH`** in vite.config.ts is the single host-dependent value ('./').
+- **Guides are built into the site** (`scripts/docs-plugin.ts` → `dist/docs/*.html`,
+  with screenshots), and in-app links use `docUrl()` → `./docs/<name>.html`, so help
+  still works when the repository is private.
+- The README keeps its public open-source framing, licence and contributing guide.

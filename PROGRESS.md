@@ -282,3 +282,15 @@ notice and no way back. Code review found more multi-tab hazards of the
 - Decision: the output file is committed; it can only contain fixture data. The
   script refuses to run if any fixture email is outside the reserved example
   domains. Documented in CONTRIBUTING.md.
+
+### 7. Deployment, going private
+- docs/deployment.md: current setup; GitHub Pro via the Student Developer Pack is
+  required for Pages from a private repo, and the site stops when it lapses (options:
+  make public again, or Cloudflare Pages); private hides the source but not the site,
+  and a static app's code is readable in any browser; step-by-step Cloudflare move,
+  including asking users to back up and restore because browser data is per address.
+- `BASE_PATH` is one constant in vite.config.ts.
+- Found while doing this: the in-app help links pointed at docs on GitHub, which would
+  404 for users once the repo is private. The guides are now built into the site as
+  pages (`/docs/*.html`) and the app links there.
+- The repo is still public at the time of this commit; the owner flips it.
