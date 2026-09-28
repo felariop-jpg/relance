@@ -1,0 +1,171 @@
+{
+  "app": {
+    "name": "Relance",
+    "tagline": "Follow-up emails, written for each person"
+  },
+  "nav": {
+    "label": "Main",
+    "contacts": "Contacts",
+    "due": "Due now",
+    "review": "Review",
+    "settings": "Settings"
+  },
+  "header": {
+    "uiLanguage": "Interface language"
+  },
+  "footer": {
+    "local": "Your contacts are stored only in this browser, on this computer. Relance never sends email: it writes drafts that you send yourself."
+  },
+  "placeholder": {
+    "title": "Not built yet",
+    "body": "This part of Relance is still being built. For now, you can manage your contacts.",
+    "goContacts": "Go to contacts"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "close": "Close",
+    "back": "Back",
+    "edit": "Edit",
+    "loading": "Loading…",
+    "optional": "optional",
+    "required": "required"
+  },
+  "languages": {
+    "en": "English",
+    "fr": "French"
+  },
+  "contactTypes": {
+    "client": "Client",
+    "prospect": "Prospect",
+    "lead": "Lead"
+  },
+  "fields": {
+    "firstName": "First name",
+    "lastName": "Last name",
+    "fullName": "Full name (split into first and last)",
+    "email": "Email",
+    "phone": "Phone",
+    "company": "Company",
+    "country": "Country",
+    "language": "Language",
+    "contactType": "Type",
+    "serviceHistory": "Work done together",
+    "notes": "Notes",
+    "lastContacted": "Last contacted"
+  },
+  "contacts": {
+    "title": "Contacts",
+    "count_one": "{{count}} contact",
+    "count_other": "{{count}} contacts",
+    "showing": "Showing {{shown}} of {{total}}",
+    "search": "Search",
+    "searchPlaceholder": "Name, company, email or notes",
+    "filterType": "Type",
+    "allTypes": "All types",
+    "add": "Add contact",
+    "import": "Import spreadsheet",
+    "empty": {
+      "title": "You don't have any contacts yet",
+      "body": "Import a spreadsheet of your contacts, or add them one at a time. To try Relance first, load a few made-up sample contacts.",
+      "loadSample": "Load sample contacts",
+      "downloadSample": "Download the sample spreadsheet",
+      "sampleHint": "It shows which columns work well."
+    },
+    "sampleLoaded_one": "Added {{count}} sample contact.",
+    "sampleLoaded_other": "Added {{count}} sample contacts.",
+    "sampleAlreadyLoaded": "The sample contacts are already in your list.",
+    "sampleError": "The sample contacts could not be loaded. Check your internet connection and try again.",
+    "noMatch": "No contacts match your search.",
+    "clearSearch": "Clear search",
+    "selectAll": "Select all shown contacts",
+    "selectRow": "Select {{name}}",
+    "selected_one": "{{count}} selected",
+    "selected_other": "{{count}} selected",
+    "deleteSelected": "Delete selected",
+    "clearSelection": "Clear selection",
+    "editContact": "Edit {{name}}",
+    "noNotes": "No notes",
+    "noNotesHint": "Drafts for this contact can't be personal until you add notes.",
+    "never": "Never",
+    "languageAuto": "{{language}} (auto)",
+    "sortBy": "Sort by {{column}}",
+    "actions": "Actions",
+    "saveFailed": "That change couldn't be saved. Please try again.",
+    "cellLabel": "{{field}}: {{name}}"
+  },
+  "form": {
+    "addTitle": "Add a contact",
+    "editTitle": "Edit contact",
+    "firstNameRequired": "Enter a first name.",
+    "emailInvalid": "This doesn't look like an email address.",
+    "countryNone": "Not set",
+    "languageAuto": "Automatic (currently {{language}})",
+    "languageHint": "Automatic chooses the language from the country and your settings.",
+    "notesHint": "The most important field. Write what you'd want to remember before emailing this person: what you talked about, what's happening for them, anything they mentioned.",
+    "serviceHistoryHint": "What you've done together, if anything.",
+    "lastContactedHint": "Leave empty if you've never been in touch.",
+    "discardTitle": "Discard your changes?",
+    "discardBody": "The changes you made to this contact won't be saved.",
+    "keepEditing": "Keep editing",
+    "discard": "Discard changes",
+    "deleteContact": "Delete contact",
+    "saveFailed": "The contact couldn't be saved. Please try again.",
+    "dateInvalid": "Enter a full date, or leave it empty."
+  },
+  "delete": {
+    "title_one": "Delete {{count}} contact?",
+    "title_other": "Delete {{count}} contacts?",
+    "body": "Any drafts written for them are deleted too. This can't be undone.",
+    "confirm_one": "Delete contact",
+    "confirm_other": "Delete {{count}} contacts"
+  },
+  "import": {
+    "title": "Import contacts from a spreadsheet",
+    "chooseIntro": "Choose a CSV file. Most spreadsheet programs can save one:",
+    "howExcel": "Excel: File → Save As → choose “CSV UTF-8”.",
+    "howNumbers": "Numbers: File → Export To → CSV.",
+    "howSheets": "Google Sheets: File → Download → Comma-separated values (.csv).",
+    "chooseFile": "Choose a file",
+    "dropHere": "or drag it here",
+    "spreadsheetFile": "This is a spreadsheet file, not a CSV file. Open it in your spreadsheet program, save it as CSV, then choose that file here.",
+    "readError": "This file couldn't be read. Make sure it's a CSV file and try again.",
+    "emptyFile": "This file has no rows to import.",
+    "mapIntro": "Tell Relance what each column in your file contains. Where a column name was familiar, a choice has been filled in for you. Please check each one.",
+    "fileName": "File: {{name}}",
+    "hasHeader": "The first row contains column names",
+    "column": "Column in your file",
+    "examples": "Example values",
+    "target": "Put this into",
+    "skip": "Don't import",
+    "columnN": "Column {{n}}",
+    "defaultType": "Type for contacts without one",
+    "needName": "To continue, choose which column holds first names (or full names).",
+    "ready_one": "{{count}} contact ready to import.",
+    "ready_other": "{{count}} contacts ready to import.",
+    "missingName_one": "{{count}} row has no first name and will be skipped.",
+    "missingName_other": "{{count}} rows have no first name and will be skipped.",
+    "importButton_one": "Import {{count}} contact",
+    "importButton_other": "Import {{count}} contacts",
+    "importing": "Importing…",
+    "importFailed": "The import didn't finish, and nothing was added. Please try again.",
+    "doneTitle": "Import finished",
+    "added_one": "Added {{count}} contact.",
+    "added_other": "Added {{count}} contacts.",
+    "duplicates_one": "{{count}} was already in your list (same email address) and was skipped.",
+    "duplicates_other": "{{count}} were already in your list (same email address) and were skipped.",
+    "skippedName_one": "{{count}} row had no first name and was skipped.",
+    "skippedName_other": "{{count}} rows had no first name and were skipped.",
+    "unknownCountry_one": "The country of {{count}} contact wasn't recognised, so it was left empty. You can set it by editing the contact.",
+    "unknownCountry_other": "The country of {{count}} contacts wasn't recognised, so it was left empty. You can set it by editing each contact.",
+    "unknownDate_one": "The last-contacted date of {{count}} contact couldn't be read, so it was left empty.",
+    "unknownDate_other": "The last-contacted date of {{count}} contacts couldn't be read, so it was left empty.",
+    "done": "Done"
+  },
+  "storage": {
+    "title": "Relance can’t store your contacts in this browser",
+    "body": "Relance keeps everything on your own computer, inside the browser. This browser is currently not allowing that, which often happens in a private or incognito window.",
+    "fix": "Open this page in a normal browser window. If that doesn’t help, try another browser such as Chrome, Edge, Firefox or Safari."
+  }
+}
