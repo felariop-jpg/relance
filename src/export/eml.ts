@@ -65,6 +65,10 @@ export function buildEml({ toName, toEmail, subject, body }: EmlInput): string {
 
 /** A safe, readable file name: "Anne Martin - Spring check-in.eml". */
 export function emlFileName(parts: string[], taken: Set<string>): string {
+  return safeFileName(parts, taken, 'eml');
+}
+
+export function safeFileName(parts: string[], taken: Set<string>, extension: string): string {
   const base =
     parts
       .filter(Boolean)
@@ -73,8 +77,8 @@ export function emlFileName(parts: string[], taken: Set<string>): string {
       .replace(/\s+/g, ' ')
       .trim()
       .slice(0, 80) || 'draft';
-  let name = `${base}.eml`;
-  for (let n = 2; taken.has(name.toLowerCase()); n++) name = `${base} (${n}).eml`;
+  let name = `${base}.${extension}`;
+  for (let n = 2; taken.has(name.toLowerCase()); n++) name = `${base} (${n}).${extension}`;
   taken.add(name.toLowerCase());
   return name;
 }

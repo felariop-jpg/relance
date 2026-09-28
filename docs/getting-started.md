@@ -119,7 +119,9 @@ You have three choices on this screen.
 3. Tick **Mark these contacts as contacted today** only if you will send the emails today. If you send them another day, leave it unticked and set the date afterwards in the **Last contacted** column on the Contacts page.
 4. Click **Download**. Your browser saves a .zip file, usually in your **Downloads** folder.
 5. Open your **Downloads** folder.
-6. Double-click the .zip file to open it.
+6. Open the .zip file:
+   - **On Windows:** right-click it and choose **Extract All…**, then **Extract**. (Opening the emails from inside the .zip window can make them read-only.)
+   - **On a Mac:** double-click it.
 7. Double-click the first email file.
 
    > TODO (screenshot): an exported draft open in Outlook, ready to send.
@@ -128,6 +130,7 @@ You have three choices on this screen.
    - **Apple Mail** opens it as a message you received. Choose **Message → Send Again** to turn it into a new email.
    - **Thunderbird**: choose **Message → Edit as New Message**.
    - In other email programs, copy the text into a new email.
+   - If the files don't open properly in your email program, export again and choose **Plain text files** instead: one text file per email, ready to copy and paste.
 
 8. Read it one last time, then click **Send**.
 9. Repeat for each email file.

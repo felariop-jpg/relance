@@ -307,7 +307,10 @@
     "fileName": "Fichier : {{name}}",
     "doneEml": "Retrouvez le fichier .zip dans votre dossier Téléchargements et double-cliquez dessus pour l'ouvrir. Ouvrez ensuite chaque fichier e-mail : Outlook l'affiche comme un nouveau message. Relisez-le, puis cliquez sur Envoyer.",
     "doneBrevo": "Dans Brevo, importez ce fichier comme des contacts. Les colonnes SUBJECT et BODY deviennent des attributs de contact utilisables dans une campagne.",
-    "failed": "L'export n'a pas fonctionné. Veuillez réessayer."
+    "failed": "L'export n'a pas fonctionné. Veuillez réessayer.",
+    "txt": "Fichiers texte (fichiers .txt dans un .zip)",
+    "txtHint": "Un fichier par e-mail, au nom du contact, avec l'adresse et l'objet en haut. À utiliser si les fichiers e-mail ne s'ouvrent pas correctement dans votre messagerie.",
+    "doneTxt": "Retrouvez le fichier .zip dans votre dossier Téléchargements et double-cliquez dessus pour l'ouvrir. Ouvrez chaque fichier texte, puis copiez l'adresse, l'objet et le texte dans un nouvel e-mail de votre messagerie habituelle."
   },
   "settings": {
     "title": "Réglages",

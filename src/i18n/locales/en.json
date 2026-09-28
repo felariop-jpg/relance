@@ -286,7 +286,10 @@
     "fileName": "File: {{name}}",
     "doneEml": "Find the .zip file in your Downloads folder and double-click it to open it. Then open each email file: Outlook shows it as a new message. Read it, then press Send.",
     "doneBrevo": "In Brevo, import this file as contacts. The SUBJECT and BODY columns become contact attributes that you can use in a campaign.",
-    "failed": "The export didn't work. Please try again."
+    "failed": "The export didn't work. Please try again.",
+    "txt": "Plain text files (.txt files in a .zip)",
+    "txtHint": "One file per email, named after the contact, with the address and subject at the top. Use this if the email files don't open properly in your email program.",
+    "doneTxt": "Find the .zip file in your Downloads folder and double-click it to open it. Open each text file, then copy the address, subject and text into a new email in your usual email program."
   },
   "settings": {
     "title": "Settings",

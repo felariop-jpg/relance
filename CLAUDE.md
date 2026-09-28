@@ -313,3 +313,10 @@ README notes that swapping models is a one-line change.
 - **Live sync between tabs** is Dexie 4's built-in BroadcastChannel propagation.
   `OtherTabsNotice` tells the user when another tab is open.
 - Any new write path needs a case in `src/db/multitab.test.ts`.
+
+### Export decisions (after deploy)
+- **Plain-text fallback export**: one `.txt` per approved draft in a zip, named
+  after the contact, address and subject on top, UTF-8 with BOM and CRLF.
+- **.eml is unverified in Outlook**; docs/eml-compatibility.md holds the manual
+  checklist and what to change in `buildEml` for each failure. Users are told
+  to "Extract All" on Windows before opening.

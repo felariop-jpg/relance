@@ -5,11 +5,11 @@ import { Button } from '../../components/Button';
 import { Checkbox } from '../../components/Checkbox';
 import { Modal } from '../../components/Modal';
 import { markExported } from '../../db/drafts';
-import { buildBrevoCsv, buildEmlZip, type ExportItem } from '../../export/bundle';
+import { buildBrevoCsv, buildEmlZip, buildTxtZip, type ExportItem } from '../../export/bundle';
 import { todayIso } from '../../lib/dates';
 import { downloadFile } from '../../lib/download';
 
-type Format = 'eml' | 'brevo';
+type Format = 'eml' | 'txt' | 'brevo';
 
 export function ExportDialog({ items, onClose }: { items: ExportItem[]; onClose: () => void }) {
   const { t } = useTranslation();
@@ -29,6 +29,9 @@ export function ExportDialog({ items, onClose }: { items: ExportItem[]; onClose:
       if (format === 'eml') {
         fileName = `relance-drafts-${today}.zip`;
         downloadFile(buildEmlZip(items), fileName, 'application/zip');
+      } else if (format === 'txt') {
+        fileName = `relance-drafts-text-${today}.zip`;
+        downloadFile(buildTxtZip(items), fileName, 'application/zip');
       } else {
         fileName = `relance-brevo-${today}.csv`;
         downloadFile(buildBrevoCsv(items), fileName, 'text/csv;charset=utf-8');
@@ -82,7 +85,7 @@ export function ExportDialog({ items, onClose }: { items: ExportItem[]; onClose:
       {done ? (
         <div className="space-y-3 text-stone-700">
           <p className="text-sm text-stone-500">{t('export.fileName', { name: done.fileName })}</p>
-          <p>{done.format === 'eml' ? t('export.doneEml') : t('export.doneBrevo')}</p>
+          <p>{done.format === 'eml' ? t('export.doneEml') : done.format === 'txt' ? t('export.doneTxt') : t('export.doneBrevo')}</p>
         </div>
       ) : (
         <div className="space-y-4">
@@ -90,6 +93,7 @@ export function ExportDialog({ items, onClose }: { items: ExportItem[]; onClose:
           <fieldset className="space-y-2">
             <legend className="mb-2 text-sm font-medium">{t('export.format')}</legend>
             {option('eml', t('export.eml'), t('export.emlHint'))}
+            {option('txt', t('export.txt'), t('export.txtHint'))}
             {option('brevo', t('export.brevo'), t('export.brevoHint'))}
           </fieldset>
           {missingEmail > 0 && <Banner tone="warning">{t('export.noEmail', { count: missingEmail })}</Banner>}

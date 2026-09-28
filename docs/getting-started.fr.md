@@ -107,7 +107,9 @@ Cet écran propose trois choix.
 3. Cochez **Indiquer ces contacts comme contactés aujourd'hui** seulement si vous envoyez les e-mails aujourd'hui. Si vous les envoyez un autre jour, laissez la case décochée et indiquez la date ensuite dans la colonne **Dernier contact** de la page Contacts.
 4. Cliquez sur **Télécharger**. Votre navigateur enregistre un fichier .zip, en général dans le dossier **Téléchargements**.
 5. Ouvrez votre dossier **Téléchargements**.
-6. Double-cliquez sur le fichier .zip pour l'ouvrir.
+6. Ouvrez le fichier .zip :
+   - **Sous Windows :** faites un clic droit dessus et choisissez **Extraire tout…**, puis **Extraire**. (Ouvrir les e-mails depuis la fenêtre du .zip peut les rendre non modifiables.)
+   - **Sur Mac :** double-cliquez dessus.
 7. Double-cliquez sur le premier fichier e-mail.
 
    > TODO (capture d'écran) : un brouillon exporté ouvert dans Outlook, prêt à être envoyé.
@@ -116,6 +118,7 @@ Cet écran propose trois choix.
    - **Apple Mail** l'ouvre comme un message reçu. Choisissez **Message → Renvoyer** pour en faire un nouvel e-mail.
    - **Thunderbird** : choisissez **Message → Modifier en tant que nouveau message**.
    - Dans les autres messageries, copiez le texte dans un nouvel e-mail.
+   - Si les fichiers ne s'ouvrent pas correctement dans votre messagerie, exportez à nouveau en choisissant **Fichiers texte** : un fichier texte par e-mail, prêt à copier-coller.
 
 8. Relisez une dernière fois, puis cliquez sur **Envoyer**.
 9. Recommencez pour chaque fichier e-mail.

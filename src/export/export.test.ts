@@ -3,7 +3,7 @@ import { strFromU8, unzipSync } from 'fflate';
 import { describe, expect, it } from 'vitest';
 import { emptyContact } from '../db/contacts';
 import { newDraft } from '../db/drafts';
-import { buildBrevoCsv, buildEmlZip, BREVO_COLUMNS } from './bundle';
+import { buildBrevoCsv, buildEmlZip, buildTxtZip, BREVO_COLUMNS } from './bundle';
 import { buildEml, emlFileName, encodeHeaderValue } from './eml';
 
 function decodeBody(eml: string): string {
@@ -90,5 +90,17 @@ describe('export bundles', () => {
     const parsed = Papa.parse<string[]>(buildBrevoCsv([{ draft, contact }]));
     expect(parsed.data[0]).toEqual([...BREVO_COLUMNS]);
     expect(parsed.data[1]).toEqual(['anne@example.com', 'Anne', 'Martin', 'Bonjour', 'Ligne 1\nLigne "2", avec virgule']);
+  });
+});
+
+describe('plain-text fallback', () => {
+  it('writes one UTF-8 .txt per draft, named by contact, with address and subject on top', () => {
+    const accented = { ...contact, id: 'c2', firstName: 'Hélène', lastName: 'Duclos', email: '' };
+    const files = unzipSync(buildTxtZip([{ draft, contact }, { draft: { ...draft, subject: 'Été' }, contact: accented }]));
+    expect(Object.keys(files)).toEqual(['Anne Martin.txt', 'Hélène Duclos.txt']);
+    const anne = new TextDecoder('utf-8', { ignoreBOM: true }).decode(files['Anne Martin.txt']);
+    expect(anne.startsWith('\uFEFFAnne Martin <anne@example.com>\r\nBonjour\r\n\r\nLigne 1\r\n')).toBe(true);
+    const helene = new TextDecoder('utf-8', { ignoreBOM: true }).decode(files['Hélène Duclos.txt']);
+    expect(helene.startsWith('\uFEFFHélène Duclos\r\nÉté\r\n')).toBe(true);
   });
 });

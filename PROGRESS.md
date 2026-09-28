@@ -265,3 +265,12 @@ notice and no way back. Code review found more multi-tab hazards of the
 - "Mark these contacts as contacted today" now starts unticked, with a help line:
   tick it only if sending today, because Relance uses the date to decide who is
   due next. The getting-started guides explain setting the date later instead.
+
+### 5. Outlook verification
+- docs/eml-compatibility.md: file anatomy, test setup, an 8-point checklist
+  (opens as a draft, recipient, subject, accents, signature, line breaks,
+  editable, sends), troubleshooting for X-Unsent, encodings, recipient,
+  signature and read-only / Protected View, with the generator change for each,
+  and a results table to fill in per Outlook version.
+- New "Plain text files" export (one .txt per draft, named by contact).
+- Guides now say to "Extract All" on Windows first, and mention the text fallback.

@@ -46,6 +46,12 @@ ANTHROPIC_API_KEY=sk-ant-... npm run drafts:snapshot
 
 This writes `fixtures/drafts-snapshot.md`: ten fixture contacts (`fixtures/contacts.json`) × every built-in template, against the real API, about €0.35. Reviewers read the diff to judge whether the drafts got better or worse. The script is a developer tool; it is not part of the app or of `npm test`.
 
+## Email export
+
+The .eml format and its known limits (classic vs. new Outlook, X-Unsent,
+encodings) are documented in [docs/eml-compatibility.md](docs/eml-compatibility.md),
+with the manual test to run on Windows. Update its results table when you test.
+
 ## Writing for users
 
 User-facing text and the guides in `docs/` are for people who have never used a developer tool.
