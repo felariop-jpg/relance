@@ -28,7 +28,7 @@ This guide takes you from nothing to your first follow-up emails. It takes about
 
 1. If you have an API key, paste it into the box.
 
-   ![The API key step](screenshots/welcome-api-key.jpg)
+   ![The API key step](screenshots/api-key-08.jpg)
 
 2. Click **Next**.
 
