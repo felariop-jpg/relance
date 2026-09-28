@@ -180,3 +180,10 @@ further testing to port 4174. The real drafts confirmed generation with
 - Screenshots of third-party screens (Outlook with an opened draft, the
   Anthropic Console billing and key pages) are marked TODO in the guides.
 - `fixtures/drafts-snapshot.md` still needs its first real run (needs a key).
+
+## Deployed
+- Live: **https://felariop-jpg.github.io/relance/** (repo: https://github.com/felariop-jpg/relance).
+- Verified on the live URL: production CSP present; welcome → sample contacts
+  → Due now → 10 demo drafts → edit → approve → .eml zip export, with no
+  account, key or card.
+- CI: tests and build pass on GitHub's Linux runner; Pages deploys from `main`.
