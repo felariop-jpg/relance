@@ -91,9 +91,9 @@ export function LanguagesSection() {
               setCountry('');
             }}
           >
-            <label className="flex flex-col text-xs text-stone-500">
+            <label className="flex max-w-full min-w-0 flex-col text-xs text-stone-500">
               {t('settings.languages.country')}
-              <select className={`${inputBase} mt-1 py-1.5`} value={country} onChange={(e) => setCountry(e.target.value)}>
+              <select className={`${inputBase} mt-1 max-w-full py-1.5`} value={country} onChange={(e) => setCountry(e.target.value)}>
                 <option value="">{t('settings.languages.choose')}</option>
                 {options
                   .filter((o) => !overrides[o.code])
@@ -104,7 +104,7 @@ export function LanguagesSection() {
                   ))}
               </select>
             </label>
-            <label className="flex flex-col text-xs text-stone-500">
+            <label className="flex max-w-full min-w-0 flex-col text-xs text-stone-500">
               {t('settings.languages.language')}
               <select className={`${inputBase} mt-1 py-1.5`} value={language} onChange={(e) => setLanguage(e.target.value as Lang)}>
                 {LANGUAGES.map((l) => (

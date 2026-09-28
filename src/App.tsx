@@ -47,7 +47,7 @@ export function App() {
             <span className="text-lg font-semibold tracking-tight">{t('app.name')}</span>
           </a>
           <nav aria-label={t('nav.label')} className="order-last w-full sm:order-none sm:w-auto">
-            <ul className="-mx-2 flex gap-1 overflow-x-auto">
+            <ul className="-mx-2 flex flex-wrap gap-1">
               {ROUTES.map((r) => (
                 <li key={r}>
                   <a

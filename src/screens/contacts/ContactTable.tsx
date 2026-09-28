@@ -79,7 +79,7 @@ export function ContactTable({
   };
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-stone-200 bg-white">
+    <div className="relative overflow-x-auto rounded-lg border border-stone-200 bg-white">
       <table className="w-full border-collapse text-sm">
         <thead className="bg-stone-50 text-xs text-stone-600">
           <tr>

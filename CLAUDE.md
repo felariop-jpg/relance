@@ -218,6 +218,14 @@ README notes that swapping models is a one-line change.
   read as part of the field's name.
 - **Layout width** is `max-w-screen-2xl` so the dense table fits on a laptop.
   Narrower screens scroll the table horizontally.
+- **Scroll containers are `relative`** (contacts table, column mapper): an absolutely
+  positioned child (the table's sr-only "Actions" header) otherwise escapes
+  `overflow-x-auto` and widens the whole page, which pushed the header's EN/FR switch
+  and "Add contact" off-screen between about 820 and 1100 px.
+- **The nav wraps** onto a second line on narrow screens instead of scrolling
+  sideways, so every item (including "Show me around") stays visible.
+- **Wide selects get `max-w-full`**: country names like « Géorgie du Sud-et-les Îles
+  Sandwich du Sud » otherwise size the picker wider than a phone.
 
 ### Phase 2 decisions
 - **Draft lifecycle** adds `pending` and `failed` to the four review statuses, so a

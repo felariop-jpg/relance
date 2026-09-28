@@ -32,7 +32,7 @@ export function ColumnMapper({
   const id = useId();
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-stone-200">
+    <div className="relative overflow-x-auto rounded-lg border border-stone-200">
       <table className="w-full text-sm">
         <thead className="bg-stone-50 text-left text-xs text-stone-600">
           <tr>
