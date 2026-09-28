@@ -8,8 +8,7 @@ import { db } from '../../db/db';
 import { createTemplateDrafts } from '../../db/drafts';
 import { enqueueDrafts } from '../../ai/batch';
 import { createPendingDrafts } from '../../ai/generate';
-import { estimateCostEur } from '../../ai/model';
-import { formatEur } from '../../lib/money';
+import { MethodPicker, type Method } from './MethodPicker';
 import { useTemplates } from '../../db/hooks';
 import { LANGUAGES, type Contact, type Lang } from '../../db/schema';
 import { useSettings } from '../../db/settings';
@@ -40,7 +39,7 @@ export function CreateDraftsDialog({
     [templates, i18n.language],
   );
   const [chosen, setChosen] = useState<string | undefined>(initialFamily);
-  const [method, setMethod] = useState<'ai' | 'template'>('ai');
+  const [method, setMethod] = useState<Method>('ai');
   const [busy, setBusy] = useState(false);
   const demo = !settings.apiKey.trim();
   const [failed, setFailed] = useState(false);
@@ -133,41 +132,7 @@ export function CreateDraftsDialog({
             </Banner>
           ))}
 
-        <fieldset className="space-y-2">
-          <legend className="mb-2 text-sm font-medium">{t('create.method')}</legend>
-          {(['ai', 'template'] as const).map((value) => (
-            <label
-              key={value}
-              className="flex cursor-pointer items-start gap-3 rounded-lg border border-stone-300 p-3 has-[:checked]:border-accent-600 has-[:checked]:bg-accent-50"
-            >
-              <input
-                type="radio"
-                name="method"
-                className="mt-1 accent-accent-700"
-                checked={method === value}
-                onChange={() => setMethod(value)}
-              />
-              <span>
-                <span className="block font-medium">
-                  {value === 'template' ? t('create.methodTemplate') : demo ? t('create.methodDemo') : t('create.methodAi')}
-                </span>
-                <span className="block text-sm text-stone-600">
-                  {value === 'template'
-                    ? t('create.methodTemplateHint')
-                    : demo
-                      ? t('create.methodDemoHint')
-                      : t('create.methodAiHint')}
-                </span>
-              </span>
-            </label>
-          ))}
-        </fieldset>
-
-        <p className="rounded-md bg-stone-100 px-3 py-2 text-sm text-stone-700" aria-live="polite">
-          {method === 'ai' && !demo
-            ? t('create.estimate', { count, cost: formatEur(estimateCostEur(count), i18n.language, t) })
-            : t('create.free')}
-        </p>
+        <MethodPicker method={method} onChange={setMethod} demo={demo} count={count} />
       </div>
     </Modal>
   );

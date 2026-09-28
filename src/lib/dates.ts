@@ -58,3 +58,16 @@ export function formatDate(iso: string | null, locale: string): string {
   const [y, m, d] = iso.split('-').map(Number);
   return new Intl.DateTimeFormat(locale, { dateStyle: 'medium' }).format(new Date(y, m - 1, d));
 }
+
+/** "3 months ago", "il y a 2 semaines", "yesterday". */
+export function formatSince(days: number, locale: string): string {
+  const rtf = new Intl.RelativeTimeFormat(locale, { numeric: 'auto' });
+  if (days < 14) return rtf.format(-days, 'day');
+  if (days < 60) return rtf.format(-Math.round(days / 7), 'week');
+  if (days < 730) return rtf.format(-Math.round(days / 30.4), 'month');
+  return rtf.format(-Math.round(days / 365), 'year');
+}
+
+export function monthName(month: number, locale: string): string {
+  return new Intl.DateTimeFormat(locale, { month: 'long' }).format(new Date(2000, month - 1, 1));
+}

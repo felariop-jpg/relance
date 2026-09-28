@@ -16,11 +16,6 @@
   "footer": {
     "local": "Vos contacts sont enregistrés uniquement dans ce navigateur, sur cet ordinateur. Relance n'envoie jamais d'e-mail : il prépare des brouillons que vous envoyez vous-même."
   },
-  "placeholder": {
-    "title": "Pas encore disponible",
-    "body": "Cette partie de Relance est en cours de construction. Pour l'instant, vous pouvez gérer vos contacts.",
-    "goContacts": "Aller aux contacts"
-  },
   "common": {
     "cancel": "Annuler",
     "save": "Enregistrer",
@@ -401,5 +396,48 @@
     "help": "Afficher cette liste",
     "note": "Les raccourcis sont en pause pendant que vous tapez dans un champ. Appuyez d'abord sur Échap pour quitter le champ.",
     "keyEsc": "Échap"
+  },
+  "due": {
+    "title": "À relancer",
+    "today": "Aujourd'hui : {{date}}",
+    "intro": "Les personnes à relancer ce mois-ci, d'après le calendrier de chaque modèle. Cochez celles que vous voulez, puis rédigez les brouillons.",
+    "rule": "Envoyé en {{month}} aux {{audience}} sans contact depuis au moins {{days}} jours.",
+    "ruleNoGap": "Envoyé en {{month}} aux {{audience}}.",
+    "selectGroup": "Sélectionner tout le monde dans {{name}}",
+    "alreadyDrafted": "A déjà un brouillon en relecture",
+    "never": "Jamais contacté",
+    "lastContact": "Dernier contact {{when}}",
+    "nothingTitle": "Personne à relancer ce mois-ci",
+    "nothingBody": "Aucun modèle n'est prévu en {{month}}, ou tout le monde a été contacté assez récemment.",
+    "upcoming": "À venir",
+    "upcomingItem_one": "{{name}} en {{month}} : {{count}} contact concerné à ce jour",
+    "upcomingItem_many": "{{name}} en {{month}} : {{count}} contacts concernés à ce jour",
+    "upcomingItem_other": "{{name}} en {{month}} : {{count}} contacts concernés à ce jour",
+    "manual": "Choisir les contacts vous-même",
+    "manualHint": "Choisissez n'importe quels contacts et n'importe quel modèle, quel que soit le calendrier.",
+    "manualSearch": "Rechercher des contacts",
+    "manualSelectShown": "Sélectionner tous les contacts affichés",
+    "hideManual": "Masquer",
+    "writeFor_one": "Écrire pour {{count}} contact…",
+    "writeFor_many": "Écrire pour {{count}} contacts…",
+    "writeFor_other": "Écrire pour {{count}} contacts…",
+    "selected_one": "{{count}} brouillon sélectionné",
+    "selected_many": "{{count}} brouillons sélectionnés",
+    "selected_other": "{{count}} brouillons sélectionnés",
+    "estimate": "environ {{cost}} avec l'IA",
+    "generate": "Rédiger les brouillons",
+    "noContacts": "Ajoutez d'abord des contacts. Personne ne peut être à relancer sans eux.",
+    "confirmTitle": "Rédiger les brouillons",
+    "groupLine_one": "{{name}} : {{count}} brouillon",
+    "groupLine_many": "{{name}} : {{count}} brouillons",
+    "groupLine_other": "{{name}} : {{count}} brouillons",
+    "ruleAll": "Envoyé en {{month}} à toutes les personnes sans contact depuis au moins {{days}} jours.",
+    "ruleAllNoGap": "Envoyé en {{month}} à tout le monde.",
+    "audienceJoin": " ou "
+  },
+  "contactTypesPlural": {
+    "client": "clients",
+    "prospect": "prospects",
+    "lead": "pistes"
   }
 }

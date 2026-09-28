@@ -4,7 +4,7 @@ import { LANGUAGES } from './db/schema';
 import { updateSettings, useSettings } from './db/settings';
 import { href, ROUTES, useRoute } from './nav';
 import { ContactsScreen } from './screens/contacts/ContactsScreen';
-import { Placeholder } from './screens/Placeholder';
+import { DueNowScreen } from './screens/due/DueNowScreen';
 import { ReviewScreen } from './screens/review/ReviewScreen';
 import { SettingsScreen } from './screens/settings/SettingsScreen';
 import { Toaster } from './components/Toaster';
@@ -68,7 +68,7 @@ export function App() {
 
       <main className="mx-auto w-full max-w-screen-2xl flex-1 px-4 py-6">
         {route === 'contacts' && <ContactsScreen />}
-        {route === 'due' && <Placeholder title={t('nav.due')} />}
+        {route === 'due' && <DueNowScreen />}
         {route === 'review' && <ReviewScreen />}
         {route === 'settings' && <SettingsScreen />}
       </main>

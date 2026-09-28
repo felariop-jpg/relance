@@ -245,3 +245,16 @@ README notes that swapping models is a one-line change.
   "Edited" marker isn't restored. Minor, and keeps the model simple.
 - **Contacts on phones**: a stacked list below 768 px (tap to edit, checkbox to
   select). Inline table editing is desktop-only.
+
+### Phase 5 decisions
+- **Built-in schedules**: Spring check-in April / 90 days / clients;
+  Late-summer planning September / 60 days / clients + prospects; Holiday
+  greeting December / 0 days / everyone; Re-engagement February / 180 days /
+  prospects; Post-event: no schedule (manual only).
+- **Due only in the rule's month.** Nothing carries over from last month; the
+  "Coming up" list shows what the next scheduled templates will catch.
+- **Everyone due is pre-ticked**; untick to leave someone out.
+- **An open draft blocks a second one** for the same contact and template family
+  (open = not exported and not skipped). Exporting or skipping frees it.
+- **Days are whole calendar days** in the user's time zone.
+- **Manual mode** reuses the Write emails dialog (any template, any contacts).

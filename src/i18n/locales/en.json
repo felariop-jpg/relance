@@ -16,11 +16,6 @@
   "footer": {
     "local": "Your contacts are stored only in this browser, on this computer. Relance never sends email: it writes drafts that you send yourself."
   },
-  "placeholder": {
-    "title": "Not built yet",
-    "body": "This part of Relance is still being built. For now, you can manage your contacts.",
-    "goContacts": "Go to contacts"
-  },
   "common": {
     "cancel": "Cancel",
     "save": "Save",
@@ -378,5 +373,44 @@
     "help": "Show this list",
     "note": "Shortcuts are paused while you type in a field. Press Esc to leave the field first.",
     "keyEsc": "Esc"
+  },
+  "due": {
+    "title": "Due now",
+    "today": "Today: {{date}}",
+    "intro": "People to follow up this month, based on each template's schedule. Tick the ones you want, then write the drafts.",
+    "rule": "Sent in {{month}} to {{audience}} not contacted for at least {{days}} days.",
+    "ruleNoGap": "Sent in {{month}} to {{audience}}.",
+    "selectGroup": "Select everyone in {{name}}",
+    "alreadyDrafted": "Already has a draft in Review",
+    "never": "Never contacted",
+    "lastContact": "Last contact {{when}}",
+    "nothingTitle": "Nobody is due this month",
+    "nothingBody": "No template is scheduled for {{month}}, or everyone has been contacted recently enough.",
+    "upcoming": "Coming up",
+    "upcomingItem_one": "{{name}} in {{month}}: {{count}} contact due as things stand",
+    "upcomingItem_other": "{{name}} in {{month}}: {{count}} contacts due as things stand",
+    "manual": "Choose contacts yourself",
+    "manualHint": "Pick any contacts and any template, whatever the schedule.",
+    "manualSearch": "Search contacts",
+    "manualSelectShown": "Select all shown",
+    "hideManual": "Hide",
+    "writeFor_one": "Write for {{count}} contact…",
+    "writeFor_other": "Write for {{count}} contacts…",
+    "selected_one": "{{count}} draft selected",
+    "selected_other": "{{count}} drafts selected",
+    "estimate": "about {{cost}} with AI",
+    "generate": "Generate drafts",
+    "noContacts": "Add contacts first. Nothing can be due without them.",
+    "confirmTitle": "Generate drafts",
+    "groupLine_one": "{{name}}: {{count}} draft",
+    "groupLine_other": "{{name}}: {{count}} drafts",
+    "ruleAll": "Sent in {{month}} to everyone not contacted for at least {{days}} days.",
+    "ruleAllNoGap": "Sent in {{month}} to everyone.",
+    "audienceJoin": " or "
+  },
+  "contactTypesPlural": {
+    "client": "clients",
+    "prospect": "prospects",
+    "lead": "leads"
   }
 }

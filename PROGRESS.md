@@ -91,3 +91,26 @@ edit, Esc, skip), rewrite with "plus court" (instruction in payload, undo toast)
 bulk bar, phone-width Review and Contacts.
 
 **Deferred**: nothing from this phase.
+
+## Phase 5 — scheduling and Due now
+**Built**
+- Declarative rules `{ month, minGapDays }` plus each template's `appliesTo`
+  (`src/lib/schedule.ts`, tested): due when the month matches, the contact type
+  fits, and the gap since last contact is at least `minGapDays` (never-contacted
+  counts as due).
+- Due now screen: one group per scheduled template with its rule in plain words,
+  everyone due pre-ticked, per-group select-all, "Already has a draft in Review"
+  rows disabled, no-notes badges, last contact as relative time, a "Coming up"
+  list for the next scheduled templates, and a sticky bar with the running count
+  and a cost estimate.
+- Generate dialog: per-template summary, AI/demo or template text, estimate.
+- "Choose contacts yourself": searchable picker + any template, whatever the
+  schedule.
+- The Phase 1 placeholder screen is gone.
+
+**Verified in the browser**: 28 September → Late-summer planning due for 10 of
+the 12 sample contacts (leads excluded); untick one, generate 9 in demo mode;
+back on Due now those 9 show "Already has a draft"; French rule text; manual
+picker opens the write dialog.
+
+**Deferred**: nothing from this phase.
