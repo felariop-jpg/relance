@@ -1,5 +1,6 @@
 import Dexie, { type EntityTable } from 'dexie';
 import type { Contact, Draft, Settings, Template, TrashEntry } from './schema';
+import { BUILT_IN_PURPOSES } from './seed';
 
 export class RelanceDB extends Dexie {
   contacts!: EntityTable<Contact, 'id'>;
@@ -35,6 +36,24 @@ export class RelanceDB extends Dexie {
             if (t.family === 'holiday' && r.month === 12 && r.minGapDays === 0) t.scheduleRule = { month: 11, minGapDays: 0 };
           }),
       );
+    // v4: "where you met" on contacts; template purpose and post-event requirement.
+    this.version(4)
+      .stores({})
+      .upgrade(async (tx) => {
+        await tx
+          .table('contacts')
+          .toCollection()
+          .modify((c) => {
+            if (typeof c.whereMet !== 'string') c.whereMet = '';
+          });
+        await tx
+          .table('templates')
+          .toCollection()
+          .modify((t) => {
+            if (typeof t.purpose !== 'string') t.purpose = BUILT_IN_PURPOSES[t.id] ?? '';
+            if (typeof t.requiresWhereMet !== 'boolean') t.requiresWhereMet = t.isBuiltIn && t.family === 'post-event';
+          });
+      });
   }
 }
 

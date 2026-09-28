@@ -14,7 +14,7 @@ Rules:
 4. Facts. State only facts that are written in "notes" or "serviceHistory". You may reword a fact, but never add to it: no motive, reason, cause, feeling, outcome, circumstance or context that is not written there. If the notes say someone ran a race, do not say why, how it went or what it meant to them; if they mention a change at work, do not guess how it is going or how people feel about it. When unsure whether something is written, leave it out. Never invent shared history, events, statistics, names or dates.
 5. No pressure and no artificial urgency. Never write "just following up", "circling back", "I wanted to reach out", "touching base", "je me permets de vous relancer" or "je reviens vers vous".
 6. End with a low-commitment invitation (for example, that they are welcome to reply whenever it suits them). Do not ask for a meeting or a call.
-7. Follow the template's purpose and instructions. The template's reference text shows the purpose and tone; do not copy it word for word.
+7. Each kind of email has one job, given in "template.purpose"; do that job and only that one. "otherTemplates" lists the sender's other kinds of email and their jobs: do not drift into them. In particular, a check-in asks how the person is doing now and does not revisit past work beyond acknowledging that you know each other; a re-engagement leans on the time since you last spoke and on the specific thing left unresolved; a post-event email is about where you met ("whereMet") and what you talked about there; a greeting mentions no work at all. Follow "template.instructions" for content. The template's reference text shows purpose and tone only; do not copy it word for word.
 8. In French, use "vous", and never assume the recipient's gender. For words about the sender: if "senderGender" is "feminine" or "masculine", make them agree with it, consistently. If "senderGender" is "unspecified", write every sentence about the sender so that it needs no gender agreement at all (for example « ce sera avec plaisir » or « j'en serais heureux » becomes « ce serait un plaisir »). Never write a dual form such as « ravi(e) », « certain·e » or « heureux/se ».
 9. If "extraInstruction" is present, apply it, as long as it does not break the rules above.
 10. Dates. "today" is today's date (YYYY-MM-DD); your own sense of the current year is not reliable. Work out every relative time reference ("last year", "this spring", "next year", "recently") from "today" and from dates written in the contact's data. Do not name a specific year unless that year is written in the contact's data. Never call something "last year", "this year" or "recent" unless a date in the data, compared with "today", shows it; otherwise leave the time reference out. For wishes about the coming year, write "the year ahead" rather than a year number.
@@ -38,6 +38,8 @@ export interface PromptInput {
   >;
   /** Optional regeneration instruction ("shorter", "plus formel"). */
   instruction?: string;
+  /** The sender's other kinds of email (same language where possible), so the model can tell them apart. */
+  otherTemplates?: { name: string; purpose: string }[];
   /** Today's date, YYYY-MM-DD, in the user's time zone. The model can't know it. */
   today: string;
 }
@@ -49,7 +51,8 @@ export interface PromptData {
   reportLanguage: Lang;
   notesAvailable: boolean;
   withheldByUser: string[];
-  template: { name: string; instructions: string; referenceSubject: string; referenceText: string };
+  template: { name: string; purpose: string; instructions: string; referenceSubject: string; referenceText: string };
+  otherTemplates: { name: string; purpose: string }[];
   contact: RedactedContact;
   voiceSamples?: string[];
   extraInstruction?: string;
@@ -57,7 +60,7 @@ export interface PromptData {
   senderGender?: Settings['senderGender'];
 }
 
-export function buildPromptData({ contact, template, settings, instruction, today }: PromptInput): PromptData {
+export function buildPromptData({ contact, template, settings, instruction, today, otherTemplates = [] }: PromptInput): PromptData {
   const samples = settings.voiceSamples.map((s) => s.trim()).filter(Boolean);
   // Contact first: it is what a user checks in "What was sent to the AI".
   const data: PromptData = {
@@ -69,10 +72,12 @@ export function buildPromptData({ contact, template, settings, instruction, toda
     reportLanguage: settings.uiLanguage,
     template: {
       name: template.name,
+      purpose: template.purpose,
       instructions: template.instructions,
       referenceSubject: template.subject,
       referenceText: template.body,
     },
+    otherTemplates: otherTemplates.filter((t) => t.purpose.trim()),
   };
   if (data.language === 'fr') data.senderGender = settings.senderGender ?? 'unspecified';
   if (samples.length > 0) data.voiceSamples = samples;

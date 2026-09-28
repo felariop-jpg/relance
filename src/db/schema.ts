@@ -23,6 +23,8 @@ export interface Contact {
   serviceHistory: string;
   /** The personalization hook: the most important field. */
   notes: string;
+  /** Where you met, e.g. "Brussels HR forum, March 2026". Required by the post-event template. */
+  whereMet: string;
   /** YYYY-MM-DD, or null if never. */
   lastContacted: string | null;
   createdAt: string;
@@ -104,11 +106,15 @@ export interface Template {
   language: Lang;
   subject: string;
   body: string;
+  /** The one job of this email, which no other template does. Sent to the model. */
+  purpose: string;
   /** Natural-language guidance passed to the model. */
   instructions: string;
   scheduleRule: ScheduleRule | null;
   /** Contact types this template is meant for. Empty = everyone. */
   appliesTo: ContactType[];
+  /** Only for contacts with a "where you met" value (the post-event template). */
+  requiresWhereMet: boolean;
   isBuiltIn: boolean;
 }
 
@@ -125,6 +131,8 @@ export const API_FIELDS = [
   'contactType',
   'serviceHistory',
   'notes',
+  // Added deliberately: the post-event email is about the meeting itself.
+  'whereMet',
 ] as const satisfies readonly (keyof Contact)[];
 export type ApiField = (typeof API_FIELDS)[number];
 

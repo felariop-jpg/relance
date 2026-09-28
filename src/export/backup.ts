@@ -37,6 +37,7 @@ const contactSchema = z
     contactType: z.enum(CONTACT_TYPES).catch('client'),
     serviceHistory: str,
     notes: str,
+    whereMet: str,
     lastContacted: isoOrNull,
     createdAt: str,
     updatedAt: str,
@@ -79,12 +80,14 @@ const templateSchema = z.object({
   language: lang,
   subject: str,
   body: str,
+  purpose: str,
   instructions: str,
   scheduleRule: z
     .object({ month: z.number().int().min(1).max(12), minGapDays: z.number().int().min(0) })
     .nullable()
     .catch(null),
   appliesTo: z.array(z.enum(CONTACT_TYPES)).catch([]),
+  requiresWhereMet: z.boolean().catch(false),
   isBuiltIn: z.boolean().catch(false),
 }) satisfies z.ZodType<Template>;
 

@@ -49,3 +49,17 @@ export function groupFamilies(templates: Template[], lang: Lang): TemplateFamily
 export function pickVersion(family: TemplateFamily, lang: Lang): Template | undefined {
   return family.versions[lang] ?? Object.values(family.versions)[0];
 }
+
+/** A template that needs "where you met" can only be used for contacts that have it. */
+export function canUseTemplate(template: Pick<Template, 'requiresWhereMet'>, contact: { whereMet?: string }): boolean {
+  return !template.requiresWhereMet || Boolean(contact.whereMet?.trim());
+}
+
+/** The other families' names and purposes, in `lang` where available, for the prompt. */
+export function otherTemplatesFor(templates: Template[], family: string, lang: Lang): { name: string; purpose: string }[] {
+  return groupFamilies(templates, lang)
+    .filter((f) => f.family !== family)
+    .map((f) => pickVersion(f, lang))
+    .filter((t): t is Template => Boolean(t))
+    .map((t) => ({ name: t.name, purpose: t.purpose }));
+}

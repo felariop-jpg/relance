@@ -55,6 +55,7 @@ export const IMPORT_TARGETS = [
   'contactType',
   'serviceHistory',
   'notes',
+  'whereMet',
   'lastContacted',
 ] as const;
 export type ImportTarget = (typeof IMPORT_TARGETS)[number];
@@ -74,6 +75,7 @@ const HEADER_HINTS: Record<ImportTarget, string[]> = {
   contactType: ['type', 'contact type', 'category', 'status', 'type de contact', 'categorie', 'statut'],
   serviceHistory: ['service history', 'history', 'services', 'work done', 'projects', 'historique', 'prestations', 'projets'],
   notes: ['notes', 'note', 'comments', 'comment', 'remarks', 'commentaires', 'commentaire', 'remarques'],
+  whereMet: ['where we met', 'where met', 'met at', 'first met', 'event', 'lieu de rencontre', 'rencontre', 'rencontre a', 'evenement'],
   lastContacted: ['last contacted', 'last contact', 'last contact date', 'last email', 'dernier contact', 'date dernier contact', 'date du dernier contact'],
 };
 
@@ -209,6 +211,7 @@ export function applyMapping(
       contactType: parseContactType(get('contactType')) ?? options.defaultType,
       serviceHistory: get('serviceHistory'),
       notes: get('notes'),
+      whereMet: get('whereMet'),
       lastContacted,
     });
   }

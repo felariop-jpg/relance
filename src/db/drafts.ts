@@ -1,6 +1,6 @@
 import { db } from './db';
 import type { Contact, Draft, DraftStatus, Settings } from './schema';
-import { pickVersion, type TemplateFamily } from './templates';
+import { canUseTemplate, pickVersion, type TemplateFamily } from './templates';
 import { resolveLanguage } from '../lib/language';
 import { fillPlaceholders, placeholderValues } from '../lib/placeholders';
 
@@ -37,7 +37,7 @@ export async function createTemplateDrafts(
   const drafts = contacts.flatMap((contact) => {
     const language = resolveLanguage(contact, settings);
     const template = pickVersion(family, language);
-    if (!template) return [];
+    if (!template || !canUseTemplate(template, contact)) return [];
     const values = placeholderValues(contact, settings);
     return [
       newDraft({

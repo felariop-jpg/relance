@@ -12,7 +12,7 @@ import { MethodPicker, type Method } from './MethodPicker';
 import { useTemplates } from '../../db/hooks';
 import { LANGUAGES, type Contact, type Lang } from '../../db/schema';
 import { useSettings } from '../../db/settings';
-import { groupFamilies } from '../../db/templates';
+import { canUseTemplate, groupFamilies, pickVersion } from '../../db/templates';
 import { resolveLanguage } from '../../lib/language';
 import { showToast } from '../../lib/toast';
 import { href } from '../../nav';
@@ -43,7 +43,14 @@ export function CreateDraftsDialog({
   const [busy, setBusy] = useState(false);
   const demo = !settings.apiKey.trim();
   const [failed, setFailed] = useState(false);
-  const family = families.find((f) => f.family === chosen) ?? families[0];
+  // How many of the chosen contacts each template can actually be used for.
+  const eligibleFor = (f: (typeof families)[number]) =>
+    (contacts ?? []).filter((c) => {
+      const version = pickVersion(f, resolveLanguage(c, settings));
+      return version ? canUseTemplate(version, c) : false;
+    }).length;
+  const usable = families.filter((f) => eligibleFor(f) > 0);
+  const family = usable.find((f) => f.family === chosen) ?? usable[0];
 
   const byLanguage = useMemo(() => {
     const counts: Record<Lang, number> = { en: 0, fr: 0 };
@@ -51,7 +58,8 @@ export function CreateDraftsDialog({
     return counts;
   }, [contacts, settings]);
 
-  const count = contacts?.length ?? 0;
+  const total = contacts?.length ?? 0;
+  const count = family ? eligibleFor(family) : 0;
 
   async function submit() {
     if (!family || !contacts) return;
@@ -97,29 +105,43 @@ export function CreateDraftsDialog({
           <fieldset>
             <legend className="mb-2 text-sm font-medium">{t('create.template')}</legend>
             <div className="grid gap-2 sm:grid-cols-2">
-              {families.map((f) => (
-                <label
-                  key={f.family}
-                  className="flex cursor-pointer items-start gap-3 rounded-lg border border-stone-300 p-3 has-[:checked]:border-accent-600 has-[:checked]:bg-accent-50"
-                >
-                  <input
-                    type="radio"
-                    name="family"
-                    className="mt-1 accent-accent-700"
-                    checked={family?.family === f.family}
-                    onChange={() => setChosen(f.family)}
-                  />
-                  <span className="min-w-0">
-                    <span className="block font-medium">{f.name}</span>
-                    <span className="block truncate text-sm text-stone-500">
-                      {(f.versions[i18n.language as Lang] ?? Object.values(f.versions)[0])?.subject}
+              {families.map((f) => {
+                const unavailable = eligibleFor(f) === 0;
+                const needsWhereMet = Object.values(f.versions).some((v) => v?.requiresWhereMet);
+                return (
+                  <label
+                    key={f.family}
+                    className={`flex items-start gap-3 rounded-lg border border-stone-300 p-3 has-[:checked]:border-accent-600 has-[:checked]:bg-accent-50 ${unavailable ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'}`}
+                  >
+                    <input
+                      type="radio"
+                      name="family"
+                      className="mt-1 accent-accent-700"
+                      disabled={unavailable}
+                      checked={family?.family === f.family}
+                      onChange={() => setChosen(f.family)}
+                    />
+                    <span className="min-w-0">
+                      <span className="block font-medium">{f.name}</span>
+                      <span className="block text-sm text-stone-500">
+                        {unavailable && needsWhereMet
+                          ? t('create.unavailable')
+                          : (f.versions[i18n.language as Lang] ?? Object.values(f.versions)[0])?.purpose}
+                      </span>
+                      {needsWhereMet && !unavailable && (
+                        <span className="mt-1 inline-block rounded bg-stone-100 px-1.5 py-0.5 text-xs text-stone-600">
+                          {t('create.needsWhereMet')}
+                        </span>
+                      )}
                     </span>
-                  </span>
-                </label>
-              ))}
+                  </label>
+                );
+              })}
             </div>
           </fieldset>
         )}
+
+        {family && count < total && <Banner tone="info">{t('create.leftOut', { count: total - count })}</Banner>}
 
         {family &&
           LANGUAGES.filter((l) => byLanguage[l] > 0 && !family.versions[l]).map((l) => (

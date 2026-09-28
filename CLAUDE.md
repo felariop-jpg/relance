@@ -33,7 +33,8 @@ prospect, lead.
   contact data to the API payload.
 - **Allowlist, not blocklist.** `API_FIELDS` in `src/db/schema.ts` lists the only
   fields that may be sent:
-  `firstName, company, country, language, contactType, serviceHistory, notes`.
+  `firstName, company, country, language, contactType, serviceHistory, notes, whereMet`
+  (`whereMet` added deliberately for the post-event email).
 - These never leave the browser: `lastName, email, phone`, any field in
   `settings.withheldFields`, and any field added to the schema in future unless
   it is explicitly added to `API_FIELDS`. New fields default to withheld.
@@ -355,3 +356,12 @@ README notes that swapping models is a one-line change.
   with screenshots), and in-app links use `docUrl()` → `./docs/<name>.html`, so help
   still works when the repository is private.
 - The README keeps its public open-source framing, licence and contributing guide.
+
+### Template purposes and "where you met" (snapshot review)
+- Every template has a `purpose` (its one job) sent to the model, plus
+  `otherTemplates` (the other families' names and purposes) so it can keep them
+  apart. Shared rule 7 spells out check-in vs re-engagement vs post-event vs greeting.
+- Contacts have `whereMet` (form field, import column, allowlisted API field).
+  Templates with `requiresWhereMet` (built-in post-event) are unavailable for
+  contacts without it: disabled with an explanation in the write dialog, skipped
+  in Due now and in the snapshot (not a gap). Schema v4 fills the new fields.

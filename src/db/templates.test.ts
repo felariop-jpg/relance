@@ -71,3 +71,56 @@ describe('schema upgrade (v3 schedule migration)', () => {
     current.close();
   });
 });
+
+describe('templates that need "where you met"', () => {
+  it('only the post-event built-ins require it, and only contacts with a value can use them', async () => {
+    const { canUseTemplate } = await import('./templates');
+    const postEvent = BUILT_IN_TEMPLATES.filter((t) => t.requiresWhereMet).map((t) => t.family);
+    expect([...new Set(postEvent)]).toEqual(['post-event']);
+    const tpl = BUILT_IN_TEMPLATES.find((t) => t.family === 'post-event')!;
+    expect(canUseTemplate(tpl, { whereMet: '' })).toBe(false);
+    expect(canUseTemplate(tpl, { whereMet: '  ' })).toBe(false);
+    expect(canUseTemplate(tpl, { whereMet: 'Lyon trade fair' })).toBe(true);
+    expect(canUseTemplate(BUILT_IN_TEMPLATES[0], {})).toBe(true);
+  });
+
+  it('every built-in states a distinct purpose', () => {
+    const en = BUILT_IN_TEMPLATES.filter((t) => t.language === 'en').map((t) => t.purpose);
+    expect(en.every((p) => p.length > 30)).toBe(true);
+    expect(new Set(en).size).toBe(en.length);
+  });
+
+  it('the v4 upgrade gives old contacts an empty "where you met" and old templates their purpose', async () => {
+    const { default: Dexie } = await import('dexie');
+    const name = 'relance-upgrade-v4';
+    const old = new Dexie(name);
+    old.version(1).stores({ contacts: 'id', drafts: 'id', templates: 'id, family, language, isBuiltIn', settings: 'id' });
+    old.version(2).stores({ trash: 'id, deletedAt' });
+    old.version(3).stores({});
+    await old.table('contacts').add({ id: 'c1', firstName: 'Old' });
+    await old.table('templates').add({ id: 'builtin-post-event-en', family: 'post-event', isBuiltIn: true, scheduleRule: null });
+    old.close();
+    const { RelanceDB } = await import('./db');
+    const db4 = new RelanceDB(name);
+    expect((await db4.contacts.get('c1'))?.whereMet).toBe('');
+    const t = await db4.templates.get('builtin-post-event-en');
+    expect(t?.requiresWhereMet).toBe(true);
+    expect(t?.purpose).toContain('whereMet');
+    db4.close();
+  });
+});
+
+describe('write dialog data layer', () => {
+  it('skips contacts that cannot use the template', async () => {
+    const { addContact, emptyContact } = await import('./contacts');
+    const { createTemplateDrafts } = await import('./drafts');
+    const { getSettings } = await import('./settings');
+    await ensureTemplatesSeeded();
+    await addContact({ ...emptyContact(), firstName: 'NoEvent' });
+    await addContact({ ...emptyContact(), firstName: 'MetAtFair', whereMet: 'Lyon fair' });
+    const family = groupFamilies(await db.templates.toArray(), 'en').find((f) => f.family === 'post-event')!;
+    const drafts = await createTemplateDrafts(await db.contacts.toArray(), family, await getSettings());
+    expect(drafts).toHaveLength(1);
+    expect((await db.contacts.get(drafts[0].contactId))?.firstName).toBe('MetAtFair');
+  });
+});

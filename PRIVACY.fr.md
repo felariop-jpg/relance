@@ -27,6 +27,7 @@ Relance se connecte à **un seul** service : l'IA Claude, de l'entreprise Anthro
 - le **type** de contact (client, prospect ou piste)
 - le **travail réalisé ensemble**
 - vos **notes** sur la personne
+- le **lieu de rencontre**, s'il est renseigné (l'e-mail « Suite à une rencontre » en parle)
 
 Sont aussi envoyés : pour les brouillons en français uniquement, l'accord grammatical choisi pour vous (Réglages → Vos informations ; « neutre » par défaut) ; le but et le texte du modèle, les e-mails d'exemple collés dans « Votre style d'écriture » (s'il y en a), et la consigne que vous tapez quand vous réécrivez un brouillon.
 

@@ -18,7 +18,7 @@ Relance is a small tool for consultants and small business owners who keep in to
 
 1. **Relance never sends email.** It has no way to: there is no email-sending code in it at all, not even switched off. It produces drafts; you press Send. This is a deliberate design decision. A tool that could send on its own could also send the wrong thing to the wrong person.
 2. **Your contacts stay on your computer.** There is no server, no database and no account. Everything is stored in your web browser. The only thing Relance ever connects to is the AI service, and only when you ask for drafts.
-3. **The AI sees as little as possible, and you can check.** For each draft it receives only first name, company, country, language, contact type, what you did together and your notes. It never receives surnames, email addresses or phone numbers. Every draft has a "What was sent to the AI" panel showing exactly what left your browser. See [PRIVACY.md](PRIVACY.md).
+3. **The AI sees as little as possible, and you can check.** For each draft it receives only first name, company, country, language, contact type, what you did together, where you met and your notes. It never receives surnames, email addresses or phone numbers. Every draft has a "What was sent to the AI" panel showing exactly what left your browser. See [PRIVACY.md](PRIVACY.md).
 
 ![What was sent to the AI, for one draft](docs/screenshots/payload.jpg)
 

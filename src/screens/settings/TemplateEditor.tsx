@@ -19,6 +19,7 @@ interface VersionState {
   name: string;
   subject: string;
   body: string;
+  purpose: string;
   instructions: string;
   isBuiltIn: boolean;
 }
@@ -30,6 +31,7 @@ export interface EditorState {
   month: number;
   minGapDays: number;
   appliesTo: ContactType[];
+  requiresWhereMet: boolean;
   versions: Record<Lang, VersionState>;
 }
 
@@ -44,6 +46,7 @@ export function editorStateFrom(family: TemplateFamily | null): EditorState {
       name: t?.name ?? '',
       subject: t?.subject ?? '',
       body: t?.body ?? '',
+      purpose: t?.purpose ?? '',
       instructions: t?.instructions ?? '',
       isBuiltIn: t?.isBuiltIn ?? false,
     };
@@ -55,6 +58,7 @@ export function editorStateFrom(family: TemplateFamily | null): EditorState {
     month: any?.scheduleRule?.month ?? new Date().getMonth() + 1,
     minGapDays: any?.scheduleRule?.minGapDays ?? 60,
     appliesTo: any?.appliesTo ?? [],
+    requiresWhereMet: any?.requiresWhereMet ?? false,
     versions: { en: version('en'), fr: version('fr') },
   };
 }
@@ -115,9 +119,11 @@ export function TemplateEditor({
         name: ver.name.trim(),
         subject: ver.subject.trim(),
         body: ver.body.trim(),
+        purpose: ver.purpose.trim(),
         instructions: ver.instructions.trim(),
         scheduleRule: rule,
         appliesTo: state.appliesTo,
+        requiresWhereMet: state.requiresWhereMet,
         isBuiltIn: ver.isBuiltIn,
       };
     });
@@ -127,7 +133,8 @@ export function TemplateEditor({
       base.scheduleOn !== state.scheduleOn ||
       base.month !== state.month ||
       base.minGapDays !== state.minGapDays ||
-      JSON.stringify(base.appliesTo) !== JSON.stringify(state.appliesTo);
+      JSON.stringify(base.appliesTo) !== JSON.stringify(state.appliesTo) ||
+      base.requiresWhereMet !== state.requiresWhereMet;
     await db.transaction('rw', db.templates, async () => {
       for (const row of rows) {
         const existing = await db.templates.get(row.id);
@@ -139,12 +146,13 @@ export function TemplateEditor({
         // to other fields of the same template are kept.
         const was = base.versions[row.language];
         const patch: Partial<Template> = {};
-        for (const key of ['name', 'subject', 'body', 'instructions'] as const) {
+        for (const key of ['name', 'subject', 'body', 'purpose', 'instructions'] as const) {
           if (was[key].trim() !== row[key]) patch[key] = row[key];
         }
         if (ruleChanged) {
           patch.scheduleRule = row.scheduleRule;
           patch.appliesTo = row.appliesTo;
+          patch.requiresWhereMet = row.requiresWhereMet;
         }
         if (Object.keys(patch).length > 0) await db.templates.update(row.id, patch);
       }
@@ -235,6 +243,18 @@ export function TemplateEditor({
           </div>
         </fieldset>
 
+        <label className="flex items-start gap-2 text-sm">
+          <Checkbox
+            className="mt-0.5"
+            checked={state.requiresWhereMet}
+            onChange={(e) => setState((s) => ({ ...s, requiresWhereMet: e.target.checked }))}
+          />
+          <span>
+            <span className="block font-medium">{t('templates.requiresWhereMet')}</span>
+            <span className="block text-xs text-stone-500">{t('templates.requiresWhereMetHint')}</span>
+          </span>
+        </label>
+
         <div>
           <div role="tablist" className="flex gap-1 border-b border-stone-200">
             {LANGUAGES.map((lang) => (
@@ -304,6 +324,16 @@ export function TemplateEditor({
                 {unknown.length > 0 && (
                   <Banner tone="warning">{t('templates.unknown', { list: unknown.map((u) => `{{${u}}}`).join(', ') })}</Banner>
                 )}
+                <Field id={`${id}-${tab}-purpose`} label={t('templates.purpose')} hint={t('templates.purposeHint')}>
+                  <AutoTextarea
+                    id={`${id}-${tab}-purpose`}
+                    rows={2}
+                    className={`${inputClass} resize-none`}
+                    value={v.purpose}
+                    onChange={(e) => setVersion({ purpose: e.target.value })}
+                    aria-describedby={`${id}-${tab}-purpose-hint`}
+                  />
+                </Field>
                 <Field id={`${id}-${tab}-instr`} label={t('templates.instructions')} hint={t('templates.instructionsHint')}>
                   <AutoTextarea
                     id={`${id}-${tab}-instr`}

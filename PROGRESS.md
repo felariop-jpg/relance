@@ -350,3 +350,16 @@ notice and no way back. Code review found more multi-tab hazards of the
   dual form. The engine rejects « ravi(e) », « certain·e », « heureux/se » (retry
   once, then malformed). Snapshot "Dual gender forms" check.
 - PRIVACY (EN/FR) mentions the setting is sent for French drafts.
+
+### 5. Five distinct emails
+- Templates now carry a stated `purpose`, sent to the model with the other
+  templates' purposes; the shared prompt says what separates a check-in (present,
+  no past work), a re-engagement (the gap and the unresolved thing), a post-event
+  email (where you met) and a greeting (no work).
+- New contact field "Where you met" (form, CSV import column, allowlisted for the
+  API, privacy docs updated). The post-event template requires it: in the write
+  dialog it is disabled with an explanation when no selected contact has it, and
+  contacts without it are left out with a count. Template editor: purpose field
+  and a "requires where you met" option.
+- Sample contacts: three have a "Where we met" value. Fixture fx-12 has one, so the
+  snapshot exercises post-event; other fixtures skip post-event (not counted as gaps).

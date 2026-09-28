@@ -24,10 +24,12 @@ Spring always feels like a good moment to look up from the day-to-day, so here i
 No agenda on my side. If something is on your mind that you would like to talk through, I am always glad to hear from you.
 
 {{signature}}`,
+    purpose: 'A personal check-in on how the person is doing now. It looks at the present and ahead; it does not revisit past work together beyond acknowledging that you know each other.',
     instructions:
       'A warm, personal spring check-in. Ask how their year is going. No pitch and no mention of services unless the notes make it natural. At most one question.',
     scheduleRule: { month: 4, minGapDays: 90 },
     appliesTo: ['client'],
+    requiresWhereMet: false,
     isBuiltIn: true,
   },
   {
@@ -43,10 +45,12 @@ Le printemps est toujours un bon moment pour lever la tête du quotidien, alors 
 Rien de particulier de mon côté. Si quelque chose vous occupe l'esprit et que vous souhaitez en parler, j'aurai toujours plaisir à vous lire.
 
 {{signature}}`,
+    purpose: 'Prendre des nouvelles de la personne, là maintenant. Le message regarde le présent et l\'avenir ; il ne revient pas sur le travail passé, sauf pour reconnaître que vous vous connaissez.',
     instructions:
       "Un message de printemps chaleureux et personnel. Demander comment se passe l'année. Aucune offre, aucune mention des services sauf si les notes le rendent naturel. Une question au maximum. Vouvoiement.",
     scheduleRule: { month: 4, minGapDays: 90 },
     appliesTo: ['client'],
+    requiresWhereMet: false,
     isBuiltIn: true,
   },
   {
@@ -64,10 +68,12 @@ If there is something you would like support with next year, I would be glad to 
 If it is easier, you can pick a time here: {{calendlyLink}}
 
 {{signature}}`,
+    purpose: 'Offer help with the coming year\'s plans, at the time organisations set budgets, tied to what you know of their situation.',
     instructions:
       "Timed for when organisations plan next year's budget. Mention gently that you are available to help with next year's plans, tied to their situation where the notes allow. No pressure; make it easy to say not now.",
     scheduleRule: { month: 8, minGapDays: 60 },
     appliesTo: ['client', 'prospect'],
+    requiresWhereMet: false,
     isBuiltIn: true,
   },
   {
@@ -85,10 +91,12 @@ Si vous envisagez un accompagnement sur un sujet l'année prochaine, j'en discut
 Si c'est plus simple, vous pouvez choisir un créneau ici : {{calendlyLink}}
 
 {{signature}}`,
+    purpose: 'Proposer votre aide pour les projets de l\'année à venir, au moment où les organisations fixent leur budget, en lien avec ce que vous savez de leur situation.',
     instructions:
       "Envoyé au moment où les organisations préparent le budget de l'année suivante. Indiquer avec légèreté que vous êtes disponible pour les projets de l'an prochain, en lien avec leur situation si les notes le permettent. Aucune pression ; il doit être facile de répondre « pas maintenant ». Vouvoiement.",
     scheduleRule: { month: 8, minGapDays: 60 },
     appliesTo: ['client', 'prospect'],
+    requiresWhereMet: false,
     isBuiltIn: true,
   },
   {
@@ -102,10 +110,12 @@ Si c'est plus simple, vous pouvez choisir un créneau ici : {{calendlyLink}}
 As the year comes to a close, warm wishes to you and those close to you for the holidays, and all the best for the year ahead.
 
 {{signature}}`,
+    purpose: 'A seasonal greeting and nothing else: no work, services, plans or meetings.',
     instructions:
       'A short holiday greeting. Do not mention services, work, offers or meetings at all. Warm and brief, under 80 words. A personal touch from the notes is welcome if it suits a greeting.',
     scheduleRule: { month: 11, minGapDays: 0 },
     appliesTo: [],
+    requiresWhereMet: false,
     isBuiltIn: true,
   },
   {
@@ -119,10 +129,12 @@ As the year comes to a close, warm wishes to you and those close to you for the 
 Alors que l'année se termine, je vous souhaite, à vous et à vos proches, de très belles fêtes, et le meilleur pour l'année qui vient.
 
 {{signature}}`,
+    purpose: 'Des vœux de saison, et rien d\'autre : ni travail, ni services, ni projets, ni rendez-vous.',
     instructions:
       "Des vœux de fin d'année courts. Ne mentionner ni les services, ni le travail, ni aucune offre ou rendez-vous. Chaleureux et bref, moins de 80 mots. Une touche personnelle tirée des notes est bienvenue si elle convient à des vœux. Vouvoiement.",
     scheduleRule: { month: 11, minGapDays: 0 },
     appliesTo: [],
+    requiresWhereMet: false,
     isBuiltIn: true,
   },
   {
@@ -138,10 +150,12 @@ It has been a while since we last spoke, and you came to mind.
 Priorities shift, I know. If the topic we discussed is still relevant, I would be happy to pick up the conversation whenever it suits you. And if not, I hope things are going well.
 
 {{signature}}`,
+    purpose: 'Reconnect with someone who went quiet: acknowledge the time since you last spoke and pick up the specific thing that was left unresolved.',
     instructions:
       'For a prospect who showed interest once and then went quiet. Acknowledge that time has passed, without any guilt-tripping. Refer to what they were interested in only if the notes say what it was. Make it easy to reply, and just as easy not to.',
     scheduleRule: { month: 2, minGapDays: 180 },
     appliesTo: ['prospect'],
+    requiresWhereMet: false,
     isBuiltIn: true,
   },
   {
@@ -157,10 +171,12 @@ Cela fait un moment que nous n'avons pas échangé, et j'ai pensé à vous.
 Les priorités évoluent, je le sais bien. Si le sujet dont nous avions parlé est toujours d'actualité, je reprendrais volontiers la conversation quand vous le souhaitez. Sinon, j'espère que tout va bien de votre côté.
 
 {{signature}}`,
+    purpose: 'Renouer avec une personne qui ne s\'est plus manifestée : reconnaître le temps écoulé depuis le dernier échange et reprendre le point précis resté en suspens.',
     instructions:
       "Pour un prospect qui s'était montré intéressé puis ne s'est plus manifesté. Reconnaître que du temps a passé, sans culpabiliser. Évoquer ce qui l'intéressait seulement si les notes le précisent. Il doit être facile de répondre, et tout aussi facile de ne pas répondre. Vouvoiement.",
     scheduleRule: { month: 2, minGapDays: 180 },
     appliesTo: ['prospect'],
+    requiresWhereMet: false,
     isBuiltIn: true,
   },
   {
@@ -176,10 +192,12 @@ It was a pleasure to meet you, and thank you for the conversation.
 If you would like to continue it at some point, I would be glad to. In the meantime, all the best with your projects.
 
 {{signature}}`,
+    purpose: 'Follow up on meeting this person at a specific event or place (whereMet): refer to where you met and, if the notes say, what you talked about there.',
     instructions:
       'For someone met recently at a conference or event. Name the event and what you talked about if the notes mention them; never guess an event name. Light and short.',
     scheduleRule: null,
     appliesTo: ['lead', 'prospect'],
+    requiresWhereMet: true,
     isBuiltIn: true,
   },
   {
@@ -195,10 +213,17 @@ Ce fut un plaisir de vous rencontrer, et merci pour cet échange.
 Si vous souhaitez le poursuivre à l'occasion, ce sera avec plaisir. D'ici là, je vous souhaite une belle réussite dans vos projets.
 
 {{signature}}`,
+    purpose: 'Faire suite à une rencontre lors d\'un événement ou dans un lieu précis (whereMet) : évoquer où vous vous êtes rencontrés et, si les notes le disent, ce dont vous avez parlé.',
     instructions:
       "Pour une personne rencontrée récemment lors d'une conférence ou d'un événement. Citer l'événement et le sujet abordé si les notes les mentionnent ; ne jamais deviner le nom d'un événement. Léger et court. Vouvoiement.",
     scheduleRule: null,
     appliesTo: ['lead', 'prospect'],
+    requiresWhereMet: true,
     isBuiltIn: true,
   },
 ];
+
+/** Purposes of the built-ins by id, for templates saved before purposes existed. */
+export const BUILT_IN_PURPOSES: Record<string, string> = Object.fromEntries(
+  BUILT_IN_TEMPLATES.map((t) => [t.id, t.purpose]),
+);

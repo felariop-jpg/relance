@@ -163,3 +163,21 @@ describe('sender gender', () => {
     expect(fem.senderGender).toBe('feminine');
   });
 });
+
+describe('template purposes', () => {
+  it('sends this template\'s purpose, the other templates\' purposes, and where you met', () => {
+    const template = BUILT_IN_TEMPLATES.find((t) => t.family === 'post-event' && t.language === 'en')!;
+    const data = JSON.parse(
+      buildRequest({
+        contact: sensitiveContact({ whereMet: 'Lyon trade fair' }),
+        template,
+        settings,
+        today: '2026-09-28',
+        otherTemplates: [{ name: 'Spring check-in', purpose: 'A check-in.' }, { name: 'Empty', purpose: ' ' }],
+      }).messages[0].content,
+    );
+    expect(data.template.purpose).toBe(template.purpose);
+    expect(data.otherTemplates).toEqual([{ name: 'Spring check-in', purpose: 'A check-in.' }]);
+    expect(data.contact.whereMet).toBe('Lyon trade fair');
+  });
+});

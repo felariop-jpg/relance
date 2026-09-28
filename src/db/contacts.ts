@@ -15,6 +15,7 @@ export function emptyContact(): ContactInput {
     contactType: 'client',
     serviceHistory: '',
     notes: '',
+    whereMet: '',
     lastContacted: null,
   };
 }
@@ -35,6 +36,8 @@ export function normalizeContact(input: ContactInput): ContactInput {
     country: input.country.trim().toUpperCase(),
     serviceHistory: input.serviceHistory.trim(),
     notes: input.notes.trim(),
+    // Contacts saved before this field existed have no value.
+    whereMet: (input.whereMet ?? '').trim(),
     lastContacted: input.lastContacted || null,
   };
 }

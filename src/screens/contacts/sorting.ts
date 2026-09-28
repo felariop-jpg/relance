@@ -69,6 +69,7 @@ export function matchesQuery(c: Contact, query: string, locale: string): boolean
       c.phone,
       c.company,
       c.notes,
+      c.whereMet,
       c.serviceHistory,
       countryName(c.country, locale),
     ].join(' '),

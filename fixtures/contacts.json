@@ -14,7 +14,8 @@
     "notes": "Ran the London half marathon in April for a local charity. Promoted to head of operations in the summer; now managing 30 people across two sites. Mentioned she wants to rethink how new managers are onboarded.",
     "lastContacted": "2025-02-10",
     "createdAt": "",
-    "updatedAt": ""
+    "updatedAt": "",
+    "whereMet": ""
   },
   {
     "case": "Empty notes",
@@ -31,7 +32,8 @@
     "notes": "",
     "lastContacted": "2024-11-02",
     "createdAt": "",
-    "updatedAt": ""
+    "updatedAt": "",
+    "whereMet": ""
   },
   {
     "case": "French contact with French notes",
@@ -48,7 +50,8 @@
     "notes": "Vient d'ouvrir un deuxième atelier à Nantes. Son fils prépare le bac cette année.",
     "lastContacted": "2025-01-15",
     "createdAt": "",
-    "updatedAt": ""
+    "updatedAt": "",
+    "whereMet": ""
   },
   {
     "case": "English contact, short practical notes",
@@ -65,7 +68,8 @@
     "notes": "Asked for a proposal last year but budget was frozen until the new fiscal year.",
     "lastContacted": "2025-03-01",
     "createdAt": "",
-    "updatedAt": ""
+    "updatedAt": "",
+    "whereMet": ""
   },
   {
     "case": "Long service history",
@@ -82,7 +86,8 @@
     "notes": "Says the leadership programme was the most useful thing the company did that year.",
     "lastContacted": "2025-05-20",
     "createdAt": "",
-    "updatedAt": ""
+    "updatedAt": "",
+    "whereMet": ""
   },
   {
     "case": "Name with accents",
@@ -99,7 +104,8 @@
     "notes": "Adore la voile ; a participé à une régate cet été.",
     "lastContacted": "2024-12-12",
     "createdAt": "",
-    "updatedAt": ""
+    "updatedAt": "",
+    "whereMet": ""
   },
   {
     "case": "Company name with punctuation",
@@ -116,7 +122,8 @@
     "notes": "Family business; his daughter joined as finance director.",
     "lastContacted": "2025-04-04",
     "createdAt": "",
-    "updatedAt": ""
+    "updatedAt": "",
+    "whereMet": ""
   },
   {
     "case": "Very short note",
@@ -133,7 +140,8 @@
     "notes": "Aime le vélo.",
     "lastContacted": null,
     "createdAt": "",
-    "updatedAt": ""
+    "updatedAt": "",
+    "whereMet": ""
   },
   {
     "case": "Notes in the other language from the contact's own",
@@ -150,7 +158,8 @@
     "notes": "Met at the Brussels HR forum. Moving her team to a four-day week from January and a bit nervous about it.",
     "lastContacted": "2025-06-30",
     "createdAt": "",
-    "updatedAt": ""
+    "updatedAt": "",
+    "whereMet": ""
   },
   {
     "case": "Prospect with no history",
@@ -167,7 +176,8 @@
     "notes": "Downloaded the guide on the website and replied asking whether we work with remote-only teams.",
     "lastContacted": null,
     "createdAt": "",
-    "updatedAt": ""
+    "updatedAt": "",
+    "whereMet": ""
   },
   {
     "case": "Bare facts that invite embellishment (motive, feelings, outcome)",
@@ -183,6 +193,25 @@
     "serviceHistory": "Workshop for the partners in 2023.",
     "notes": "Moved to Lisbon in June. Left the partnership.",
     "lastContacted": "2025-02-20",
+    "createdAt": "",
+    "updatedAt": "",
+    "whereMet": ""
+  },
+  {
+    "case": "Met at an event (exercises the post-event template)",
+    "id": "fx-12",
+    "firstName": "Aurélien",
+    "lastName": "Moreau",
+    "email": "aurelien@example.org",
+    "phone": "",
+    "company": "Atelier Brume",
+    "country": "FR",
+    "language": null,
+    "contactType": "lead",
+    "serviceHistory": "",
+    "notes": "Talked about how to keep a small team motivated through a busy season. Asked for the name of the book I mentioned.",
+    "whereMet": "Salon des entrepreneurs de Lyon, 11 septembre 2026",
+    "lastContacted": null,
     "createdAt": "",
     "updatedAt": ""
   }

@@ -2,7 +2,7 @@ import { db } from '../db/db';
 import { newDraft, updateDraft } from '../db/drafts';
 import { SETTINGS_ID, type Contact, type Draft, type Settings } from '../db/schema';
 import { getSettings } from '../db/settings';
-import { pickVersion, type TemplateFamily } from '../db/templates';
+import { canUseTemplate, otherTemplatesFor, pickVersion, type TemplateFamily } from '../db/templates';
 import { resolveLanguage } from '../lib/language';
 import { todayIso } from '../lib/dates';
 import { fillPlaceholders, placeholderValues } from '../lib/placeholders';
@@ -54,7 +54,8 @@ export async function generateDraft(draftId: string, deps: GenerateDeps = {}): P
     return { ok: false, code: 'unknown', costEur: 0 };
   }
 
-  const request = buildRequest({ contact, template, settings, instruction: draft.instruction, today: todayIso() });
+  const otherTemplates = otherTemplatesFor(await db.templates.toArray(), template.family, resolveLanguage(contact, settings));
+  const request = buildRequest({ contact, template, settings, instruction: draft.instruction, today: todayIso(), otherTemplates });
   const language = resolveLanguage(contact, settings);
   const demo = !settings.apiKey.trim() && !deps.send;
   await updateDraft(draftId, { status: 'pending', error: null, payloadJson: JSON.stringify(request) });
@@ -115,7 +116,7 @@ export async function createPendingDrafts(
   const drafts = contacts.flatMap((contact) => {
     const language = resolveLanguage(contact, settings);
     const template = pickVersion(family, language);
-    if (!template) return [];
+    if (!template || !canUseTemplate(template, contact)) return [];
     return [
       newDraft({
         contactId: contact.id,

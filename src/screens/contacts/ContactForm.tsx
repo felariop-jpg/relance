@@ -96,7 +96,7 @@ export function ContactForm({
   const described = (name: string, hasHint: boolean) =>
     errors[name as keyof ContactErrors] ? `${fid(name)}-error` : hasHint ? `${fid(name)}-hint` : undefined;
 
-  const text = (name: 'firstName' | 'lastName' | 'email' | 'phone' | 'company', type = 'text') => (
+  const text = (name: 'firstName' | 'lastName' | 'email' | 'phone' | 'company' | 'whereMet', type = 'text') => (
     <Field
       id={fid(name)}
       label={
@@ -234,6 +234,17 @@ export function ContactForm({
             />
           </Field>
         </div>
+
+        <Field id={fid('whereMet')} label={t('fields.whereMet')} hint={t('form.whereMetHint')}>
+          <input
+            id={fid('whereMet')}
+            className={inputClass}
+            value={draft.whereMet}
+            onChange={(e) => set('whereMet', e.target.value)}
+            aria-describedby={described('whereMet', true)}
+            autoComplete="off"
+          />
+        </Field>
 
         <Field id={fid('notes')} label={t('fields.notes')} hint={t('form.notesHint')}>
           <textarea

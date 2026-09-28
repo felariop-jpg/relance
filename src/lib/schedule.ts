@@ -1,5 +1,5 @@
 import type { Contact, Draft, ScheduleRule, Settings, Template } from '../db/schema';
-import { groupFamilies, pickVersion, type TemplateFamily } from '../db/templates';
+import { canUseTemplate, groupFamilies, pickVersion, type TemplateFamily } from '../db/templates';
 import { resolveLanguage } from './language';
 
 const DAY = 86_400_000;
@@ -73,7 +73,7 @@ export function dueGroups(
       .filter((c) => isDue(c, rule, appliesTo, today))
       .flatMap((contact) => {
         const template = pickVersion(family, resolveLanguage(contact, settings));
-        if (!template) return [];
+        if (!template || !canUseTemplate(template, contact)) return [];
         return [
           {
             contact,

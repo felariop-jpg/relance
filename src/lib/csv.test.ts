@@ -77,6 +77,7 @@ describe('suggestMapping', () => {
 
   it('maps a lone "Name" column to full name', () => {
     expect(suggestMapping(['Name', 'Email'])).toEqual(['fullName', 'email']);
+    expect(suggestMapping(['Where we met', 'Lieu de rencontre'])).toEqual(['whereMet', null]);
   });
 
   it('maps every column of the bundled sample file', () => {

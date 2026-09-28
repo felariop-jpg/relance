@@ -50,7 +50,8 @@
     "contactType": "Type",
     "serviceHistory": "Travail réalisé ensemble",
     "notes": "Notes",
-    "lastContacted": "Dernier contact"
+    "lastContacted": "Dernier contact",
+    "whereMet": "Lieu de rencontre"
   },
   "contacts": {
     "title": "Contacts",
@@ -115,7 +116,8 @@
     "saveFailed": "Le contact n'a pas pu être enregistré. Veuillez réessayer.",
     "dateInvalid": "Saisissez une date complète, ou laissez le champ vide.",
     "discarded": "Modifications non enregistrées abandonnées.",
-    "deletedElsewhere": "Ce contact a été supprimé, peut-être dans un autre onglet : vos modifications n'ont pas pu être enregistrées. Vous pouvez le restaurer depuis « Supprimés récemment » dans la page Contacts."
+    "deletedElsewhere": "Ce contact a été supprimé, peut-être dans un autre onglet : vos modifications n'ont pas pu être enregistrées. Vous pouvez le restaurer depuis « Supprimés récemment » dans la page Contacts.",
+    "whereMetHint": "Par exemple : « Forum RH de Bruxelles, mars 2026 ». Le modèle « Suite à une rencontre » en a besoin."
   },
   "import": {
     "title": "Importer des contacts depuis un tableur",
@@ -197,7 +199,12 @@
     "methodDemo": "E-mails d'exemple (démo, sans IA)",
     "methodDemoHint": "Montre le fonctionnement avec des brouillons écrits à l'avance. Ajoutez une clé API dans les Réglages pour en écrire de vrais.",
     "estimate": "Environ {{cost}} de frais d'IA pour {{count}} e-mails. C'est une estimation ; le coût réel s'affiche ensuite.",
-    "free": "Gratuit : aucune IA n'est utilisée."
+    "free": "Gratuit : aucune IA n'est utilisée.",
+    "needsWhereMet": "Nécessite le « Lieu de rencontre »",
+    "unavailable": "Aucun de ces contacts n'a de « Lieu de rencontre » renseigné : ce modèle ne peut donc pas être utilisé. Ajoutez-le d'abord sur le contact.",
+    "leftOut_one": "{{count}} contact n'a pas de « Lieu de rencontre » : ce modèle ne sera pas utilisé pour lui. Ajoutez-le sur le contact pour l'inclure.",
+    "leftOut_many": "{{count}} contacts n'ont pas de « Lieu de rencontre » : ce modèle ne sera pas utilisé pour eux. Ajoutez-le sur chaque contact pour les inclure.",
+    "leftOut_other": "{{count}} contacts n'ont pas de « Lieu de rencontre » : ce modèle ne sera pas utilisé pour eux. Ajoutez-le sur chaque contact pour les inclure."
   },
   "review": {
     "title": "Relecture",
@@ -410,7 +417,8 @@
         "language": "Langue",
         "contactType": "Type (client, prospect, piste)",
         "serviceHistory": "Travail réalisé ensemble",
-        "notes": "Notes"
+        "notes": "Notes",
+        "whereMet": "Lieu de rencontre"
       }
     },
     "voice": {
@@ -563,7 +571,11 @@
       "signature": "votre signature",
       "calendlyLink": "lien de rendez-vous"
     },
-    "empty": "Il n'y a aucun modèle. Restaurez les modèles intégrés ou créez-en un nouveau."
+    "empty": "Il n'y a aucun modèle. Restaurez les modèles intégrés ou créez-en un nouveau.",
+    "purpose": "À quoi sert cet e-mail",
+    "purposeHint": "Une phrase sur le rôle de cet e-mail, que vos autres modèles n'ont pas. L'IA s'en sert pour garder chaque type d'e-mail distinct.",
+    "requiresWhereMet": "Seulement pour les contacts dont le « Lieu de rencontre » est renseigné",
+    "requiresWhereMetHint": "Pour les e-mails qui parlent d'une rencontre. Les contacts sans lieu de rencontre ne peuvent pas recevoir ce modèle."
   },
   "firstRun": {
     "skip": "Passer l'introduction",
