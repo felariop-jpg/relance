@@ -10,7 +10,8 @@ Les modèles se trouvent dans **Réglages → Modèles**. Cliquez sur **Modifier
 
 - **Quand il est à envoyer.** Soit « jamais automatiquement » (vous choisissez les contacts vous-même), soit un mois et un nombre minimum de jours depuis votre dernier contact avec la personne. Par exemple : août, au moins 60 jours.
 - **Destiné aux.** Clients, prospects, pistes, ou tout le monde (ne cochez rien).
-- **Une version en anglais et une version en français.** Chacune a un nom, un objet, le texte de l'e-mail et des consignes pour l'IA. Vous pouvez omettre une langue ; les contacts de cette langue reçoivent alors l'autre version.
+- **Une version en anglais et une version en français.** Chacune a un nom, un objet, le texte de l'e-mail, **à quoi sert cet e-mail** (son rôle, que vos autres modèles n'ont pas) et des **consignes pour l'IA**. Vous pouvez omettre une langue ; les contacts de cette langue reçoivent alors l'autre version.
+- **Seulement pour les contacts avec un « Lieu de rencontre »** (facultatif). Le modèle « Suite à une rencontre » a cette case cochée : il ne peut servir que pour les contacts dont le lieu de rencontre est renseigné.
 
 ## Les calendriers intégrés ne sont qu'un point de départ
 
@@ -28,20 +29,23 @@ Ils ont été choisis comme valeurs par défaut raisonnables ; ce ne sont pas de
 
 ## Comment le texte est utilisé
 
-- **Sans IA** (« Utiliser le texte du modèle tel quel »), le texte est utilisé exactement tel que vous l'avez écrit, avec les emplacements remplis.
-- **Avec l'IA**, le texte sert de *référence* pour le but et le ton. L'IA écrit un nouvel e-mail pour chaque personne, en suivant vos **Consignes pour l'IA**.
+- **Sans IA** (« Utiliser le texte du modèle tel quel »), le texte de l'e-mail est utilisé exactement tel que vous l'avez écrit, avec les emplacements remplis.
+- **Avec l'IA**, le texte de l'e-mail **n'est pas du tout montré à l'IA**. L'IA écrit chaque e-mail avec ses propres mots, à partir du rôle du modèle, de vos consignes et des informations du contact. (Quand l'IA voyait un e-mail d'exemple, elle le reformulait dans chaque brouillon, et tous les destinataires recevaient presque la même ouverture.)
 
-Donc : avec l'IA, ce sont les **consignes** qui comptent le plus. Sans l'IA, c'est le **texte de l'e-mail** que les gens reçoivent.
+Donc : avec l'IA, ce sont le **rôle** et les **consignes** qui comptent. Sans l'IA, c'est le **texte de l'e-mail** que les gens reçoivent.
 
 ## Écrire de bonnes consignes
 
-Écrivez-les comme si vous briefiez un assistant. Des phrases courtes et simples fonctionnent le mieux.
+Décrivez **ce que** l'e-mail doit faire, pas **comment** le formuler. Si vous écrivez une phrase pour l'IA, elle l'utilisera pour tout le monde.
 
-- Dites à quoi sert l'e-mail : « Un message chaleureux au printemps. Demander comment se passe l'année. »
-- Dites ce qu'il faut éviter : « Aucune offre commerciale. Ne pas mentionner nos services. »
-- Précisez la longueur ou le ton si c'est important : « Très court, trois ou quatre phrases. »
+- **Objectif :** le résultat voulu, par exemple « la personne sait que je suis disponible pour ses projets de l'an prochain, et il lui est facile de dire pas maintenant ».
+- **Doit contenir :** les éléments, par exemple « une question sur ce qu'elle vit en ce moment », « le lien de rendez-vous ».
+- **Ne doit pas contenir :** ce qui relève d'un autre type d'e-mail, par exemple « aucune mention des projets passés », « aucune offre ».
+- **Longueur**, si elle compte : « 60 à 110 mots ».
 
-Les règles communes s'appliquent toujours en plus de vos consignes : la langue du contact, moins de 150 mots, aucun fait inventé, aucune pression, et une invitation légère à la fin.
+Les modèles intégrés suivent ce format.
+
+Les règles communes s'appliquent toujours en plus de vos consignes : la langue du contact, moins de 150 mots, une ouverture construite à partir des informations de la personne, aucun fait inventé, aucune pression, et une invitation légère à la fin.
 
 ## Les emplacements
 

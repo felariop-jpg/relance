@@ -191,3 +191,49 @@ export function dualFormCheck(items: { label: string; entry: Entry }[], find: (t
   });
   return [`**Dual gender forms:** ${hits.length === 0 ? 'none.' : `${hits.length}:`}`, ...hits];
 }
+
+const GREETING = /^(hello|hi|hey|dear|good (morning|afternoon)|bonjour|bonsoir|cher|chère|madame|monsieur)\b/i;
+
+/** The first six words of the email after the greeting line, lower-cased, names removed. */
+export function openingWords(body: string, firstName: string): string {
+  const lines = body.split('\n').map((l) => l.trim()).filter(Boolean);
+  if (lines.length && (GREETING.test(lines[0]) || (lines[0].endsWith(',') && lines[0].split(/\s+/).length <= 4))) lines.shift();
+  const name = firstName.toLowerCase();
+  return lines
+    .join(' ')
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}'’\s-]/gu, ' ')
+    .split(/\s+/)
+    .filter((w) => w && w !== name)
+    .slice(0, 6)
+    .join(' ');
+}
+
+/**
+ * Check 2 (the owner's metric): per template, how many drafts share their
+ * first six words (after the greeting) with another draft of the same template.
+ */
+export function openingCheck(items: { group: string; label: string; entry: Entry; firstName: string }[]): string[] {
+  const groups = new Map<string, { label: string; opening: string }[]>();
+  for (const { group, label, entry, firstName } of items) {
+    const d = readDraft(entry);
+    if (!d) continue;
+    const list = groups.get(group) ?? [];
+    list.push({ label, opening: openingWords(d.body, firstName) });
+    groups.set(group, list);
+  }
+  const lines = ['**Repeated openings** (drafts sharing their first six words with another draft of the same template):', ''];
+  let total = 0;
+  for (const [group, list] of groups) {
+    const counts = new Map<string, number>();
+    for (const { opening } of list) counts.set(opening, (counts.get(opening) ?? 0) + 1);
+    const repeated = list.filter((x) => (counts.get(x.opening) ?? 0) > 1);
+    total += repeated.length;
+    lines.push(`- ${group}: ${repeated.length} of ${list.length}`);
+    for (const opening of [...new Set(repeated.map((r) => r.opening))]) {
+      lines.push(`  - "${opening}…" × ${counts.get(opening)}`);
+    }
+  }
+  lines.push('', `Total: ${total} drafts with a repeated opening.`);
+  return lines;
+}

@@ -1,6 +1,7 @@
 import Dexie, { type EntityTable } from 'dexie';
 import type { Contact, Draft, Settings, Template, TrashEntry } from './schema';
-import { BUILT_IN_PURPOSES } from './seed';
+import { BUILT_IN_PURPOSES, BUILT_IN_TEMPLATES } from './seed';
+import { PREVIOUS_BUILT_IN_INSTRUCTIONS } from './migrations/previous-briefs';
 
 export class RelanceDB extends Dexie {
   contacts!: EntityTable<Contact, 'id'>;
@@ -54,6 +55,19 @@ export class RelanceDB extends Dexie {
             if (typeof t.requiresWhereMet !== 'boolean') t.requiresWhereMet = t.isBuiltIn && t.family === 'post-event';
           });
       });
+    // v5: built-in briefs rewritten (intent and content, no wording to copy).
+    // Only replaces instructions the user never edited.
+    this.version(5)
+      .stores({})
+      .upgrade((tx) =>
+        tx
+          .table('templates')
+          .toCollection()
+          .modify((t) => {
+            const fresh = BUILT_IN_TEMPLATES.find((b) => b.id === t.id);
+            if (t.isBuiltIn && fresh && t.instructions === PREVIOUS_BUILT_IN_INSTRUCTIONS[t.id]) t.instructions = fresh.instructions;
+          }),
+      );
   }
 }
 

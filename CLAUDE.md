@@ -365,3 +365,16 @@ README notes that swapping models is a one-line change.
   Templates with `requiresWhereMet` (built-in post-event) are unavailable for
   contacts without it: disabled with an explanation in the write dialog, skipped
   in Due now and in the snapshot (not a gap). Schema v4 fills the new fields.
+
+### Openings and templates (snapshot review)
+- **The model never sees a template's email text.** It paraphrased it into every
+  draft (22 of 50 drafts in the first snapshot shared their first six words with
+  another draft of the same template). It gets `purpose` + `instructions`, a brief of
+  what the email must achieve, contain and avoid. `body` stays the finished email
+  for the no-AI "template text" mode.
+- **Openers**: with notes, the first sentence after the greeting must come from the
+  contact's own data; generic seasonal or "why I'm writing" framing is banned there,
+  as are the stock phrases seen in the first snapshot. Without notes, the code picks
+  an `openingApproach` per contact + template (stable hash) from five approaches,
+  skipping those that need empty or withheld fields.
+- The snapshot's "Repeated openings" check is the owner's metric for this.

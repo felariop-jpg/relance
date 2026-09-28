@@ -181,3 +181,32 @@ describe('template purposes', () => {
     expect(data.contact.whereMet).toBe('Lyon trade fair');
   });
 });
+
+describe('no model email to paraphrase', () => {
+  it('never sends the template email text, only its purpose and brief', () => {
+    for (const template of BUILT_IN_TEMPLATES) {
+      const json = JSON.stringify(buildRequest({ contact: sensitiveContact(), template, settings, today: '2026-09-28' }));
+      const firstSentence = template.body.split('\n').find((l) => l.length > 40)!.slice(0, 40);
+      expect(json).not.toContain(JSON.stringify(firstSentence).slice(1, -1));
+      expect(json).toContain(JSON.stringify(template.purpose).slice(1, -1));
+    }
+  });
+
+  it('gives an opening approach only when there are no notes, varied across contacts and stable per contact', async () => {
+    const { chooseOpeningApproach } = await import('./prompt');
+    const template = BUILT_IN_TEMPLATES[0];
+    const withNotes = JSON.parse(buildRequest({ contact: sensitiveContact(), template, settings, today: '2026-09-28' }).messages[0].content);
+    expect(withNotes).not.toHaveProperty('openingApproach');
+    const noNotes = JSON.parse(buildRequest({ contact: sensitiveContact({ notes: '' }), template, settings, today: '2026-09-28' }).messages[0].content);
+    expect(typeof noNotes.openingApproach).toBe('string');
+    const picks = new Set(
+      Array.from({ length: 20 }, (_, i) => chooseOpeningApproach({ id: `c${i}`, serviceHistory: 'Workshop.', company: 'Co' }, template, settings)),
+    );
+    expect(picks.size).toBeGreaterThanOrEqual(4);
+    const again = () => chooseOpeningApproach({ id: 'same', serviceHistory: '', company: '' }, template, settings);
+    expect(again()).toBe(again());
+    // Never suggests opening from fields that are empty or withheld.
+    expect(again()).not.toContain('serviceHistory');
+    expect(again()).not.toContain('"company"');
+  });
+});

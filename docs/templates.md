@@ -10,7 +10,8 @@ Templates are in **Settings → Templates**. Click **Edit** next to one.
 
 - **When it is due.** Either "never on its own" (you choose the contacts yourself), or a month plus a minimum number of days since you last contacted the person. For example: August, at least 60 days.
 - **Meant for.** Clients, prospects, leads, or everyone (leave all three unticked).
-- **An English version and a French version.** Each has a name, a subject, the email text, and instructions for the AI. You can leave one language out; contacts in that language then get the other version.
+- **An English version and a French version.** Each has a name, a subject, the email text, **what this email is for** (its one job, which your other templates don't do), and a **brief for the AI**. You can leave one language out; contacts in that language then get the other version.
+- **Only for contacts with "Where you met"** (optional). The post-event template has this ticked: it can only be used for contacts whose "Where you met" is filled in.
 
 ## The built-in schedules are only a starting point
 
@@ -28,20 +29,23 @@ They were picked as a reasonable default and are not advice. When your contacts 
 
 ## How the email text is used
 
-- **Without AI** ("Use the template text as it is"), the text is used exactly as you wrote it, with the placeholders filled in.
-- **With AI**, the text is a *reference* for the purpose and tone. The AI writes a new email for each person, following your **Instructions for the AI**.
+- **Without AI** ("Use the template text as it is"), the email text is used exactly as you wrote it, with the placeholders filled in.
+- **With AI**, the email text is **not shown to the AI at all**. The AI writes each email in its own words from the template's purpose, your brief, and that contact's details. (When the AI was shown a sample email, it reworded it into every draft, and all recipients got near-identical openings.)
 
-So: when you use AI, the **instructions** matter most. When you don't, the **email text** is what people receive.
+So: when you use AI, the **purpose** and the **brief** matter. When you don't, the **email text** is what people receive.
 
-## Writing good instructions
+## Writing a good brief
 
-Write them the way you would brief an assistant. Short, plain sentences work best.
+Describe **what** the email must do, not **how** to word it. If you write a sentence for the AI to use, it will use it for everyone.
 
-- Say what the email is for: "A warm check-in in spring. Ask how their year is going."
-- Say what to avoid: "No sales pitch. Don't mention our services."
-- Say the length or tone if it matters: "Very short, three or four sentences."
+- **Must achieve:** the one result you want, for example "they know I'm available for next year's plans, and it's easy to say not now".
+- **Must contain:** the pieces, for example "one question about how they are doing now", "the booking link".
+- **Must not contain:** what belongs to another kind of email, for example "no mention of past projects", "no offers".
+- **Length**, if it matters: "60 to 110 words".
 
-The shared rules always apply on top of your instructions: the contact's language, under 150 words, no invented facts, no pressure, and a light invitation at the end.
+The built-in templates show this format.
+
+The shared rules always apply on top of your brief: the contact's language, under 150 words, an opening built from that person's own details, no invented facts, no pressure, and a light invitation at the end.
 
 ## Placeholders
 

@@ -363,3 +363,18 @@ notice and no way back. Code review found more multi-tab hazards of the
   and a "requires where you met" option.
 - Sample contacts: three have a "Where we met" value. Fixture fx-12 has one, so the
   snapshot exercises post-event; other fixtures skip post-event (not counted as gaps).
+
+### 2. Near-identical openers
+- Root cause confirmed: the model was given each template's email text as a
+  "reference" and reworded it every time.
+- The model no longer receives template prose at all. The five built-ins have new
+  briefs in both languages (must achieve / must contain / must not contain /
+  subject / length); the email text remains, unchanged, for the no-AI mode. (Owner
+  asked for the body itself to become an instruction; that would have broken the
+  no-AI mode, so the instruction became a separate brief and the body stays hidden
+  from the model.)
+- Opening rule: built from the contact's specifics when notes exist; stock phrases
+  banned; no-notes contacts get one of five opening approaches chosen in code.
+- Snapshot "Repeated openings" per template. Baseline on the first run: 22 drafts
+  (spring 8/10, holiday 5/10, post-event 4/10, re-engagement 3/10, planning 2/10).
+- Template editor and templates guide (EN/FR) explain purpose + brief.

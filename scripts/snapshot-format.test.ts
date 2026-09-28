@@ -109,3 +109,21 @@ describe('snapshot date', () => {
     expect(parseSnapshot(out).date).toBe('2026-09-28');
   });
 });
+
+describe('opening check', () => {
+  it('ignores the greeting and the name, and counts drafts that share six opening words', async () => {
+    const { openingWords, openingCheck } = await import('./snapshot-format');
+    expect(openingWords('Hello Hannah,\n\nSpring always feels like a good moment to look up.', 'Hannah')).toBe('spring always feels like a good');
+    expect(openingWords('Bonjour Léa,\n\nLe printemps est toujours un bon moment', 'Léa')).toBe('le printemps est toujours un bon');
+    const e = (text: string): Entry => ({ kind: 'ok', body: okBody({ subject: 's', personalizationUsed: 'p', body: text }) });
+    const lines = openingCheck([
+      { group: 'Spring', label: 'a', firstName: 'Ann', entry: e('Hello Ann,\n\nSpring always feels like a good moment, Ann.') },
+      { group: 'Spring', label: 'b', firstName: 'Bo', entry: e('Hi Bo,\n\nSpring always feels like a good moment.') },
+      { group: 'Spring', label: 'c', firstName: 'Cy', entry: e('Hello Cy,\n\nCongratulations on the new role.') },
+      { group: 'Holiday', label: 'd', firstName: 'Di', entry: e('Dear Di,\n\nWarm wishes.') },
+    ]);
+    expect(lines).toContain('- Spring: 2 of 3');
+    expect(lines).toContain('- Holiday: 0 of 1');
+    expect(lines.at(-1)).toBe('Total: 2 drafts with a repeated opening.');
+  });
+});

@@ -22,7 +22,7 @@ import { createHash } from 'node:crypto';
 import { createInterface } from 'node:readline/promises';
 import { anthropicSend } from '../src/ai/anthropic';
 import { alwaysOnline, classifyError, dualForm, generateWithRetries } from '../src/ai/engine';
-import { failedBody, key, okBody, parseSnapshot, pendingBody, renderSnapshot, dualFormCheck, sourceCheck, type Entry, type Job } from './snapshot-format';
+import { failedBody, key, okBody, parseSnapshot, pendingBody, renderSnapshot, dualFormCheck, openingCheck, sourceCheck, type Entry, type Job } from './snapshot-format';
 import { costEur, costUsd, EST_TOKENS_PER_DRAFT, MODEL } from '../src/ai/model';
 import { buildRequest, SYSTEM_PROMPT } from '../src/ai/prompt';
 import type { Contact } from '../src/db/schema';
@@ -135,7 +135,12 @@ const checks = () => {
     entry: entries.get(key(p.job.contactId, p.job.heading)) ?? { kind: 'pending' as const, body: [] },
     sources: `${p.contact.notes}\n${p.contact.serviceHistory}\n${p.contact.whereMet ?? ''}`,
   }));
-  return [...sourceCheck(items), '', ...dualFormCheck(items, dualForm)];
+  const openings = plan.map((p, i) => ({
+    ...items[i],
+    group: BUILT_IN_TEMPLATES.find((t) => t.family === p.template.family && t.language === 'en')?.name ?? p.template.family,
+    firstName: p.contact.firstName,
+  }));
+  return [...openingCheck(openings), '', ...sourceCheck(items), '', ...dualFormCheck(items, dualForm)];
 };
 const save = () =>
   writeFileSync(OUTPUT, renderSnapshot(MODEL, promptHash, jobs, entries, checks(), [`Date given to the model: \`${snapshotDate}\``, '']));

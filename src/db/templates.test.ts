@@ -124,3 +124,26 @@ describe('write dialog data layer', () => {
     expect((await db.contacts.get(drafts[0].contactId))?.firstName).toBe('MetAtFair');
   });
 });
+
+describe('schema v5', () => {
+  it('replaces unedited old built-in briefs with the new ones and keeps edited ones', async () => {
+    const { default: Dexie } = await import('dexie');
+    const { PREVIOUS_BUILT_IN_INSTRUCTIONS } = await import('./migrations/previous-briefs');
+    const name = 'relance-upgrade-v5';
+    const old = new Dexie(name);
+    old.version(1).stores({ contacts: 'id', drafts: 'id', templates: 'id, family, language, isBuiltIn', settings: 'id' });
+    old.version(2).stores({ trash: 'id, deletedAt' });
+    old.version(3).stores({});
+    old.version(4).stores({});
+    await old.table('templates').bulkAdd([
+      { id: 'builtin-holiday-en', family: 'holiday', isBuiltIn: true, instructions: PREVIOUS_BUILT_IN_INSTRUCTIONS['builtin-holiday-en'] },
+      { id: 'builtin-holiday-fr', family: 'holiday', isBuiltIn: true, instructions: 'Mes propres consignes.' },
+    ]);
+    old.close();
+    const { RelanceDB } = await import('./db');
+    const db5 = new RelanceDB(name);
+    expect((await db5.templates.get('builtin-holiday-en'))?.instructions).toMatch(/^Must achieve:/);
+    expect((await db5.templates.get('builtin-holiday-fr'))?.instructions).toBe('Mes propres consignes.');
+    db5.close();
+  });
+});
