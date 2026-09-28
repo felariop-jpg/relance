@@ -20,6 +20,8 @@ import { newDraft } from './drafts';
 import { SETTINGS_ID, type Contact, type ContactInput } from './schema';
 import { ensureSettings, getSettings, modifySettings } from './settings';
 import { createBackup, restoreBackup, undoRestore } from '../export/backup';
+import { loadSampleContacts } from '../lib/sample';
+import { clearTourLeftovers } from '../tour/tourState';
 
 const tabB = new RelanceDB('relance');
 const person = (firstName: string, extra: Partial<ContactInput> = {}) => ({ ...emptyContact(), firstName, ...extra });
@@ -129,6 +131,19 @@ describe('two tabs writing at the same time', () => {
     await undoRestore(before, backup); // tab A undoes
     const names = (await db.contacts.toArray()).map((c) => c.firstName).sort();
     expect(names).toEqual(['AddedInB', 'Before']);
+  });
+
+  it('clearing the tour sample contacts keeps what another tab added meanwhile, and undo never duplicates', async () => {
+    await loadSampleContacts(new Date(2026, 8, 28));
+    const now = stamp();
+    const [, undo] = await Promise.all([
+      tabB.contacts.add({ ...person('Own', { email: 'own@company.test' }), id: 'own', createdAt: now, updatedAt: now }),
+      clearTourLeftovers([]),
+    ]);
+    expect((await db.contacts.toArray()).map((c) => c.id)).toEqual(['own']);
+    // Undo twice (two tabs' toasts): the samples come back once.
+    await Promise.all([undo(), undo()]);
+    expect(await db.contacts.count()).toBe(13);
   });
 
   it('two tabs adding different country overrides keep both', async () => {

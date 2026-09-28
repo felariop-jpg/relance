@@ -373,7 +373,15 @@ README notes that swapping models is a one-line change.
   - With no drafts, the generating step offers "Write 3 example drafts": the demo
     writer, forced even when an API key is set (`forceDemo`), so the tour never spends
     or sends anything. Sample contacts are used first. They are ordinary drafts
-    labelled Example; the last step offers to remove them (and finish).
+    labelled Example.
+  - **The tour ends on an empty start.** When it ends (Finish, Skip or Escape) and
+    there are sample contacts (recognised by the bundled addresses, whoever loaded
+    them) or example drafts, a closing card offers "Start with my own contacts"
+    (default, Enter) or "Keep them for now" (Escape). Starting fresh deletes the
+    samples with all their drafts and the tour's other examples, opens the empty
+    Contacts page, and shows an Undo toast. It bypasses Recently deleted (made-up
+    data; a new user shouldn't meet "Recently deleted (12)"); the undo re-adds only
+    what is missing. The user's own contacts and drafts are never touched.
   - Keys: Escape skips (unless a dialog or popover is open, which gets it first);
     → or Enter moves on and ← goes back, only while focus is on the card or nowhere,
     never while typing in a field. Focus moves to the step's heading and returns to

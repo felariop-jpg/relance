@@ -5,6 +5,7 @@ import type { Contact, Draft } from '../db/schema';
 import { getSettings, updateSettings } from '../db/settings';
 import { canUseTemplate, groupFamilies, pickVersion } from '../db/templates';
 import { resolveLanguage } from '../lib/language';
+import { SAMPLE_EMAILS } from '../lib/sample';
 import type { Route } from '../nav';
 
 export type StepId = 'sample' | 'contacts' | 'due' | 'generate' | 'review' | 'export';
@@ -138,4 +139,39 @@ export async function writeExampleDrafts(count = 3): Promise<string[]> {
   }
   await Promise.all(ids.map((id) => generateDraft(id, { forceDemo: true, demoDelayMs: 250 })));
   return ids;
+}
+
+export const isSampleContact = (c: Pick<Contact, 'email'>) => SAMPLE_EMAILS.has(c.email.toLowerCase());
+
+/** What "Start with my own contacts" would clear: the sample contacts, and the tour's other example drafts. */
+export function tourLeftovers(contacts: Contact[], drafts: Draft[], exampleIds: string[]) {
+  const samples = contacts.filter(isSampleContact);
+  const sampleIds = new Set(samples.map((c) => c.id));
+  const examples = drafts.filter((d) => exampleIds.includes(d.id) && !sampleIds.has(d.contactId));
+  return { samples, examples };
+}
+
+/**
+ * Clears the sample contacts (with all their drafts) and the tour's example drafts,
+ * so Relance is back to an empty start. Made-up data, so it skips Recently deleted
+ * (a new user would otherwise meet "Recently deleted (12)"); the returned undo puts
+ * back whatever is still missing.
+ */
+export async function clearTourLeftovers(exampleIds: string[]): Promise<() => Promise<void>> {
+  return db.transaction('rw', db.contacts, db.drafts, async () => {
+    const [contacts, drafts] = await Promise.all([db.contacts.toArray(), db.drafts.toArray()]);
+    const { samples, examples } = tourLeftovers(contacts, drafts, exampleIds);
+    const sampleIds = new Set(samples.map((c) => c.id));
+    const removedDrafts = [...drafts.filter((d) => sampleIds.has(d.contactId)), ...examples];
+    await db.drafts.bulkDelete(removedDrafts.map((d) => d.id));
+    await db.contacts.bulkDelete([...sampleIds]);
+    return async () => {
+      await db.transaction('rw', db.contacts, db.drafts, async () => {
+        const haveContacts = new Set((await db.contacts.bulkGet([...sampleIds])).filter(Boolean).map((c) => c!.id));
+        await db.contacts.bulkAdd(samples.filter((c) => !haveContacts.has(c.id)));
+        const haveDrafts = new Set((await db.drafts.bulkGet(removedDrafts.map((d) => d.id))).filter(Boolean).map((d) => d!.id));
+        await db.drafts.bulkAdd(removedDrafts.filter((d) => !haveDrafts.has(d.id)));
+      });
+    };
+  });
 }

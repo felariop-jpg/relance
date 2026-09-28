@@ -3,11 +3,21 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProp
 import { useTranslation } from 'react-i18next';
 import { Button } from '../components/Button';
 import { db } from '../db/db';
-import { deleteDrafts, restoreDrafts } from '../db/drafts';
 import { loadSampleContacts } from '../lib/sample';
 import { showToast } from '../lib/toast';
 import { href } from '../nav';
-import { backward, endTour, forward, goTo, hasShowableDrafts, rememberExamples, useTour, writeExampleDrafts } from './tourState';
+import {
+  backward,
+  clearTourLeftovers,
+  endTour,
+  forward,
+  goTo,
+  hasShowableDrafts,
+  rememberExamples,
+  tourLeftovers,
+  useTour,
+  writeExampleDrafts,
+} from './tourState';
 
 const visible = (el: Element) => el.getClientRects().length > 0;
 
@@ -42,6 +52,11 @@ export function Tour() {
   const { t } = useTranslation();
   const tour = useTour();
   const drafts = useLiveQuery(() => db.drafts.toArray(), []);
+  const contacts = useLiveQuery(() => db.contacts.toArray(), []);
+  // Set when the tour is ending and there are sample contacts or example drafts to offer clearing.
+  const [closing, setClosing] = useState<null | 'skipped' | 'finished'>(null);
+  const leftovers = tourLeftovers(contacts ?? [], drafts ?? [], tour.exampleIds);
+  const hasLeftovers = leftovers.samples.length > 0 || leftovers.examples.length > 0;
   const step = tour.active ? tour.steps[tour.index] : undefined;
   const part = step?.parts?.[tour.part];
   const targets = part?.targets ?? step?.targets;
@@ -59,6 +74,7 @@ export function Tour() {
 
   // Focus goes back where it was when the tour ends.
   useEffect(() => {
+    setClosing(null);
     if (tour.active) {
       returnFocus.current = document.activeElement;
     } else if (returnFocus.current instanceof HTMLElement && document.contains(returnFocus.current)) {
@@ -127,7 +143,30 @@ export function Tour() {
     setPlace(corner);
   }, [rect, step, busy, failed, needsExamples, t]);
 
-  const skip = useCallback(() => void endTour(last ? 'finished' : 'skipped'), [last]);
+  // Ending, by Skip or Finish: first offer to clear the examples, so Relance isn't left full of made-up people.
+  const end = useCallback(
+    (how: 'skipped' | 'finished') => (hasLeftovers ? setClosing(how) : void endTour(how)),
+    [hasLeftovers],
+  );
+  const skip = useCallback(() => end(last ? 'finished' : 'skipped'), [end, last]);
+
+  async function startFresh() {
+    if (!closing) return;
+    setBusy(true);
+    try {
+      const undo = await clearTourLeftovers(tour.exampleIds);
+      window.location.hash = href('contacts');
+      showToast({ tone: 'success', message: t('tour.end.cleared'), undo });
+    } finally {
+      setBusy(false);
+      void endTour(closing);
+    }
+  }
+  const keep = () => closing && void endTour(closing);
+
+  useEffect(() => {
+    if (closing) requestAnimationFrame(() => heading.current?.focus());
+  }, [closing]);
 
   const primary = useCallback(async () => {
     if (!step || busy) return;
@@ -152,17 +191,12 @@ export function Tour() {
         setBusy(false);
       }
     } else if (last) {
-      void endTour('finished');
+      end('finished');
     } else {
       forward();
     }
-  }, [step, busy, needsExamples, last, tour.index]);
+  }, [step, busy, needsExamples, last, tour.index, end]);
 
-  async function removeExamplesAndFinish() {
-    const removed = await deleteDrafts(tour.exampleIds);
-    showToast({ tone: 'info', message: t('review.removed', { count: removed.length }), undo: () => restoreDrafts(removed) });
-    void endTour('finished');
-  }
 
   // Escape skips; arrow keys and Enter move on while the tour card (or nothing) has focus.
   useEffect(() => {
@@ -171,7 +205,15 @@ export function Tour() {
       if (e.key === 'Escape') {
         if (dialogOrPopoverOpen()) return;
         e.preventDefault();
-        skip();
+        if (closing) keep();
+        else skip();
+        return;
+      }
+      if (closing) {
+        if (e.key === 'Enter' && (document.activeElement === heading.current || document.activeElement === document.body)) {
+          e.preventDefault();
+          void startFresh();
+        }
         return;
       }
       const active = document.activeElement;
@@ -188,9 +230,37 @@ export function Tour() {
     };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
-  }, [step, skip, primary, tour.index, tour.part, busy]);
+  }, [step, skip, primary, tour.index, tour.part, busy, closing]);
 
   if (!step) return null;
+
+  if (closing) {
+    return (
+      <div
+        ref={card}
+        role="dialog"
+        aria-modal="false"
+        aria-labelledby="tour-title"
+        aria-describedby="tour-body"
+        className="fixed right-4 bottom-4 left-4 z-30 rounded-xl border border-stone-200 bg-white p-4 shadow-xl sm:left-auto sm:w-[24rem]"
+      >
+        <h2 id="tour-title" ref={heading} tabIndex={-1} className="font-semibold focus:outline-none">
+          {t(leftovers.samples.length > 0 ? 'tour.end.title' : 'tour.end.titleExamples')}
+        </h2>
+        <p id="tour-body" className="mt-1 text-sm text-stone-700">
+          {t(leftovers.samples.length > 0 ? 'tour.end.body' : 'tour.end.bodyExamples')}
+        </p>
+        <div className="mt-3 flex flex-wrap items-center justify-end gap-2">
+          <Button size="sm" variant="ghost" disabled={busy} onClick={keep}>
+            {t('tour.end.keep')}
+          </Button>
+          <Button size="sm" variant="primary" disabled={busy} onClick={() => void startFresh()}>
+            {t(leftovers.samples.length > 0 ? 'tour.end.startFresh' : 'tour.end.removeExamples')}
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   const title = t(`tour.${step.id}.title`);
   const body = part
@@ -247,11 +317,6 @@ export function Tour() {
           {!last && (
             <Button size="sm" variant="ghost" onClick={skip}>
               {t('tour.skip')}
-            </Button>
-          )}
-          {last && tour.exampleIds.length > 0 && (
-            <Button size="sm" onClick={() => void removeExamplesAndFinish()}>
-              {t('tour.removeExamples')}
             </Button>
           )}
           <Button size="sm" variant="primary" disabled={busy} onClick={() => void primary()}>

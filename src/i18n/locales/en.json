@@ -662,10 +662,9 @@
     "next": "Next",
     "back": "Back",
     "finish": "Finish",
-    "removeExamples": "Remove the examples and finish",
     "sample": {
       "title": "Let’s use real contacts",
-      "body": "The tour is clearer with people in it. Load 12 made-up sample contacts to follow along? You can delete them afterwards.",
+      "body": "The tour is clearer with people in it. Load 12 made-up sample contacts to follow along? At the end, Relance offers to remove them so you can start with your own.",
       "load": "Load sample contacts",
       "loading": "Loading…"
     },
@@ -693,6 +692,16 @@
     "export": {
       "title": "Approve, export, send",
       "body": "Approve the drafts you’re happy with, then click Export. You get email files to open in Outlook and send yourself: Relance never sends anything."
+    },
+    "end": {
+      "title": "Start with your own contacts?",
+      "body": "The tour used made-up sample contacts. Remove them, and the drafts written for them, so Relance starts empty and ready for your own? You can undo this.",
+      "titleExamples": "Remove the example drafts?",
+      "bodyExamples": "The tour wrote example drafts for some of your contacts. Remove them so they don’t get in the way? You can undo this.",
+      "startFresh": "Start with my own contacts",
+      "removeExamples": "Remove the examples",
+      "keep": "Keep them for now",
+      "cleared": "The examples are gone. Add your own contacts: import a spreadsheet, or use Add contact."
     }
   }
 }

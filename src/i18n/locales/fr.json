@@ -698,10 +698,9 @@
     "next": "Suivant",
     "back": "Retour",
     "finish": "Terminer",
-    "removeExamples": "Supprimer les exemples et terminer",
     "sample": {
       "title": "Partons de vrais contacts",
-      "body": "La visite est plus claire avec des personnes dedans. Charger 12 contacts d'exemple fictifs pour suivre ? Vous pourrez les supprimer ensuite.",
+      "body": "La visite est plus claire avec des personnes dedans. Charger 12 contacts d'exemple fictifs pour suivre ? À la fin, Relance propose de les supprimer pour que vous commenciez avec les vôtres.",
       "load": "Charger les contacts d'exemple",
       "loading": "Chargement…"
     },
@@ -729,6 +728,16 @@
     "export": {
       "title": "Valider, exporter, envoyer",
       "body": "Validez les brouillons qui vous conviennent, puis cliquez sur Exporter. Vous obtenez des fichiers e-mail à ouvrir dans Outlook et à envoyer vous-même : Relance n'envoie jamais rien."
+    },
+    "end": {
+      "title": "Commencer avec vos propres contacts ?",
+      "body": "La visite a utilisé des contacts d'exemple fictifs. Les supprimer, avec les brouillons écrits pour eux, pour que Relance soit vide et prêt pour les vôtres ? Vous pourrez annuler.",
+      "titleExamples": "Supprimer les brouillons d'exemple ?",
+      "bodyExamples": "La visite a rédigé des brouillons d'exemple pour certains de vos contacts. Les supprimer pour qu'ils ne gênent pas ? Vous pourrez annuler.",
+      "startFresh": "Commencer avec mes propres contacts",
+      "removeExamples": "Supprimer les exemples",
+      "keep": "Les garder pour le moment",
+      "cleared": "Les exemples sont supprimés. Ajoutez vos propres contacts : importez un tableur, ou utilisez Ajouter un contact."
     }
   }
 }

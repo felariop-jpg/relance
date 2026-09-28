@@ -74,6 +74,9 @@ const ROWS: SampleRow[] = [
     lastContactedDaysAgo: 330 },
 ];
 
+/** The bundled contacts' addresses: how the tour recognises sample contacts to clear away. */
+export const SAMPLE_EMAILS: ReadonlySet<string> = new Set(ROWS.map((r) => r.email));
+
 function daysAgo(today: Date, days: number): string {
   const date = new Date(today.getFullYear(), today.getMonth(), today.getDate() - days);
   return todayIso(date);

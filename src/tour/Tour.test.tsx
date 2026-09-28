@@ -8,7 +8,9 @@ import { db } from '../db/db';
 import { addContact, emptyContact } from '../db/contacts';
 import { ensureSettings, getSettings } from '../db/settings';
 import { Tour } from './Tour';
-import { startTour, tourSnapshot } from './tourState';
+import { goTo, startTour, tourSnapshot } from './tourState';
+import { loadSampleContacts } from '../lib/sample';
+import { ensureTemplatesSeeded } from '../db/templates';
 
 (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 const settle = () => act(async () => { for (let i = 0; i < 10; i++) await new Promise((r) => setTimeout(r, 10)); });
@@ -77,6 +79,41 @@ describe('Tour', () => {
     await settle();
     expect(tourSnapshot().active).toBe(false);
     expect(document.querySelector('[role=dialog]')).toBeNull();
+    expect((await getSettings()).tourState).toBe('skipped');
+    unmount();
+  });
+
+  it('ends by offering to clear the sample contacts, and does it on Enter', async () => {
+    await ensureTemplatesSeeded();
+    await loadSampleContacts(new Date(2026, 8, 28));
+    const unmount = await mount();
+    act(() => goTo(tourSnapshot().steps.length - 1));
+    await settle();
+    const finish = [...document.querySelectorAll('[role=dialog] button')].find((b) => b.textContent === 'Finish') as HTMLButtonElement;
+    act(() => finish.click());
+    await settle();
+    expect(document.getElementById('tour-title')?.textContent).toBe('Start with your own contacts?');
+    expect(tourSnapshot().active).toBe(true);
+    (document.getElementById('tour-title') as HTMLElement).focus();
+    await key('Enter');
+    await settle();
+    expect(tourSnapshot().active).toBe(false);
+    expect((await db.contacts.toArray()).map((c) => c.firstName)).toEqual(['Ann']);
+    expect(window.location.hash).toBe('#/contacts');
+    expect((await getSettings()).tourState).toBe('finished');
+    unmount();
+  });
+
+  it('keeps the samples when the user says so (Escape at the end)', async () => {
+    await loadSampleContacts(new Date(2026, 8, 28));
+    const unmount = await mount();
+    await key('Escape');
+    await settle();
+    expect(document.getElementById('tour-title')?.textContent).toBe('Start with your own contacts?');
+    await key('Escape');
+    await settle();
+    expect(tourSnapshot().active).toBe(false);
+    expect(await db.contacts.count()).toBe(13);
     expect((await getSettings()).tourState).toBe('skipped');
     unmount();
   });

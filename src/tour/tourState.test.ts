@@ -3,8 +3,9 @@ import { db } from '../db/db';
 import { addContact, emptyContact } from '../db/contacts';
 import { ensureSettings, getSettings, updateSettings } from '../db/settings';
 import { ensureTemplatesSeeded } from '../db/templates';
+import { newDraft } from '../db/drafts';
 import { loadSampleContacts } from '../lib/sample';
-import { backward, endTour, forward, goTo, startTour, tourSnapshot, writeExampleDrafts } from './tourState';
+import { backward, clearTourLeftovers, endTour, forward, goTo, startTour, tourSnapshot, writeExampleDrafts } from './tourState';
 
 beforeEach(async () => {
   await Promise.all(db.tables.map((t) => t.clear()));
@@ -71,5 +72,27 @@ describe('guided tour', () => {
     const contacts = await db.contacts.bulkGet(drafts.map((d) => d!.contactId));
     expect(contacts.every((c) => /@example\.(com|net|org)$/.test(c!.email))).toBe(true);
     expect((await getSettings()).costTotalEur).toBe(0);
+  });
+
+  it('clears the sample contacts and example drafts, never the user\'s own, and can undo it', async () => {
+    await loadSampleContacts(new Date(2026, 8, 28));
+    const ownId = await addContact({ ...emptyContact(), firstName: 'Real', email: 'real@company.test', notes: 'Met in Lyon.' });
+    // Examples for everyone, including the user's own contact...
+    const examples = await writeExampleDrafts(13);
+    const ownExample = (await db.drafts.bulkGet(examples)).find((d) => d!.contactId === ownId)!;
+    // ...and a draft the user wrote themselves, which must survive.
+    const mine = newDraft({ contactId: ownId, templateId: ownExample.templateId, language: 'en', status: 'approved' });
+    await db.drafts.add(mine);
+
+    const undo = await clearTourLeftovers(examples);
+    expect((await db.contacts.toArray()).map((c) => c.id)).toEqual([ownId]);
+    expect((await db.drafts.toArray()).map((d) => d.id)).toEqual([mine.id]);
+
+    // Made-up data doesn't clutter Recently deleted.
+    expect(await db.trash.count()).toBe(0);
+
+    await undo();
+    expect(await db.contacts.count()).toBe(13);
+    expect(await db.drafts.get(ownExample.id)).toBeDefined();
   });
 });
