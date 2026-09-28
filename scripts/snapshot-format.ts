@@ -159,7 +159,9 @@ const squash = (s: string) =>
 
 /** Phrases quoted in personalizationUsed ("…", “…”, « … »). */
 export function quotedPhrases(text: string): string[] {
-  return [...text.matchAll(/"([^"]+)"|“([^”]+)”|«\s*([^»]+?)\s*»/g)].map((m) => (m[1] ?? m[2] ?? m[3]).trim());
+  // "source phrase" → rendering in the email's language: only the source is a quote.
+  const sourcesOnly = text.replace(/→[^"“«;\n]*/g, ' ');
+  return [...sourcesOnly.matchAll(/"([^"]+)"|“([^”]+)”|«\s*([^»]+?)\s*»/g)].map((m) => (m[1] ?? m[2] ?? m[3]).trim());
 }
 
 /** True if every word of the quote appears in the source, in the same order (a trimmed quote adds nothing). */
@@ -203,7 +205,8 @@ export function sourceCheck(items: SourceItem[]): string[] {
     const values = data.map(squash).filter(Boolean);
     const ownText = squash(`${draft.subject} ${draft.body}`);
     const quotes = quotedPhrases(draft.personalization);
-    if (hasNotes && quotes.length === 0 && !/no notes|aucune note|not use|n'utilise|pas utilisé/i.test(draft.personalization)) {
+    const saysNoSource = /^\s*(no source|aucune source)|no notes|aucune note|not use|n'utilise|pas utilisé/i.test(draft.personalization);
+    if (hasNotes && quotes.length === 0 && !saysNoSource) {
       problems.push(`- ${label}: no source phrase quoted`);
     }
     for (const raw of quotes) {
@@ -348,4 +351,31 @@ export function inferenceCheck(items: { label: string; entry: Entry; notes: stri
     `**Feelings stated back** (a feeling from the notes echoed in the email): ${feelings.length === 0 ? 'none.' : `${feelings.length}:`}`,
     ...feelings,
   ];
+}
+
+/** Unambiguous everyday words of one language, used to spot the other language inside a draft. */
+const ONLY_EN = new Set(
+  'the and with through during your you our we is are was were have has will would about from this that which what when how it\'s i\'m busy season team keep small while been being into just also very some'.split(' '),
+);
+const ONLY_FR = new Set(
+  'le la les des du une et avec pendant votre vos vous nous est sont était avons avez sera serait dans pour qui quand comment c\'est j\'ai très aussi équipe période chargée petite garder'.split(' '),
+);
+
+/**
+ * Check: words from the other language inside a draft (such as « une petite
+ * équipe motivée through a busy season »). Contact data (company, where you met...),
+ * [PLACEHOLDERS] and {{tokens}} are ignored.
+ */
+export function languageMixCheck(items: { label: string; entry: Entry; language: string; data?: string[] }[]): string[] {
+  const hits: string[] = [];
+  for (const { label, entry, language, data = [] } of items) {
+    const d = readDraft(entry);
+    if (!d) continue;
+    let text = `${d.subject}\n${d.body}`.replace(/\[[^\]]*\]|\{\{[^}]*\}\}/g, ' ');
+    for (const value of data.filter((v) => v.trim())) text = text.split(value).join(' ');
+    const other = language === 'fr' ? ONLY_EN : ONLY_FR;
+    const words = [...new Set(text.toLowerCase().replace(/[’]/g, "'").split(/[^\p{L}']+/u).filter((w) => other.has(w)))];
+    if (words.length) hits.push(`- ${label}: ${words.map((w) => `"${w}"`).join(', ')}`);
+  }
+  return [`**Mixed languages** (words from the other language in the email): ${hits.length === 0 ? 'none.' : `${hits.length}:`}`, ...hits];
 }

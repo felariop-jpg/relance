@@ -190,3 +190,36 @@ describe('source check noise', () => {
     expect(lines[0]).toContain('3 problem(s)');
   });
 });
+
+describe('cross-language quoting', () => {
+  const e = (personalization: string, body = 'Bonjour.'): Entry => ({ kind: 'ok', body: okBody({ subject: 's', body, personalizationUsed: personalization }) });
+  it('checks only the source phrase, not how it was rendered in the email', () => {
+    expect(quotedPhrases('Used "Moving her team to a four-day week" → le passage à la semaine de quatre jours; "Met at the Brussels HR forum" → notre rencontre à Bruxelles')).toEqual([
+      'Moving her team to a four-day week',
+      'Met at the Brussels HR forum',
+    ]);
+    const lines = sourceCheck([
+      {
+        label: 'fx-09',
+        entry: e('Used "Moving her team to a four-day week from January" → le passage de votre équipe à la semaine de quatre jours dès janvier.'),
+        sources: 'Met at the Brussels HR forum. Moving her team to a four-day week from January and a bit nervous about it.',
+        hasNotes: true,
+      },
+      { label: 'holiday', entry: e('No source: the notes are about work, which a greeting leaves out.'), sources: 'Asked about remote-only teams.', hasNotes: true },
+    ]);
+    expect(lines).toEqual(["**Source check:** all 2 drafts quote only phrases found in their contact's data."]);
+  });
+
+  it('flags words from the other language inside a draft, ignoring contact data and placeholders', async () => {
+    const { languageMixCheck } = await import('./snapshot-format');
+    const lines = languageMixCheck([
+      { label: 'fx-12', language: 'fr', entry: e('p', 'Comment garder une petite équipe motivée through a busy season.') },
+      { label: 'clean-fr', language: 'fr', entry: e('p', 'Merci pour notre échange au Salon des entrepreneurs. Le livre : [TITLE OF THE BOOK].'), data: ['Salon des entrepreneurs'] },
+      { label: 'en-with-company', language: 'en', entry: e('p', 'Hello, how is Atelier Brume doing?'), data: ['Atelier Brume'] },
+      { label: 'en-mixed', language: 'en', entry: e('p', 'Thank you pour your time.') },
+    ]);
+    expect(lines[0]).toContain('2:');
+    expect(lines).toContain('- fx-12: "through", "busy", "season"');
+    expect(lines).toContain('- en-mixed: "pour"');
+  });
+});

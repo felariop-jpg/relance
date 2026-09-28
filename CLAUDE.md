@@ -404,3 +404,9 @@ README notes that swapping models is a one-line change.
 - **Source check** treats contact fields as data, skips no-notes self-quotes, and
   accepts in-order word subsequences; any remaining flag is a quote containing
   words that are not in the contact's notes, serviceHistory, whereMet or openThread.
+- **Cross-language quoting** (normal: notes are often in the other language):
+  personalizationUsed quotes each source phrase exactly, in its original language,
+  then "→ rendering" when the email's language differs; "No source:" when nothing
+  from the data is used. The checker verifies only the source phrase against the
+  contact's data. The email itself stays in one language; the snapshot's "Mixed
+  languages" check flags everyday words of the other language in the email body.

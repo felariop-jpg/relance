@@ -460,3 +460,21 @@ notice and no way back. Code review found more multi-tab hazards of the
   « pourrait sans doute prendre un relief particulier avec ce changement à venir »
   is classified as a consequence: it says the upcoming change makes past coaching
   more relevant, an implied effect on her work. Left for the owner to judge.
+
+### 2. Cross-language quoting
+- personalizationUsed format: "exact source phrase in its original language" →
+  rendering in the email's language (no quotes around the rendering). "No source:"
+  when a draft rightly uses nothing from the data (e.g. a greeting for a contact
+  whose notes are only about work), so those drafts aren't flagged.
+- The checker verifies only the quoted source phrase against the contact's data;
+  renderings are ignored.
+- The language rule now says to render sources in the email's language, never word
+  for word; new snapshot check "Mixed languages" (everyday EN words in FR emails and
+  vice versa, ignoring contact data and placeholders). Third run baseline: none.
+  fx-12's half-translated « …motivée through a busy season » was in the
+  personalizationUsed quote, not in the email; the new format removes the pressure
+  that produced it.
+- fx-07's "now on board" / "settling in well": no new rule needed. "Settling in
+  well" is an inferred circumstance (facts rule: never add outcome or circumstance;
+  consequence rule: situation). "Now on board" is a rendering of "joined", which the
+  new format reports as a rendering rather than as a quote.
