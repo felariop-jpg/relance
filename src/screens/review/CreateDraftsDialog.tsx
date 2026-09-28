@@ -12,7 +12,7 @@ import { MethodPicker, type Method } from './MethodPicker';
 import { useTemplates } from '../../db/hooks';
 import { LANGUAGES, type Contact, type Lang } from '../../db/schema';
 import { useSettings } from '../../db/settings';
-import { canUseTemplate, groupFamilies, pickVersion } from '../../db/templates';
+import { canUseTemplate, groupFamilies, missingOpenThread, pickVersion } from '../../db/templates';
 import { resolveLanguage } from '../../lib/language';
 import { showToast } from '../../lib/toast';
 import { href } from '../../nav';
@@ -59,6 +59,11 @@ export function CreateDraftsDialog({
   }, [contacts, settings]);
 
   const total = contacts?.length ?? 0;
+  const eligibleContacts = (contacts ?? []).filter((c) => {
+    const version = family ? pickVersion(family, resolveLanguage(c, settings)) : undefined;
+    return version ? canUseTemplate(version, c, settings.withheldFields) : false;
+  });
+  const needFinishing = family && method === 'ai' && !demo ? missingOpenThread(family, eligibleContacts, settings.withheldFields) : 0;
   const count = family ? eligibleFor(family) : 0;
 
   async function submit() {
@@ -141,6 +146,8 @@ export function CreateDraftsDialog({
             </div>
           </fieldset>
         )}
+
+        {needFinishing > 0 && <Banner tone="warning">{t('create.willNeedOpenThread', { count: needFinishing })}</Banner>}
 
         {family && count < total && (
           <Banner tone="info">

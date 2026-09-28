@@ -115,7 +115,8 @@
     "discarded": "Unsaved changes discarded.",
     "deletedElsewhere": "This contact was deleted, possibly in another tab, so your changes couldn't be saved. You can restore it from “Recently deleted” on the Contacts page.",
     "whereMetHint": "For example: “Brussels HR forum, March 2026”. The post-event template needs this.",
-    "openThreadHint": "The question, request or proposal you never got back to. The re-engagement email is about this."
+    "openThreadHint": "What you're waiting on, or never got back to. The re-engagement email is built around this. If it's empty, those drafts come back with a gap for you to fill in by hand.",
+    "openThreadPlaceholder": "e.g. waiting on their budget decision; said they'd come back to us in the spring"
   },
   "import": {
     "title": "Import contacts from a spreadsheet",
@@ -191,7 +192,9 @@
     "leftOut_other": "{{count}} contacts have nothing in {{fields}}, so this template won't be used for them. Fill it in on each contact to include them.",
     "or": " or ",
     "needsFields": "Needs {{fields}}",
-    "quoted": "“{{name}}”"
+    "quoted": "“{{name}}”",
+    "willNeedOpenThread_one": "{{count}} of these drafts will need finishing by hand: “Left open” is empty for that contact, so Relance will leave a gap rather than invent what was left open. Fill it in on the contact first for a complete draft.",
+    "willNeedOpenThread_other": "{{count}} of these drafts will need finishing by hand: “Left open” is empty for those contacts, so Relance will leave a gap rather than invent what was left open. Fill it in on each contact first for complete drafts."
   },
   "review": {
     "title": "Review",
@@ -502,7 +505,9 @@
     "groupLine_other": "{{name}}: {{count}} drafts",
     "ruleAll": "Sent in {{month}} to everyone not contacted for at least {{days}} days.",
     "ruleAllNoGap": "Sent in {{month}} to everyone.",
-    "audienceJoin": " or "
+    "audienceJoin": " or ",
+    "willNeedOpenThread_one": "{{count}} will need finishing by hand (“Left open” is empty)",
+    "willNeedOpenThread_other": "{{count}} will need finishing by hand (“Left open” is empty)"
   },
   "contactTypesPlural": {
     "client": "clients",

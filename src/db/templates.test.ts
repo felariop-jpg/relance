@@ -186,3 +186,16 @@ describe('re-engagement needs something to re-engage about', () => {
     db6.close();
   });
 });
+
+describe('drafts that will need "Left open" filled in by hand', () => {
+  it('counts contacts without it for re-engagement only, and treats a withheld field as empty', async () => {
+    const { missingOpenThread } = await import('./templates');
+    const families = groupFamilies(BUILT_IN_TEMPLATES, 'en');
+    const reengage = families.find((f) => f.family === 'reengage')!;
+    const spring = families.find((f) => f.family === 'spring-checkin')!;
+    const contacts = [{ openThread: 'Waiting on their budget decision' }, { openThread: '' }, {}];
+    expect(missingOpenThread(reengage, contacts)).toBe(2);
+    expect(missingOpenThread(spring, contacts)).toBe(0);
+    expect(missingOpenThread(reengage, contacts, ['openThread'])).toBe(3);
+  });
+});

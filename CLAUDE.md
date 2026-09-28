@@ -410,3 +410,6 @@ README notes that swapping models is a one-line change.
   from the data is used. The checker verifies only the source phrase against the
   contact's data. The email itself stays in one language; the snapshot's "Mixed
   languages" check flags everyday words of the other language in the email body.
+- **"Left open" gaps are intended.** Re-engagement without `openThread` returns a
+  [WHAT WAS LEFT OPEN] placeholder; never relax this into guessing. The dialogs
+  count such drafts before generating (`missingOpenThread`).

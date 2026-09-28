@@ -72,3 +72,17 @@ export function otherTemplatesFor(templates: Template[], family: string, lang: L
     .filter((t): t is Template => Boolean(t))
     .map((t) => ({ name: t.name, purpose: t.purpose }));
 }
+
+/**
+ * Contacts this family will be written for who have nothing in "Left open":
+ * their drafts come back with a [WHAT WAS LEFT OPEN] gap to fill in by hand.
+ */
+export function missingOpenThread(
+  family: TemplateFamily,
+  contacts: { openThread?: string }[],
+  withheld: readonly string[] = [],
+): number {
+  const usesIt = Object.values(family.versions).some((v) => v?.requiresAnyOf?.includes('openThread'));
+  if (!usesIt) return 0;
+  return contacts.filter((c) => withheld.includes('openThread') || !c.openThread?.trim()).length;
+}

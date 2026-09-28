@@ -68,7 +68,8 @@ Cet écran propose trois choix.
 2. Regardez la colonne **Notes**. Une étiquette jaune **Aucune note** signifie que l'IA n'aura rien de personnel à dire sur cette personne.
 3. Cliquez sur le prénom d'un contact pour l'ouvrir.
 4. Dans **Notes**, écrivez ce que vous voudriez vous rappeler avant de lui écrire : ce dont vous avez parlé, ce qu'elle vit en ce moment, ce qu'elle a mentionné. C'est ce qui rend chaque e-mail personnel.
-5. Cliquez sur **Enregistrer**.
+5. Pour les personnes à relancer un jour (une question restée sans réponse, une proposition en attente), renseignez **Resté en suspens**, par exemple « en attente de leur décision budgétaire » ou « doivent revenir vers nous au printemps ». C'est autour de cela que l'e-mail « Reprendre contact » est construit. S'il est vide, Relance laisse un passage entre [CROCHETS] à compléter vous-même plutôt que d'inventer.
+6. Cliquez sur **Enregistrer**.
 
    La colonne **Langue** indique la langue de chaque personne. « (auto) » signifie que Relance l'a choisie d'après le pays. Pour la changer, choisissez une autre langue dans cette colonne.
 

@@ -71,7 +71,8 @@ You have three choices on this screen.
 2. Look at the **Notes** column. A yellow **No notes** label means the AI will have nothing personal to say about that person.
 3. Click a contact's name to open it.
 4. In **Notes**, write what you would want to remember before emailing them: what you talked about, what is happening for them, anything they mentioned. This is what makes each email personal.
-5. Click **Save**.
+5. For people you might re-engage (a question you never answered, a proposal on hold), fill in **Left open**, for example "waiting on their budget decision" or "said they'd come back to us in the spring". This is what the re-engagement email is built around. If it's empty, Relance leaves a gap in [SQUARE BRACKETS] for you to fill in by hand rather than inventing something.
+6. Click **Save**.
 
    The **Language** column shows which language each person will get. "(auto)" means Relance chose it from the country. To change it, pick another language in that column.
 

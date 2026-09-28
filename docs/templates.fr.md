@@ -13,6 +13,14 @@ Les modèles se trouvent dans **Réglages → Modèles**. Cliquez sur **Modifier
 - **Une version en anglais et une version en français.** Chacune a un nom, un objet, le texte de l'e-mail, **à quoi sert cet e-mail** (son rôle, que vos autres modèles n'ont pas) et des **consignes pour l'IA**. Vous pouvez omettre une langue ; les contacts de cette langue reçoivent alors l'autre version.
 - **Seulement pour les contacts qui ont au moins l'un de ces éléments** : « Lieu de rencontre », « Travail réalisé ensemble » ou « Resté en suspens » (facultatif). Un modèle qui a besoin d'un détail pour écrire ne peut pas servir pour les contacts qui ne l'ont pas, au lieu d'inventer quelque chose. « Suite à une rencontre » a besoin du lieu de rencontre ; « Reprendre contact » a besoin d'au moins l'un des trois.
 
+## Ce qui fait fonctionner « Reprendre contact » : « Resté en suspens »
+
+L'e-mail « Reprendre contact » reprend le point précis resté sans suite. Relance ne le connaît que si vous l'écrivez dans le champ **Resté en suspens** du contact, par exemple « en attente de leur décision budgétaire ».
+
+- Avec ce champ, le brouillon est complet.
+- Sans lui (mais avec « Travail réalisé ensemble » ou « Lieu de rencontre »), le brouillon revient avec un passage comme **[CE QUI EST RESTÉ EN SUSPENS]** à compléter vous-même. C'est voulu : deviner reviendrait à inventer un projet ou une promesse qui n'a jamais existé. La fenêtre « Écrire des e-mails » vous indique combien de brouillons seront à compléter avant de commencer.
+- Sans aucun des trois champs, « Reprendre contact » n'est pas proposé pour ce contact.
+
 ## Les calendriers intégrés ne sont qu'un point de départ
 
 Relance propose ces mois :

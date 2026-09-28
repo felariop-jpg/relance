@@ -251,6 +251,7 @@ export function ContactForm({
             id={fid('openThread')}
             className={inputClass}
             value={draft.openThread}
+            placeholder={t('form.openThreadPlaceholder')}
             onChange={(e) => set('openThread', e.target.value)}
             aria-describedby={described('openThread', true)}
             autoComplete="off"

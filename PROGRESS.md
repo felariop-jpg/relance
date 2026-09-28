@@ -478,3 +478,15 @@ notice and no way back. Code review found more multi-tab hazards of the
   well" is an inferred circumstance (facts rule: never add outcome or circumstance;
   consequence rule: situation). "Now on board" is a rendering of "joined", which the
   new format reports as a rendering rather than as a quote.
+
+### 3. "Left open" earns its place
+- Contact form: helper line and example placeholder ("waiting on their budget
+  decision; said they'd come back to us in the spring"), EN and FR.
+- Write emails and Due now dialogs say, before generating, how many re-engagement
+  drafts will need finishing because "Left open" is empty (AI mode only; demo drafts
+  have no gaps). Guides explain the field (getting started, templates; EN and FR).
+- **Known product characteristic, not a defect:** re-engagement drafts for contacts
+  with an empty "Left open" come back with a [WHAT WAS LEFT OPEN] gap to fill in by
+  hand (6 of 9 placeholders in the third run). This is the model correctly refusing
+  to invent an unresolved point. Do not "fix" it by letting the model guess; the fix
+  is users filling in the field, which the UI and guides now encourage.

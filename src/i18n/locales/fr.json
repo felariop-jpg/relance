@@ -119,7 +119,8 @@
     "discarded": "Modifications non enregistrées abandonnées.",
     "deletedElsewhere": "Ce contact a été supprimé, peut-être dans un autre onglet : vos modifications n'ont pas pu être enregistrées. Vous pouvez le restaurer depuis « Supprimés récemment » dans la page Contacts.",
     "whereMetHint": "Par exemple : « Forum RH de Bruxelles, mars 2026 ». Le modèle « Suite à une rencontre » en a besoin.",
-    "openThreadHint": "La question, la demande ou la proposition à laquelle vous n'avez jamais donné suite. L'e-mail « Reprendre contact » en parle."
+    "openThreadHint": "Ce que vous attendez, ou ce à quoi vous n'avez jamais donné suite. L'e-mail « Reprendre contact » est construit autour de cela. S'il est vide, ces brouillons reviennent avec un passage à compléter vous-même.",
+    "openThreadPlaceholder": "ex. : en attente de leur décision budgétaire ; doivent revenir vers nous au printemps"
   },
   "import": {
     "title": "Importer des contacts depuis un tableur",
@@ -208,7 +209,10 @@
     "leftOut_other": "{{count}} contacts n'ont rien dans {{fields}} : ce modèle ne sera pas utilisé pour eux. Renseignez-le sur chaque contact pour les inclure.",
     "or": " ou ",
     "needsFields": "Nécessite {{fields}}",
-    "quoted": "« {{name}} »"
+    "quoted": "« {{name}} »",
+    "willNeedOpenThread_one": "{{count}} de ces brouillons devra être complété à la main : « Resté en suspens » est vide pour ce contact, Relance laissera donc un passage à compléter plutôt que d'inventer. Renseignez-le d'abord sur le contact pour un brouillon complet.",
+    "willNeedOpenThread_many": "{{count}} de ces brouillons devront être complétés à la main : « Resté en suspens » est vide pour ces contacts, Relance laissera donc un passage à compléter plutôt que d'inventer. Renseignez-le d'abord sur chaque contact pour des brouillons complets.",
+    "willNeedOpenThread_other": "{{count}} de ces brouillons devront être complétés à la main : « Resté en suspens » est vide pour ces contacts, Relance laissera donc un passage à compléter plutôt que d'inventer. Renseignez-le d'abord sur chaque contact pour des brouillons complets."
   },
   "review": {
     "title": "Relecture",
@@ -531,7 +535,10 @@
     "groupLine_other": "{{name}} : {{count}} brouillons",
     "ruleAll": "Envoyé en {{month}} à toutes les personnes sans contact depuis au moins {{days}} jours.",
     "ruleAllNoGap": "Envoyé en {{month}} à tout le monde.",
-    "audienceJoin": " ou "
+    "audienceJoin": " ou ",
+    "willNeedOpenThread_one": "{{count}} à compléter à la main (« Resté en suspens » vide)",
+    "willNeedOpenThread_many": "{{count}} à compléter à la main (« Resté en suspens » vide)",
+    "willNeedOpenThread_other": "{{count}} à compléter à la main (« Resté en suspens » vide)"
   },
   "contactTypesPlural": {
     "client": "clients",

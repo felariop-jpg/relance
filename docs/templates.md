@@ -13,6 +13,14 @@ Templates are in **Settings → Templates**. Click **Edit** next to one.
 - **An English version and a French version.** Each has a name, a subject, the email text, **what this email is for** (its one job, which your other templates don't do), and a **brief for the AI**. You can leave one language out; contacts in that language then get the other version.
 - **Only for contacts that have at least one of** "Where you met", "Work done together" or "Left open" (optional). A template that needs a detail to write about can't be used for contacts who don't have it, instead of making something up. Post-event needs "Where you met"; re-engagement needs at least one of the three.
 
+## What makes re-engagement work: "Left open"
+
+The re-engagement email picks up the specific thing that was left unresolved. Relance only knows what that is if you write it in the contact's **Left open** field, for example "waiting on their budget decision".
+
+- With it, the draft is complete.
+- Without it (but with "Work done together" or "Where you met"), the draft comes back with a gap such as **[WHAT WAS LEFT OPEN]** that you fill in by hand. Relance does this on purpose: guessing would mean inventing a project or a promise that never existed. The Write emails window tells you how many drafts will need finishing before you start.
+- With none of the three fields, re-engagement isn't offered for that contact.
+
 ## The built-in schedules are only a starting point
 
 Relance comes with these months:
