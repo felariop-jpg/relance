@@ -51,6 +51,7 @@ export const DRAFT_ERROR_CODES = [
   'rate_limit',
   'overloaded',
   'malformed',
+  'billing',
   'interrupted',
   'unknown',
 ] as const;

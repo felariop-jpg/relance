@@ -8,6 +8,7 @@ import { Placeholder } from './screens/Placeholder';
 import { ReviewScreen } from './screens/review/ReviewScreen';
 import { SettingsScreen } from './screens/settings/SettingsScreen';
 import { Toaster } from './components/Toaster';
+import { DemoBanner } from './components/DemoBanner';
 
 export function App() {
   const { t, i18n } = useTranslation();
@@ -63,6 +64,7 @@ export function App() {
           </div>
         </div>
       </header>
+      <DemoBanner />
 
       <main className="mx-auto w-full max-w-screen-2xl flex-1 px-4 py-6">
         {route === 'contacts' && <ContactsScreen />}

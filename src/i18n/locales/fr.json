@@ -193,7 +193,13 @@
     "done_many": "{{count}} brouillons sont prêts à relire.",
     "done_other": "{{count}} brouillons sont prêts à relire.",
     "noTemplates": "Il n'y a encore aucun modèle. Vous pouvez en ajouter un dans les Réglages.",
-    "failed": "Les brouillons n'ont pas pu être créés. Veuillez réessayer."
+    "failed": "Les brouillons n'ont pas pu être créés. Veuillez réessayer.",
+    "methodAi": "Écrire des e-mails personnels avec l'IA",
+    "methodAiHint": "Utilise les notes de chaque contact. Vous relisez chaque e-mail avant tout envoi.",
+    "methodDemo": "E-mails d'exemple (démo, sans IA)",
+    "methodDemoHint": "Montre le fonctionnement avec des brouillons écrits à l'avance. Ajoutez une clé API dans les Réglages pour en écrire de vrais.",
+    "estimate": "Environ {{cost}} de frais d'IA pour {{count}} e-mails. C'est une estimation ; le coût réel s'affiche ensuite.",
+    "free": "Gratuit : aucune IA n'est utilisée."
   },
   "review": {
     "title": "Relecture",
@@ -243,7 +249,29 @@
     "exportApproved_one": "Exporter {{count}} brouillon validé",
     "exportApproved_many": "Exporter {{count}} brouillons validés",
     "exportApproved_other": "Exporter {{count}} brouillons validés",
-    "noneApproved": "Validez les brouillons que vous voulez envoyer, puis exportez-les ici."
+    "noneApproved": "Validez les brouillons que vous voulez envoyer, puis exportez-les ici.",
+    "writing": "Rédaction de cet e-mail…",
+    "retry": "Réessayer",
+    "cost": "Coût {{cost}}",
+    "errors": {
+      "network": "Impossible de joindre le service d'IA. Vérifiez votre connexion internet, puis réessayez.",
+      "auth": "Votre clé API n'a pas été acceptée. Vérifiez-la dans les Réglages, puis réessayez.",
+      "rate_limit": "Le service d'IA reçoit trop de demandes. Relance a patienté et réessayé, mais il est toujours occupé. Réessayez dans quelques minutes.",
+      "overloaded": "Le service d'IA est surchargé en ce moment. Réessayez dans quelques minutes.",
+      "malformed": "La réponse de l'IA est arrivée incomplète deux fois. Réessayez. Si cela se reproduit, essayez une consigne plus simple.",
+      "billing": "Votre compte Anthropic n'a plus de crédit. Ajoutez du crédit sur le site d'Anthropic, puis réessayez.",
+      "interrupted": "La rédaction s'est arrêtée parce que la page a été fermée ou rechargée. Réessayez.",
+      "unknown": "Un problème est survenu pendant la rédaction de cet e-mail. Réessayez."
+    },
+    "payload": {
+      "title": "Ce qui a été envoyé à l'IA",
+      "demoTitle": "Ce qui serait envoyé à l'IA",
+      "note": "Voici tout ce qui a quitté votre navigateur pour cet e-mail. Rien d'autre n'a été envoyé : ni le nom de famille, ni l'adresse e-mail, ni le numéro de téléphone, ni aucun des champs que vous avez choisi de ne pas transmettre.",
+      "demoNote": "Mode démo : rien n'a été envoyé. Voici exactement ce qui serait envoyé si vous ajoutiez une clé API.",
+      "readable": "Le texte du message est affiché développé pour faciliter la lecture. « Copier » donne le texte exact qui a été envoyé.",
+      "copy": "Copier",
+      "copied": "Copié"
+    }
   },
   "export": {
     "title": "Exporter les brouillons validés",
@@ -292,6 +320,28 @@
       "notBackup": "Ce fichier n'est pas une sauvegarde Relance, ou il est endommagé.",
       "tooNew": "Cette sauvegarde a été créée par une version plus récente de Relance. Rechargez cette page pour obtenir la dernière version, puis réessayez.",
       "failed": "La restauration n'a pas abouti et rien n'a été modifié."
+    },
+    "ai": {
+      "title": "Connexion à l'IA",
+      "body": "Relance rédige les brouillons avec Claude, une IA créée par Anthropic. Il faut votre propre clé API, qui est enregistrée uniquement dans ce navigateur et envoyée uniquement à Anthropic.",
+      "key": "Clé API Anthropic",
+      "keyHint": "Commence par « sk-ant- ». Laissez vide pour utiliser le mode démo.",
+      "guide": "Comment obtenir une clé API",
+      "show": "Afficher",
+      "hide": "Masquer",
+      "check": "Vérifier la clé",
+      "checking": "Vérification…",
+      "ok": "La clé fonctionne.",
+      "invalid": "Cette clé n'a pas été acceptée. Vérifiez que vous l'avez copiée en entier.",
+      "network": "Impossible de joindre Anthropic. Vérifiez votre connexion internet.",
+      "empty": "Pas encore de clé : Relance est en mode démo."
+    },
+    "cost": {
+      "title": "Coûts de l'IA",
+      "total": "Dépensé en IA depuis le {{date}} : {{cost}}",
+      "hint": "Calculé à partir de ce qu'Anthropic indique pour chaque brouillon, avec un prix approximatif. Votre compte Anthropic indique le montant exact.",
+      "reset": "Remettre à zéro",
+      "resetDone": "Total des coûts remis à zéro."
     }
   },
   "backupReminder": {
@@ -299,5 +349,26 @@
     "body": "Vous avez {{count}} contacts enregistrés uniquement dans ce navigateur. Téléchargez une sauvegarde pour ne pas les perdre si le navigateur efface ses données.",
     "download": "Télécharger une sauvegarde",
     "later": "Me le rappeler dans une semaine"
+  },
+  "money": {
+    "lessThanCent": "moins de {{amount}}"
+  },
+  "demo": {
+    "banner": "Mode démo : les brouillons sont des exemples écrits à l'avance, et aucune IA n'est utilisée. Pour écrire de vrais e-mails personnalisés, ajoutez votre clé API dans les Réglages.",
+    "goSettings": "Ouvrir les Réglages"
+  },
+  "batch": {
+    "writing": "Rédaction des brouillons : {{done}} sur {{total}}…",
+    "waiting": "Le service d'IA a demandé à Relance de ralentir. Il réessaiera automatiquement.",
+    "finished_one": "{{count}} brouillon rédigé.",
+    "finished_many": "{{count}} brouillons rédigés.",
+    "finished_other": "{{count}} brouillons rédigés.",
+    "failed_one": "{{count}} n'a pas pu être rédigé ; la raison est indiquée sur la carte.",
+    "failed_many": "{{count}} n'ont pas pu être rédigés ; la raison est indiquée sur chaque carte.",
+    "failed_other": "{{count}} n'ont pas pu être rédigés ; la raison est indiquée sur chaque carte.",
+    "cost": "Coût : {{cost}}.",
+    "demoCost": "Mode démo : aucun coût.",
+    "authFailed": "Votre clé API n'a pas été acceptée, Relance s'est donc arrêté. Vérifiez la clé dans les Réglages, puis utilisez Réessayer sur chaque carte.",
+    "dismiss": "Masquer"
   }
 }

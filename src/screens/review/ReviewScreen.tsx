@@ -12,6 +12,7 @@ import { showToast } from '../../lib/toast';
 import { href } from '../../nav';
 import { DraftCard } from './DraftCard';
 import { ExportDialog } from './ExportDialog';
+import { BatchBanner } from './BatchBanner';
 
 const FILTERS = ['toReview', 'approved', 'skipped', 'all'] as const;
 type Filter = (typeof FILTERS)[number];
@@ -57,6 +58,7 @@ export function ReviewScreen() {
   return (
     <section className="mx-auto max-w-3xl space-y-4 pb-24">
       <h1 className="text-2xl font-semibold tracking-tight">{t('review.title')}</h1>
+      <BatchBanner />
 
       {drafts.length === 0 ? (
         <div className="rounded-xl border border-dashed border-stone-300 px-6 py-12 text-center">

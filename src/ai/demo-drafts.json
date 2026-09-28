@@ -1,0 +1,119 @@
+{
+  "families": {
+    "spring-checkin": {
+      "en": {
+        "subject": "How is your spring going, {{firstName}}?",
+        "body": "Hello {{firstName}},\n\n{{opening}}\n\nSpring felt like a good moment to ask how the year is treating you so far. No agenda on my side, I am simply curious how things are going.\n\nIf you ever feel like sharing news, I would be glad to hear it, whenever suits you.\n\n{{signature}}"
+      },
+      "fr": {
+        "subject": "Comment se passe votre printemps, {{firstName}} ?",
+        "body": "Bonjour {{firstName}},\n\n{{opening}}\n\nLe printemps m'a semblé un bon moment pour prendre de vos nouvelles. Rien de particulier de mon côté, simplement l'envie de savoir comment se passe votre année.\n\nSi vous avez envie de partager des nouvelles, je vous lirai avec plaisir, quand cela vous conviendra.\n\n{{signature}}"
+      }
+    },
+    "planning": {
+      "en": {
+        "subject": "Looking ahead to next year",
+        "body": "Hello {{firstName}},\n\n{{opening}}\n\nThis is often when teams start sketching out next year. If there is something you would like support with, I would be happy to think it through with you, at whatever pace suits you.\n\nAnd if the timing is not right, that is completely fine.\n\n{{calendlyLink}}\n\n{{signature}}"
+      },
+      "fr": {
+        "subject": "En pensant à l'année prochaine",
+        "body": "Bonjour {{firstName}},\n\n{{opening}}\n\nC'est souvent le moment où l'on commence à esquisser l'année suivante. Si vous envisagez un accompagnement sur un sujet, j'y réfléchirai volontiers avec vous, à votre rythme.\n\nEt si le moment n'est pas le bon, aucun souci.\n\n{{calendlyLink}}\n\n{{signature}}"
+      }
+    },
+    "holiday": {
+      "en": {
+        "subject": "Warm wishes for the holidays",
+        "body": "Hello {{firstName}},\n\n{{opening}}\n\nAs the year draws to a close, warm wishes to you and those close to you. I hope the holidays bring you some rest, and that the new year is kind to you.\n\n{{signature}}"
+      },
+      "fr": {
+        "subject": "Belles fêtes de fin d'année",
+        "body": "Bonjour {{firstName}},\n\n{{opening}}\n\nAlors que l'année se termine, je vous souhaite, à vous et à vos proches, de très belles fêtes. Que les vacances vous apportent un peu de repos, et que la nouvelle année vous soit douce.\n\n{{signature}}"
+      }
+    },
+    "reengage": {
+      "en": {
+        "subject": "A quick hello",
+        "body": "Hello {{firstName}},\n\n{{opening}}\n\nIt has been a while since we last spoke, and you came to mind. Priorities shift, I know, so no expectations at all.\n\nIf the topic we discussed is still on your list, I would be glad to pick it up again whenever suits you.\n\n{{signature}}"
+      },
+      "fr": {
+        "subject": "Un petit bonjour",
+        "body": "Bonjour {{firstName}},\n\n{{opening}}\n\nCela fait un moment que nous n'avons pas échangé, et j'ai pensé à vous. Les priorités évoluent, je le sais bien, alors aucune attente de ma part.\n\nSi le sujet dont nous avions parlé est toujours d'actualité, je le reprendrai volontiers quand vous le souhaiterez.\n\n{{signature}}"
+      }
+    },
+    "post-event": {
+      "en": {
+        "subject": "Good to meet you",
+        "body": "Hello {{firstName}},\n\n{{opening}}\n\nThank you for taking the time to talk. If you would like to continue the conversation at some point, I would be glad to, whenever it suits you.\n\n{{signature}}"
+      },
+      "fr": {
+        "subject": "Suite à notre rencontre",
+        "body": "Bonjour {{firstName}},\n\n{{opening}}\n\nMerci d'avoir pris le temps d'échanger. Si vous souhaitez poursuivre la conversation à l'occasion, ce sera avec plaisir, quand cela vous conviendra.\n\n{{signature}}"
+      }
+    },
+    "other": {
+      "en": {
+        "subject": "A quick hello",
+        "body": "Hello {{firstName}},\n\n{{opening}}\n\nI hope things are going well on your side. If there is anything you would like to share, I am always glad to hear from you, whenever suits you.\n\n{{signature}}"
+      },
+      "fr": {
+        "subject": "Un petit bonjour",
+        "body": "Bonjour {{firstName}},\n\n{{opening}}\n\nJ'espère que tout va bien de votre côté. Si vous avez envie de partager des nouvelles, je vous lirai avec plaisir, quand cela vous conviendra.\n\n{{signature}}"
+      }
+    }
+  },
+  "openings": {
+    "amelie.rousseau@example.com": {
+      "en": ["I hope your daughter's first weeks in Lyon have gone well.", "Her daughter starting university in Lyon."],
+      "fr": ["J'espère que les premières semaines de votre fille à Lyon se passent bien.", "Sa fille qui a commencé l'université à Lyon."]
+    },
+    "tom.hendricks@example.org": {
+      "en": ["I hope the move to the new office is shaping up well.", "His office move in the spring."],
+      "fr": ["J'espère que le déménagement dans les nouveaux bureaux se prépare bien.", "Son déménagement de bureaux au printemps."]
+    },
+    "sofia.almeida@example.net": {
+      "en": ["It was good to meet you at the regional HR meetup.", "Meeting her at the regional HR meetup."],
+      "fr": ["C'était un plaisir de vous rencontrer lors de la rencontre RH régionale.", "La rencontre lors de l'événement RH régional."]
+    },
+    "julien.marchal@example.com": {
+      "en": ["I hope the new site is everything you hoped it would be.", "The new site he is proud of."],
+      "fr": ["J'espère que le nouveau site est à la hauteur de vos attentes.", "Le nouveau site dont il est fier."]
+    },
+    "nadia.benali@example.org": {
+      "en": ["Thank you again for your question about working with small teams.", "Her question about pricing for small teams."],
+      "fr": ["Merci encore pour votre question sur l'accompagnement des petites équipes.", "Sa question sur les tarifs pour les petites équipes."],
+      "workRelated": true
+    },
+    "lukas.steiner@example.com": {
+      "en": ["I still think about our conversation in Geneva about remote teams, and I hope the Oslo project is going well.", "The Geneva conference and his project in Oslo."],
+      "fr": ["Je repense encore à notre échange à Genève sur les équipes à distance, et j'espère que le projet d'Oslo avance bien.", "La conférence de Genève et son projet à Oslo."]
+    },
+    "claire.dubois@example.net": {
+      "en": ["Growing from 8 to 14 people in a year is quite something.", "Her team growing from 8 to 14 people."],
+      "fr": ["Passer de 8 à 14 personnes en un an, ce n'est pas rien.", "Son équipe passée de 8 à 14 personnes."]
+    },
+    "mh.faure@example.com": {
+      "en": ["I hope the autumn is off to a good start for you and your partners.", "The session she mentioned for her partners in the autumn."],
+      "fr": ["J'espère que l'automne commence bien pour vous et vos associés.", "La session évoquée pour ses associés à l'automne."]
+    },
+    "emma.lindqvist@example.net": {
+      "en": ["It was lovely to chat at the stand in Brussels.", "Meeting her at the conference stand in Brussels."],
+      "fr": ["Ce fut un plaisir d'échanger avec vous sur le stand à Bruxelles.", "La rencontre sur le stand à Bruxelles."]
+    },
+    "daniel.weber@example.com": {
+      "en": ["Welcome back from your parental leave. I hope the return has been a gentle one.", "His return from parental leave."],
+      "fr": ["Bon retour après votre congé parental. J'espère que la reprise se passe en douceur.", "Son retour de congé parental."]
+    },
+    "isabelle.moreau@example.org": {
+      "en": ["I hope the busy season at the garden centre has been a good one.", "The busy season at her garden centre."],
+      "fr": ["J'espère que la haute saison à la jardinerie a été bonne.", "La haute saison de sa jardinerie."]
+    }
+  },
+  "generic": {
+    "en": ["I hope you are keeping well.", "Example draft: no notes were used, because this is demo mode."],
+    "fr": ["J'espère que vous allez bien.", "Brouillon d'exemple : aucune note n'a été utilisée, car c'est le mode démo."]
+  },
+  "noNotes": {
+    "en": "No notes were available for this contact, so this example is not personalised.",
+    "fr": "Aucune note n'était disponible pour ce contact : cet exemple n'est donc pas personnalisé."
+  }
+}

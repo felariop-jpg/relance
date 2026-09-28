@@ -9,6 +9,10 @@ import { editDraftText, setDraftStatus } from '../../db/drafts';
 import type { Contact, Draft, Template } from '../../db/schema';
 import { formatDate } from '../../lib/dates';
 import { unknownPlaceholders } from '../../lib/placeholders';
+import { formatEur } from '../../lib/money';
+import { enqueueDrafts } from '../../ai/batch';
+import { PayloadPanel } from './PayloadPanel';
+import { RefreshIcon } from '../../components/icons';
 
 const SAVE_DELAY_MS = 400;
 
@@ -68,6 +72,7 @@ export function DraftCard({
   const name = contact ? [contact.firstName, contact.lastName].filter(Boolean).join(' ') : t('review.deletedContact');
   const unknown = unknownPlaceholders(subject + body);
   const approved = draft.status === 'approved';
+  const busy = draft.status === 'pending' || draft.status === 'failed';
   const skipped = draft.status === 'skipped';
 
   return (
@@ -99,6 +104,34 @@ export function DraftCard({
         </div>
       </header>
 
+      {draft.status === 'pending' ? (
+        <div className="space-y-2 px-4 py-6" aria-busy="true">
+          <p className="flex items-center gap-2 text-sm text-stone-600">
+            <span className="h-3 w-3 animate-pulse rounded-full bg-accent-600" />
+            {t('review.writing')}
+          </p>
+          <div className="h-3 w-2/3 animate-pulse rounded bg-stone-200" />
+          <div className="h-3 w-full animate-pulse rounded bg-stone-200" />
+          <div className="h-3 w-5/6 animate-pulse rounded bg-stone-200" />
+        </div>
+      ) : draft.status === 'failed' ? (
+        <div className="px-4 py-4">
+          <Banner
+            tone="error"
+            actions={
+              <Button size="sm" variant="primary" className="min-h-11 sm:min-h-8" onClick={() => enqueueDrafts([draft.id])}>
+                <RefreshIcon />
+                {t('review.retry')}
+              </Button>
+            }
+          >
+            <p>{t(`review.errors.${draft.error?.code ?? 'unknown'}`)}</p>
+            {draft.error?.code === 'unknown' && draft.error.detail && (
+              <p className="font-mono text-xs opacity-70">{draft.error.detail}</p>
+            )}
+          </Banner>
+        </div>
+      ) : (
       <div className="space-y-3 px-4 py-3">
         <Personalization draft={draft} />
 
@@ -134,11 +167,19 @@ export function DraftCard({
           </Banner>
         )}
       </div>
+      )}
+
+      {draft.payloadJson && draft.source !== 'template' && draft.status !== 'pending' && (
+        <div className="px-4 pb-3">
+          <PayloadPanel payloadJson={draft.payloadJson} demo={draft.source === 'demo'} />
+        </div>
+      )}
 
       <footer className="flex flex-wrap items-center gap-2 border-t border-stone-100 px-4 py-3">
         <Button
           variant={approved ? 'primary' : 'secondary'}
           aria-pressed={approved}
+          disabled={busy}
           className="min-h-11 sm:min-h-0"
           onClick={() => void setDraftStatus([draft.id], approved ? 'generated' : 'approved')}
         >
@@ -147,6 +188,7 @@ export function DraftCard({
         </Button>
         <Button
           aria-pressed={skipped}
+          disabled={busy}
           className="min-h-11 sm:min-h-0"
           onClick={() => void setDraftStatus([draft.id], skipped ? 'generated' : 'skipped')}
         >
@@ -157,6 +199,8 @@ export function DraftCard({
           {t('review.remove')}
         </Button>
         <span className="ml-auto text-xs text-stone-500" aria-live="polite">
+          {draft.costEur > 0 && t('review.cost', { cost: formatEur(draft.costEur, i18n.language, t) })}
+          {draft.costEur > 0 && draft.exportedAt && ' · '}
           {draft.exportedAt && t('review.exported', { date: formatDate(draft.exportedAt.slice(0, 10), i18n.language) })}
           {draft.exportedAt && saveState !== 'idle' && ' · '}
           {saveState === 'saving' && t('review.saving')}

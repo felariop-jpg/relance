@@ -177,7 +177,13 @@
     "done_one": "{{count}} draft is ready to review.",
     "done_other": "{{count}} drafts are ready to review.",
     "noTemplates": "There are no templates yet. You can add one in Settings.",
-    "failed": "The drafts couldn't be created. Please try again."
+    "failed": "The drafts couldn't be created. Please try again.",
+    "methodAi": "Write personal emails with AI",
+    "methodAiHint": "Uses each contact's notes. You review every email before anything is sent.",
+    "methodDemo": "Example emails (demo, no AI)",
+    "methodDemoHint": "Shows how it works with drafts written in advance. Add an API key in Settings to write real ones.",
+    "estimate": "About {{cost}} in AI costs for {{count}} emails. This is an estimate; the real cost is shown afterwards.",
+    "free": "Free: no AI is used."
   },
   "review": {
     "title": "Review",
@@ -225,7 +231,29 @@
     "unknownPlaceholders": "This email still contains {{list}}. Replace it before sending.",
     "exportApproved_one": "Export {{count}} approved draft",
     "exportApproved_other": "Export {{count}} approved drafts",
-    "noneApproved": "Approve the drafts you want to send, then export them here."
+    "noneApproved": "Approve the drafts you want to send, then export them here.",
+    "writing": "Writing this email…",
+    "retry": "Try again",
+    "cost": "Cost {{cost}}",
+    "errors": {
+      "network": "Couldn't reach the AI service. Check your internet connection, then try again.",
+      "auth": "Your API key was not accepted. Check it in Settings, then try again.",
+      "rate_limit": "The AI service is receiving too many requests. Relance waited and retried, but it is still busy. Try again in a few minutes.",
+      "overloaded": "The AI service is overloaded right now. Try again in a few minutes.",
+      "malformed": "The AI's answer came back incomplete twice. Try again. If it keeps happening, try a simpler instruction.",
+      "billing": "Your Anthropic account has run out of credit. Add credit on the Anthropic website, then try again.",
+      "interrupted": "Writing stopped because the page was closed or reloaded. Try again.",
+      "unknown": "Something went wrong while writing this email. Try again."
+    },
+    "payload": {
+      "title": "What was sent to the AI",
+      "demoTitle": "What would be sent to the AI",
+      "note": "This is everything that left your browser for this email. Nothing else was sent: not the surname, email address or phone number, and none of the fields you chose to withhold.",
+      "demoNote": "Demo mode: nothing was sent. This is exactly what would be sent if you added an API key.",
+      "readable": "Shown with the message text expanded so it is easier to read. Copy gives the exact text that was sent.",
+      "copy": "Copy",
+      "copied": "Copied"
+    }
   },
   "export": {
     "title": "Export approved drafts",
@@ -272,6 +300,28 @@
       "notBackup": "This file isn't a Relance backup, or it is damaged.",
       "tooNew": "This backup was made by a newer version of Relance. Reload this page to get the latest version, then try again.",
       "failed": "The restore didn't finish, and nothing was changed."
+    },
+    "ai": {
+      "title": "AI connection",
+      "body": "Relance writes drafts with Claude, an AI made by Anthropic. It needs your own API key, which is stored only in this browser and sent only to Anthropic.",
+      "key": "Anthropic API key",
+      "keyHint": "Starts with “sk-ant-”. Leave empty to use demo mode.",
+      "guide": "How to get an API key",
+      "show": "Show",
+      "hide": "Hide",
+      "check": "Check the key",
+      "checking": "Checking…",
+      "ok": "The key works.",
+      "invalid": "This key was not accepted. Check that you copied all of it.",
+      "network": "Couldn't reach Anthropic. Check your internet connection.",
+      "empty": "No key yet: Relance is in demo mode."
+    },
+    "cost": {
+      "title": "AI costs",
+      "total": "Spent on AI since {{date}}: {{cost}}",
+      "hint": "Worked out from what Anthropic reports for each draft, using an approximate price. Your Anthropic account shows the exact amount.",
+      "reset": "Reset to zero",
+      "resetDone": "Cost total reset."
     }
   },
   "backupReminder": {
@@ -279,5 +329,24 @@
     "body": "You have {{count}} contacts stored only in this browser. Download a backup so you don't lose them if the browser clears its data.",
     "download": "Download a backup",
     "later": "Remind me in a week"
+  },
+  "money": {
+    "lessThanCent": "less than {{amount}}"
+  },
+  "demo": {
+    "banner": "Demo mode: drafts are examples written in advance, and no AI is used. To write real personalised emails, add your API key in Settings.",
+    "goSettings": "Open Settings"
+  },
+  "batch": {
+    "writing": "Writing drafts: {{done}} of {{total}}…",
+    "waiting": "The AI service asked Relance to slow down. It will retry automatically.",
+    "finished_one": "{{count}} draft written.",
+    "finished_other": "{{count}} drafts written.",
+    "failed_one": "{{count}} couldn't be written; see the card for the reason.",
+    "failed_other": "{{count}} couldn't be written; see each card for the reason.",
+    "cost": "Cost: {{cost}}.",
+    "demoCost": "Demo mode: no cost.",
+    "authFailed": "Your API key was not accepted, so Relance stopped. Check the key in Settings, then use Try again on each card.",
+    "dismiss": "Hide"
   }
 }

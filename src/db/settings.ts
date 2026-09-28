@@ -1,29 +1,10 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { useMemo } from 'react';
 import { db } from './db';
-import { SETTINGS_ID, type Lang, type Settings } from './schema';
-import { browserLanguage } from '../lib/language';
+import { SETTINGS_ID, type Settings } from './schema';
+import { defaultSettings } from './settings-defaults';
 
-export function defaultSettings(uiLanguage: Lang = browserLanguage()): Settings {
-  return {
-    id: SETTINGS_ID,
-    apiKey: '',
-    signature: '',
-    calendlyLink: '',
-    senderName: '',
-    uiLanguage,
-    defaultLanguage: 'en',
-    countryLanguageOverrides: {},
-    withheldFields: [],
-    voiceSamples: [],
-    costTotalEur: 0,
-    costSince: new Date().toISOString(),
-    lastBackupAt: null,
-    backupReminderSnoozedUntil: null,
-    templatesSeeded: false,
-    firstRunDone: false,
-  };
-}
+export { defaultSettings };
 
 /** Creates the settings row on first launch. Safe to call repeatedly. */
 export async function ensureSettings(): Promise<Settings> {

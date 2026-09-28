@@ -30,3 +30,43 @@ Contacts table, CSV import with column mapper, sample data, EN/FR wiring.
 - Settings beyond backup (Phase 6). The Review screen gets regeneration,
   keyboard shortcuts and mobile polish in Phase 4.
 - Bundle-size warning from Vite (>500 kB); revisit in Phase 7.
+
+## Phase 3 — the generation layer
+**Built**
+- `redactForApi` (allowlist, `src/ai/redact.ts`) with tests proving surname,
+  email, phone, ids, dates, withheld fields and any future field never reach
+  the payload, including the full request with sender details.
+- Shared prompt (`src/ai/prompt.ts`) with the tone rules, placeholder rules,
+  voice-sample rules (addition B, prompt side) and an `extraInstruction` slot
+  for regeneration. Output forced through a `save_draft` tool, validated with zod.
+- Engine (`src/ai/engine.ts`): one retry on malformed or wrong-language replies;
+  automatic back-off on 429/529 honouring Retry-After (up to 4 retries); errors
+  classified as network / auth / rate_limit / overloaded / malformed / billing /
+  interrupted / unknown.
+- Per-card fault tolerance (`src/ai/batch.ts`): 3 at a time, every draft saved
+  independently; a 401 stops new calls and marks the rest, finished drafts stay.
+  Reloading mid-batch turns pending cards into retryable "interrupted" errors.
+- Payload transparency (addition A): the exact request is stored on the draft;
+  a collapsed "What was sent to the AI" panel shows it with Copy.
+- Cost (addition F): estimate before, actual after (from returned usage), running
+  total in Settings with reset (undoable). Pricing in one constant.
+- Demo mode plumbing and content (addition C): no key → canned drafts from
+  `src/ai/demo-drafts.json`, EN + FR, personal openings for the sample contacts.
+  Persistent demo banner. Payload panel still shows what *would* be sent.
+- Minimal Settings: API key (show/hide, "check the key" via the free models
+  endpoint) and the cost total.
+- Prompt regression harness (addition I): `fixtures/contacts.json` (10 cases),
+  `npm run drafts:snapshot`, rule documented in CONTRIBUTING.md.
+
+**Verified in the browser**: demo batch of 12; payload panel contents (only the
+7 allowed fields); a real call to api.anthropic.com with an invalid key through
+the production CSP → per-card "key not accepted", batch stopped, earlier drafts
+intact.
+
+**Deferred**
+- The baseline `fixtures/drafts-snapshot.md` is a placeholder: no API key is
+  available in this environment. The owner runs `npm run drafts:snapshot` once.
+- A real successful generation against `claude-sonnet-5` is untested for the
+  same reason (engine and parsing are unit-tested with fakes; the SDK path was
+  verified up to the 401).
+- Voice-sample editing UI is Phase 6.

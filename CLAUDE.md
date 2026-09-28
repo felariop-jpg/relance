@@ -202,3 +202,33 @@ README notes that swapping models is a one-line change.
   days; "Remind me in a week" snoozes 7 days.
 - **Undo window** is 10 s; deleted rows live only in the toast's closure.
   Toasts sit above the Review screen's bottom export bar.
+
+### Phase 3 decisions
+- **Structured output via a forced tool** (`save_draft`, `tool_choice`), then zod.
+  A reply in the wrong language counts as malformed (retried once).
+- **SDK retries off** (`maxRetries: 0`); the engine owns retries so they are
+  tested. 429/529/5xx: up to 4 automatic retries, Retry-After honoured, else
+  2 s → 4 s → 8 s → 16 s (+ jitter), capped at 30 s.
+- **Concurrency 3.** A 401/403 stops further calls in the batch; remaining cards
+  are marked "key not accepted" with Retry. A 400 about credit → "billing".
+- **SDK is lazy-loaded** on first generation, so it never slows the first page.
+- **The sender's own details are never sent**: signature, Calendly link and
+  sender name are placeholders filled locally, like the recipient's surname.
+- **`personalizationUsed` is written in the UI language** (`reportLanguage`),
+  because it's for the user, not the recipient.
+- **Payload panel** stores the exact request (`payloadJson`). The on-screen view
+  expands the message's JSON text and puts the message first for readability;
+  Copy gives the exact bytes sent. Failed calls that reached the API still show
+  their payload (it was sent); cards stopped before any call show none.
+- **Pricing assumption**: EUR 2.76 / 13.8 per million input/output tokens
+  (USD 3 / 15 at 0.92), `EST_TOKENS_PER_DRAFT` 1800 in / 350 out. Check
+  anthropic.com/pricing when changing `MODEL`. Malformed replies' tokens count
+  toward the real cost.
+- **Demo mode** is simply "no API key". Demo drafts are marked `source: 'demo'`,
+  labelled "Example" on the card, free, and use a 0.35–0.85 s delay. Sample
+  contacts get note-based openings; anyone else gets a generic opening with a
+  warning badge ("demo mode: notes not used").
+- **API key check** uses the free models-list endpoint, never a generation.
+- **Voice samples** go in the payload only when present; the Settings hint will
+  ask users to remove names and private details before pasting.
+- **Docs links** point to the GitHub repo (`REPO_URL` in `src/config.ts`).
