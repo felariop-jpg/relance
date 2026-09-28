@@ -7,7 +7,10 @@ import type { Plugin } from 'vite';
  * (dist/docs/*.html), so the in-app help links work whatever the repository's
  * visibility or the host. Build time only: nothing here ships as JavaScript.
  */
-const PAGES: [source: string, page: string][] = [
+export const PAGES: [source: string, page: string][] = [
+  ['docs/README.md', 'index'],
+  ['docs/handover.md', 'handover'],
+  ['docs/handover.fr.md', 'handover.fr'],
   ['docs/getting-started.md', 'getting-started'],
   ['docs/getting-started.fr.md', 'getting-started.fr'],
   ['docs/api-key.md', 'api-key'],
@@ -15,6 +18,7 @@ const PAGES: [source: string, page: string][] = [
   ['docs/templates.md', 'templates'],
   ['docs/templates.fr.md', 'templates.fr'],
   ['docs/eml-compatibility.md', 'eml-compatibility'],
+  ['docs/deployment.md', 'deployment'],
   ['PRIVACY.md', 'privacy'],
   ['PRIVACY.fr.md', 'privacy.fr'],
 ];
@@ -47,6 +51,8 @@ code{background:#f5f5f4;padding:.1em .3em;border-radius:4px;font-size:.9em}pre{b
 table{border-collapse:collapse;width:100%;font-size:.95em}th,td{border:1px solid #e7e5e4;padding:.4rem .6rem;text-align:left;vertical-align:top}
 blockquote{margin:1rem 0;padding:.5rem 1rem;background:#fffbeb;border-left:4px solid #f59e0b}
 .back{display:inline-block;margin-bottom:1rem}
+@page{size:A4;margin:12mm 14mm}
+@media print{body{font-size:10pt;line-height:1.38;background:none}main{max-width:none;padding:0}.back{display:none}a{color:inherit;text-decoration:none}h1{font-size:16pt;margin:0 0 .4em}h2{font-size:11.5pt;margin:.9em 0 .25em}p,ul,ol{margin:.3em 0}li{margin:.1em 0}ul,ol{padding-left:1.4em}img{display:none}}
 </style>
 </head>
 <body><main><a class="back" href="../">${back}</a>

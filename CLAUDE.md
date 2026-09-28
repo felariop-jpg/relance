@@ -397,6 +397,15 @@ README notes that swapping models is a one-line change.
   with screenshots), and in-app links use `docUrl()` → `./docs/<name>.html`, so help
   still works when the repository is private.
 - The README keeps its public open-source framing, licence and contributing guide.
+- **Handover sheet** (`docs/handover.md` / `.fr.md`): one side of A4, for the person
+  who uses Relance day to day, written to "you". The docs pages have print styles
+  (A4, 10 pt, no back link or images); a test caps the handover's length, and it was
+  checked by printing to PDF (one page in each language). "Who to contact" is a
+  blank line to fill in by hand: the guides are on a public site, so no personal
+  contact details go in the repository.
+- **Guides index**: `docs/README.md` (GitHub's folder view) is also built as
+  `docs/index.html` on the site, since a private repository hides GitHub from the user.
+  deployment.md is published too, for whoever maintains the site.
 
 ### Template purposes and "where you met" (snapshot review)
 - Every template has a `purpose` (its one job) sent to the model, plus

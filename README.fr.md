@@ -26,7 +26,9 @@ Relance est un petit outil pour les consultants et les dirigeants de petites ent
 2. Suivez l'accueil en trois étapes, ou passez-le.
 3. Chargez les contacts d'exemple pour essayer, ou importez votre propre tableur.
 
-Guide pas à pas : **[Premiers pas](docs/getting-started.fr.md)** · Autres guides : [Obtenir une clé API](docs/api-key.fr.md) · [Modifier les modèles](docs/templates.fr.md) · [Confidentialité](PRIVACY.fr.md)
+Guide pas à pas : **[Premiers pas](docs/getting-started.fr.md)** · Autres guides : [Obtenir une clé API](docs/api-key.fr.md) · [Modifier les modèles](docs/templates.fr.md) · [Confidentialité](PRIVACY.fr.md) · [Tous les guides](docs/README.md)
+
+**Pour passer le relais :** imprimez le **[guide en une page](docs/handover.fr.md)** pour la personne qui utilisera Relance.
 
 ## Combien ça coûte
 

@@ -34,7 +34,9 @@ Anyone who follows up with a few dozen or a few hundred people by hand and wants
 
 Step-by-step guide: **[Getting started](docs/getting-started.md)** · **[Premiers pas](docs/getting-started.fr.md)**
 
-Other guides: [Getting an API key](docs/api-key.md) · [Editing templates](docs/templates.md) · [Privacy](PRIVACY.md)
+**Handing over?** Print the **[one-page guide](docs/handover.md)** · **[guide en une page](docs/handover.fr.md)** for the person who will use Relance.
+
+Other guides: [Getting an API key](docs/api-key.md) · [Editing templates](docs/templates.md) · [Privacy](PRIVACY.md) · [All guides](docs/README.md)
 
 ## What it costs
 
