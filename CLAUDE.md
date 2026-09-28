@@ -79,7 +79,11 @@ README notes that swapping models is a one-line change.
 - Under 150 words, short paragraphs.
 - Open with something specific from the notes. If notes are empty or withheld,
   say so in `personalizationUsed` rather than inventing a detail.
-- Never invent facts, shared history, statistics or names.
+- Never invent facts, shared history, statistics or names. State only facts written
+  in notes or serviceHistory; reword but never add motive, cause, feeling, outcome,
+  circumstance or context. `personalizationUsed` quotes, exactly and in double
+  quotes, every source phrase used. The snapshot's "Source check" verifies each
+  quote exists in the contact's data; fixture fx-11 is bait for embellishment.
 - No pressure, no artificial urgency, no "just following up" / "circling back" /
   "I wanted to reach out".
 - End with a low-commitment invitation, not a meeting request.

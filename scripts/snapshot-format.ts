@@ -77,13 +77,14 @@ export function parseSnapshot(markdown: string): { model: string | null; hash: s
     entries.set(key(contact, heading), { kind, body });
   };
   for (const line of markdown.split('\n')) {
-    const h2 = /^## (\S+?): /.exec(line);
+    // "## fx-01: …" starts a contact; any other "## …" (such as "## Checks") is not one.
+    const h2 = /^## (.*)$/.exec(line);
     const h3 = /^### (.+)$/.exec(line);
     if (h2 || h3) {
       flush();
       body = [];
       if (h2) {
-        contact = h2[1];
+        contact = /^(\S+?): /.exec(h2[1])?.[1] ?? null;
         heading = null;
       } else heading = h3![1];
     } else if (heading) body.push(line);
@@ -92,16 +93,25 @@ export function parseSnapshot(markdown: string): { model: string | null; hash: s
   return { model, hash, entries };
 }
 
-export function renderSnapshot(model: string, hash: string, jobs: Job[], entries: Map<string, Entry>): string {
+export function renderSnapshot(
+  model: string,
+  hash: string,
+  jobs: Job[],
+  entries: Map<string, Entry>,
+  checks: string[] = [],
+  extraHeader: string[] = [],
+): string {
   const gaps = jobs.filter((j) => entries.get(key(j.contactId, j.heading))?.kind !== 'ok').length;
   const lines = [
     '# Draft snapshot',
     '',
     `Model: \`${model}\` · Prompt + templates hash: \`${hash}\``,
     '',
+    ...extraHeader,
     'Raw model output (placeholders not yet filled). Regenerate with `npm run drafts:snapshot`.',
     '',
   ];
+  if (checks.length > 0) lines.push('## Checks', '', ...checks, '');
   if (gaps > 0) {
     lines.push(
       `**${gaps} of ${jobs.length} drafts are missing** (marked "Not generated" below, with the reason). Fill them with \`npm run drafts:snapshot -- --retry-failed\`.`,
@@ -118,4 +128,50 @@ export function renderSnapshot(model: string, hash: string, jobs: Job[], entries
     lines.push(`### ${job.heading}`, '', ...entry.body, '');
   }
   return lines.join('\n');
+}
+
+/** The parts of a written draft, read back from its lines in the file. */
+export function readDraft(entry: Entry): { subject: string; personalization: string; body: string } | null {
+  if (entry.kind !== 'ok') return null;
+  const subject = entry.body.find((l) => l.startsWith('**Subject:** '))?.slice(13) ?? '';
+  const personalization = entry.body.find((l) => l.startsWith('**Personalization used:** '))?.slice(26) ?? '';
+  const body = entry.body
+    .filter((l) => l.startsWith('>'))
+    .map((l) => l.replace(/^> ?/, ''))
+    .join('\n');
+  return { subject, personalization, body };
+}
+
+const squash = (s: string) => s.toLowerCase().replace(/\s+/g, ' ').trim();
+
+/** Phrases quoted in personalizationUsed ("…", “…”, « … »). */
+export function quotedPhrases(text: string): string[] {
+  return [...text.matchAll(/"([^"]+)"|“([^”]+)”|«\s*([^»]+?)\s*»/g)].map((m) => (m[1] ?? m[2] ?? m[3]).trim());
+}
+
+/**
+ * Check 1: does each draft cite its sources, and do those quotes exist?
+ * A quote that isn't in the contact's own data means the self-report (or the
+ * draft) drifted from the facts.
+ */
+export function sourceCheck(
+  items: { label: string; entry: Entry; sources: string }[],
+): string[] {
+  const problems: string[] = [];
+  let checked = 0;
+  for (const { label, entry, sources } of items) {
+    const draft = readDraft(entry);
+    if (!draft) continue;
+    checked++;
+    const quotes = quotedPhrases(draft.personalization);
+    const haystack = squash(sources);
+    if (haystack && quotes.length === 0 && !/no notes|aucune note|not use|n'utilise|pas utilisé/i.test(draft.personalization)) {
+      problems.push(`- ${label}: no source phrase quoted`);
+    }
+    for (const q of quotes) if (!haystack.includes(squash(q))) problems.push(`- ${label}: quote not in the contact's data: "${q}"`);
+  }
+  return [
+    `**Source check:** ${problems.length === 0 ? `all ${checked} drafts quote only phrases found in their contact's notes or work history.` : `${problems.length} problem(s) in ${checked} drafts:`}`,
+    ...problems,
+  ];
 }

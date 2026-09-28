@@ -22,7 +22,7 @@ import { createHash } from 'node:crypto';
 import { createInterface } from 'node:readline/promises';
 import { anthropicSend } from '../src/ai/anthropic';
 import { alwaysOnline, classifyError, generateWithRetries } from '../src/ai/engine';
-import { failedBody, key, okBody, parseSnapshot, pendingBody, renderSnapshot, type Entry, type Job } from './snapshot-format';
+import { failedBody, key, okBody, parseSnapshot, pendingBody, renderSnapshot, sourceCheck, type Entry, type Job } from './snapshot-format';
 import { costEur, costUsd, EST_TOKENS_PER_DRAFT, MODEL } from '../src/ai/model';
 import { buildRequest, SYSTEM_PROMPT } from '../src/ai/prompt';
 import type { Contact } from '../src/db/schema';
@@ -114,7 +114,15 @@ if (!process.argv.includes('--yes')) {
 
 // Mark everything still to do as "not run yet" so an interrupted run leaves visible gaps.
 for (const p of todo) entries.set(key(p.job.contactId, p.job.heading), { kind: 'pending', body: pendingBody() });
-const save = () => writeFileSync(OUTPUT, renderSnapshot(MODEL, promptHash, jobs, entries));
+const checks = () =>
+  sourceCheck(
+    plan.map((p) => ({
+      label: `${p.job.contactId} ${p.job.heading}`,
+      entry: entries.get(key(p.job.contactId, p.job.heading)) ?? { kind: 'pending', body: [] },
+      sources: `${p.contact.notes}\n${p.contact.serviceHistory}`,
+    })),
+  );
+const save = () => writeFileSync(OUTPUT, renderSnapshot(MODEL, promptHash, jobs, entries, checks()));
 save();
 
 let total = 0;

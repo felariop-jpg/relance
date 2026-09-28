@@ -317,3 +317,20 @@ notice and no way back. Code review found more multi-tab hazards of the
   existing drafts unchanged, and refuses if the prompt hash or model differs.
 - Checked against the owner's real file: it parses as 50 entries with the same hash;
   gaps injected into a copy (old and new format) are detected.
+
+## Snapshot review round (owner read all 50 drafts)
+
+### 1. Possible invented facts
+- Findings: "for a good cause" (fx-01) rewords "for a local charity" in the notes;
+  "the restructuring" (fx-05) is in the service history ("2025: ad-hoc advice on a
+  restructuring"). Neither was invented, but neither appeared in personalizationUsed.
+  The same fx-05 sentence adds "and that the team is finding its footing", which
+  is not in the data: an inferred circumstance.
+- Fix: the facts rule now forbids adding motive, reason, cause, feeling, outcome,
+  circumstance or context to a stated fact; personalizationUsed must quote each
+  source phrase exactly. Interpreted "verbatim" as: facts must be stated in the data
+  (rewording allowed, adding not); the quotes themselves are verbatim.
+- Snapshot "Source check": flags drafts that quote nothing and quotes not found in
+  the contact's notes or work history. Baseline on the first run: 44 of 50 drafts
+  flagged (the old prompt never asked for quotes).
+- Bait fixture fx-11: "Moved to Lisbon in June. Left the partnership."

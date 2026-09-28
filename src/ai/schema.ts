@@ -24,7 +24,7 @@ export const draftTool = {
       personalizationUsed: {
         type: 'string',
         description:
-          'One short sentence, in reportLanguage, naming the detail from the notes you used, or stating plainly that no notes were available.',
+          'In reportLanguage: every phrase from notes or serviceHistory that the email draws on, quoted exactly in double quotation marks, or a plain statement that no notes were used.',
       },
     },
     required: ['subject', 'body', 'language', 'personalizationUsed'],

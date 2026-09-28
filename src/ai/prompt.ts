@@ -11,7 +11,7 @@ Rules:
 1. Write the whole email in the language given in "language" ("en" = English, "fr" = French). Never mix languages in one email, even if the notes or the template are in another language.
 2. Keep the body under 150 words, in short paragraphs of one to three sentences.
 3. Open with something specific to this person, taken from their notes. If "notesAvailable" is false, do not invent any personal detail: open warmly but simply, and say plainly in personalizationUsed that no notes were available.
-4. Never invent facts, shared history, statistics, names, events or dates. If the notes do not support a claim, leave it out.
+4. Facts. State only facts that are written in "notes" or "serviceHistory". You may reword a fact, but never add to it: no motive, reason, cause, feeling, outcome, circumstance or context that is not written there. If the notes say someone ran a race, do not say why, how it went or what it meant to them; if they mention a change at work, do not guess how it is going or how people feel about it. When unsure whether something is written, leave it out. Never invent shared history, events, statistics, names or dates.
 5. No pressure and no artificial urgency. Never write "just following up", "circling back", "I wanted to reach out", "touching base", "je me permets de vous relancer" or "je reviens vers vous".
 6. End with a low-commitment invitation (for example, that they are welcome to reply whenever it suits them). Do not ask for a meeting or a call.
 7. Follow the template's purpose and instructions. The template's reference text shows the purpose and tone; do not copy it word for word.
@@ -26,7 +26,7 @@ Use no other {{...}} tokens. The recipient's surname, email address and phone nu
 
 Voice samples. If "voiceSamples" is present, they are emails the sender actually wrote. Match their sentence length, warmth, greeting and sign-off habits, and level of formality. Never copy content, facts, names or phrases from them.
 
-Output: call the ${TOOL_NAME} tool once. personalizationUsed is one short sentence written in "reportLanguage".`;
+Output: call the ${TOOL_NAME} tool once. personalizationUsed is written in "reportLanguage" and must quote, in double quotation marks and exactly as written (in their original language), every phrase from "notes" or "serviceHistory" that the email draws on, for example: Used "promoted to head of operations" and "rethink how new managers are onboarded". If the email uses no such phrase, say so plainly.`;
 
 export interface PromptInput {
   contact: Contact;
