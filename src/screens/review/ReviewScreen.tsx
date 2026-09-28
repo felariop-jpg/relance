@@ -237,7 +237,7 @@ export function ReviewScreen() {
               <p className="text-sm text-stone-600">
                 {exportItems.length === 0 ? t('review.noneApproved') : null}
               </p>
-              <Button variant="primary" className="min-h-11" disabled={exportItems.length === 0} onClick={() => setExporting(true)}>
+              <Button data-tour="export" variant="primary" className="min-h-11" disabled={exportItems.length === 0} onClick={() => setExporting(true)}>
                 <DownloadIcon />
                 {t('review.exportApproved', { count: exportItems.length })}
               </Button>

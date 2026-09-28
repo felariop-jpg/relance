@@ -654,5 +654,45 @@
     "whatAiSees": "For each draft, the AI receives only the ticked fields, for that one contact. Surnames, email addresses and phone numbers never leave this computer, whatever you tick.",
     "languageAuto": "“(auto)” means Relance chose the language from the contact’s country: French for France and Monaco, otherwise your choice in Settings → Email languages. Pick a language in this column to set it yourself.",
     "markContacted": "Relance counts from this date to decide when someone is due again. If you send later, leave this unticked and change “Last contacted” on the Contacts page on the day you send."
+  },
+  "tour": {
+    "nav": "Show me around",
+    "stepOf": "Step {{n}} of {{total}}",
+    "skip": "Skip tour",
+    "next": "Next",
+    "back": "Back",
+    "finish": "Finish",
+    "removeExamples": "Remove the examples and finish",
+    "sample": {
+      "title": "Let’s use real contacts",
+      "body": "The tour is clearer with people in it. Load 12 made-up sample contacts to follow along? You can delete them afterwards.",
+      "load": "Load sample contacts",
+      "loading": "Loading…"
+    },
+    "contacts": {
+      "title": "Your contacts",
+      "body": "Each row is one person. Their notes matter most: every email is built from what you write there, and the AI never invents what isn’t in them."
+    },
+    "due": {
+      "title": "Who’s due, and why",
+      "body": "Due now lists who to write to this month. Each template has a month and a minimum time since your last contact, and someone appears only when both fit. When nobody is due, it shows the next batch instead."
+    },
+    "generate": {
+      "title": "Writing drafts",
+      "body": "Tick the people you want and click Generate drafts, or use Choose contacts yourself at any time. Relance writes one draft per person, in their language, and shows the cost before it starts.",
+      "bodyExamples": "Tick the people you want and click Generate drafts, or use Choose contacts yourself at any time. For this tour, Relance can write three example drafts instead: they’re free, and no AI is used.",
+      "write": "Write 3 example drafts",
+      "writing": "Writing…",
+      "failed": "The example drafts couldn’t be written. Try again, or skip the tour."
+    },
+    "review": {
+      "title": "Check every draft",
+      "body": "Each draft is a card you can edit. This coloured line shows which details from your notes the draft used, so you can check nothing was made up.",
+      "payload": "The panel at the bottom of every card shows exactly what leaves this computer for this email, and nothing else: no surname, email address or phone number. Click it to open it."
+    },
+    "export": {
+      "title": "Approve, export, send",
+      "body": "Approve the drafts you’re happy with, then click Export. You get email files to open in Outlook and send yourself: Relance never sends anything."
+    }
   }
 }

@@ -20,5 +20,6 @@ export function defaultSettings(uiLanguage: Lang = browserLanguage()): Settings 
     backupReminderSnoozedUntil: null,
     templatesSeeded: false,
     firstRunDone: false,
+    tourState: 'none',
   };
 }

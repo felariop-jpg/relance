@@ -178,7 +178,16 @@ export interface Settings {
   backupReminderSnoozedUntil: string | null;
   templatesSeeded: boolean;
   firstRunDone: boolean;
+  /**
+   * The guided tour: 'queued' after the welcome is completed (it then starts once),
+   * 'started' while shown, 'skipped' or 'finished' afterwards. Never auto-starts again;
+   * "Show me around" in the nav always can.
+   */
+  tourState: TourState;
 }
+
+export const TOUR_STATES = ['none', 'queued', 'started', 'skipped', 'finished'] as const;
+export type TourState = (typeof TOUR_STATES)[number];
 
 /** Contacts (with their drafts) removed together, kept 30 days so any tab can restore them. */
 export interface TrashEntry {

@@ -690,5 +690,45 @@
     "whatAiSees": "Pour chaque brouillon, l'IA ne reçoit que les champs cochés, pour ce seul contact. Les noms de famille, adresses e-mail et numéros de téléphone ne quittent jamais cet ordinateur, quoi que vous cochiez.",
     "languageAuto": "« (auto) » signifie que Relance a choisi la langue d'après le pays du contact : français pour la France et Monaco, sinon votre choix dans Réglages → Langue des e-mails. Choisissez une langue dans cette colonne pour la fixer vous-même.",
     "markContacted": "Relance compte à partir de cette date pour savoir quand relancer quelqu'un. Si vous envoyez plus tard, laissez la case vide et changez « Dernier contact » sur la page Contacts le jour de l'envoi."
+  },
+  "tour": {
+    "nav": "Visite guidée",
+    "stepOf": "Étape {{n}} sur {{total}}",
+    "skip": "Passer la visite",
+    "next": "Suivant",
+    "back": "Retour",
+    "finish": "Terminer",
+    "removeExamples": "Supprimer les exemples et terminer",
+    "sample": {
+      "title": "Partons de vrais contacts",
+      "body": "La visite est plus claire avec des personnes dedans. Charger 12 contacts d'exemple fictifs pour suivre ? Vous pourrez les supprimer ensuite.",
+      "load": "Charger les contacts d'exemple",
+      "loading": "Chargement…"
+    },
+    "contacts": {
+      "title": "Vos contacts",
+      "body": "Chaque ligne est une personne. Ce sont ses notes qui comptent le plus : chaque e-mail est construit à partir de ce que vous y écrivez, et l'IA n'invente jamais ce qui n'y figure pas."
+    },
+    "due": {
+      "title": "Qui relancer, et pourquoi",
+      "body": "La page À relancer liste les personnes à qui écrire ce mois-ci. Chaque modèle a un mois et un délai minimum depuis votre dernier contact : une personne n'apparaît que si les deux conditions sont remplies. Quand personne n'est à relancer, la page indique le prochain envoi."
+    },
+    "generate": {
+      "title": "Rédiger les brouillons",
+      "body": "Cochez les personnes voulues et cliquez sur Rédiger les brouillons, ou utilisez à tout moment Choisir les contacts vous-même. Relance rédige un brouillon par personne, dans sa langue, et indique le coût avant de commencer.",
+      "bodyExamples": "Cochez les personnes voulues et cliquez sur Rédiger les brouillons, ou utilisez à tout moment Choisir les contacts vous-même. Pour cette visite, Relance peut rédiger trois brouillons d'exemple : c'est gratuit, et aucune IA n'est utilisée.",
+      "write": "Rédiger 3 brouillons d'exemple",
+      "writing": "Rédaction…",
+      "failed": "Les brouillons d'exemple n'ont pas pu être rédigés. Réessayez, ou passez la visite."
+    },
+    "review": {
+      "title": "Relire chaque brouillon",
+      "body": "Chaque brouillon est une fiche que vous pouvez modifier. Cette ligne colorée indique les détails de vos notes utilisés par le brouillon : vous vérifiez ainsi que rien n'a été inventé.",
+      "payload": "Le panneau en bas de chaque fiche montre exactement ce qui quitte cet ordinateur pour cet e-mail, et rien d'autre : ni nom de famille, ni adresse e-mail, ni téléphone. Cliquez dessus pour l'ouvrir."
+    },
+    "export": {
+      "title": "Valider, exporter, envoyer",
+      "body": "Validez les brouillons qui vous conviennent, puis cliquez sur Exporter. Vous obtenez des fichiers e-mail à ouvrir dans Outlook et à envoyer vous-même : Relance n'envoie jamais rien."
+    }
   }
 }

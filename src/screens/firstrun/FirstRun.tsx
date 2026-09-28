@@ -20,8 +20,9 @@ export function FirstRun() {
   const [importing, setImporting] = useState(false);
   const [sampleError, setSampleError] = useState(false);
 
-  const finish = () => {
-    void updateSettings({ firstRunDone: true, apiKey: key.trim() });
+  // Completing the welcome queues the guided tour; skipping the introduction doesn't.
+  const finish = (tour = true) => {
+    void updateSettings({ firstRunDone: true, apiKey: key.trim(), ...(tour ? { tourState: 'queued' as const } : {}) });
     window.location.hash = href('contacts');
   };
 
@@ -131,7 +132,7 @@ export function FirstRun() {
                 <Button className="min-h-12" onClick={sample}>
                   {t('firstRun.contacts.sample')}
                 </Button>
-                <Button variant="ghost" className="min-h-12" onClick={finish}>
+                <Button variant="ghost" className="min-h-12" onClick={() => finish()}>
                   {t('firstRun.contacts.empty')}
                 </Button>
               </div>
@@ -140,7 +141,7 @@ export function FirstRun() {
         </div>
 
         <div className="mt-6 flex items-center justify-between gap-3">
-          <button type="button" onClick={finish} className="text-sm text-stone-500 underline underline-offset-4 hover:text-stone-800">
+          <button type="button" onClick={() => finish(false)} className="text-sm text-stone-500 underline underline-offset-4 hover:text-stone-800">
             {t('firstRun.skip')}
           </button>
           <div className="flex gap-2">

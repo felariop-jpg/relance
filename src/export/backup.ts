@@ -10,6 +10,7 @@ import {
   GATE_FIELDS,
   LANGUAGES,
   SENDER_GENDERS,
+  TOUR_STATES,
   SETTINGS_ID,
   type Contact,
   type Draft,
@@ -117,6 +118,7 @@ const settingsSchema = z
     backupReminderSnoozedUntil: isoOrNull,
     templatesSeeded: z.boolean().catch(true),
     firstRunDone: z.boolean().catch(true),
+    tourState: z.enum(TOUR_STATES).catch('finished'),
   })
   .partial();
 

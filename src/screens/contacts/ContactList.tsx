@@ -23,7 +23,7 @@ export function ContactList({
 }) {
   const { t, i18n } = useTranslation();
   return (
-    <ul className="divide-y divide-stone-100 overflow-hidden rounded-lg border border-stone-200 bg-white">
+    <ul data-tour="contacts" className="divide-y divide-stone-100 overflow-hidden rounded-lg border border-stone-200 bg-white">
       {contacts.map((c) => {
         const name = contactName(c);
         return (

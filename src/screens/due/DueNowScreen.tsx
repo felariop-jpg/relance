@@ -130,7 +130,7 @@ export function DueNowScreen() {
           )}
 
           {idle && headline && (
-            <section className="rounded-xl border border-accent-100 bg-accent-50 px-5 py-4">
+            <section data-tour="due" className="rounded-xl border border-accent-100 bg-accent-50 px-5 py-4">
               <h2 className="text-lg font-semibold">
                 {t('due.nextTitle', { name: headline.family.name, month: monthName(headline.month, locale) })}
               </h2>
@@ -145,7 +145,7 @@ export function DueNowScreen() {
             const pickable = selectable(g);
             const on = pickable.filter((e) => selected.has(keyOf(e.contact.id, g.family.family))).length;
             return (
-              <section key={g.family.family} className="rounded-xl border border-stone-200 bg-white">
+              <section key={g.family.family} data-tour="due" className="rounded-xl border border-stone-200 bg-white">
                 <header className="flex items-start gap-3 border-b border-stone-100 px-4 py-3">
                   <Checkbox
                     className="mt-1 h-5 w-5"
@@ -212,7 +212,7 @@ export function DueNowScreen() {
           })}
 
           {next.length > 0 && (
-            <section>
+            <section data-tour="upcoming">
               <h2 className="mb-2 text-sm font-semibold tracking-wide text-stone-500 uppercase">{t('due.upcoming')}</h2>
               <ul className="space-y-1 text-sm text-stone-600">
                 {next.map((u) => (
@@ -231,6 +231,7 @@ export function DueNowScreen() {
                 <p className="text-sm text-stone-500">{t(idle ? 'due.manualHintIdle' : 'due.manualHint')}</p>
               </div>
               <Button
+                data-tour={idle ? 'generate' : undefined}
                 variant={idle && !manualOpen ? 'primary' : undefined}
                 onClick={() => setManualOpen((v) => !v)}
                 aria-expanded={manualOpen}
@@ -301,7 +302,7 @@ export function DueNowScreen() {
               {t('due.selected', { count })}
               {count > 0 && !settings.apiKey.trim() ? '' : count > 0 ? ` · ${t('due.estimate', { cost: formatEur(estimateCostEur(count), locale, t) })}` : ''}
             </p>
-            <Button variant="primary" className="min-h-11" disabled={count === 0} onClick={() => setConfirming(jobs())}>
+            <Button data-tour="generate" variant="primary" className="min-h-11" disabled={count === 0} onClick={() => setConfirming(jobs())}>
               <MailIcon />
               {t('due.generate')}
             </Button>

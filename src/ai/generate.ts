@@ -23,6 +23,8 @@ export interface GenerateDeps {
   onWaiting?: (waiting: boolean) => void;
   connectivity?: Connectivity;
   onOffline?: (offline: boolean) => void;
+  /** Write a free example draft even when a key is set (the guided tour). Nothing is sent. */
+  forceDemo?: boolean;
 }
 
 export type GenerateOutcome =
@@ -60,7 +62,7 @@ export async function generateDraft(draftId: string, deps: GenerateDeps = {}): P
   const otherTemplates = otherTemplatesFor(await db.templates.toArray(), template.family, resolveLanguage(contact, settings));
   const request = buildRequest({ contact, template, settings, instruction: draft.instruction, today: todayIso(), otherTemplates });
   const language = resolveLanguage(contact, settings);
-  const demo = !settings.apiKey.trim() && !deps.send;
+  const demo = deps.forceDemo || (!settings.apiKey.trim() && !deps.send);
   await updateDraft(draftId, { status: 'pending', error: null, payloadJson: JSON.stringify(request) });
 
   try {

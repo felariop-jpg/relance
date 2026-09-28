@@ -195,7 +195,7 @@ export const DraftCard = forwardRef<
       )}
 
       {draft.payloadJson && draft.source !== 'template' && draft.status !== 'pending' && (
-        <div className="px-4 pb-3">
+        <div data-tour="draft-payload" className="px-4 pb-3">
           <PayloadPanel payloadJson={draft.payloadJson} demo={draft.source === 'demo'} />
         </div>
       )}
@@ -292,7 +292,7 @@ function Personalization({ draft }: { draft: Draft }) {
   const { t } = useTranslation();
   if (draft.source === 'template') {
     return (
-      <p className="flex items-center gap-2 text-sm text-stone-500">
+      <p data-tour="draft-used" className="flex items-center gap-2 text-sm text-stone-500">
         <InfoIcon className="shrink-0" />
         {t('review.notPersonal')}
       </p>
@@ -300,12 +300,12 @@ function Personalization({ draft }: { draft: Draft }) {
   }
   if (!draft.personalizationUsed) return null;
   return draft.notesAvailable ? (
-    <p className="flex items-start gap-2 rounded-md bg-accent-50 px-3 py-2 text-sm text-accent-800">
+    <p data-tour="draft-used" className="flex items-start gap-2 rounded-md bg-accent-50 px-3 py-2 text-sm text-accent-800">
       <InfoIcon className="mt-0.5 shrink-0" />
       {draft.personalizationUsed}
     </p>
   ) : (
-    <p className="flex items-start gap-2 rounded-md bg-amber-100 px-3 py-2 text-sm font-medium text-amber-950">
+    <p data-tour="draft-used" className="flex items-start gap-2 rounded-md bg-amber-100 px-3 py-2 text-sm font-medium text-amber-950">
       <WarningIcon className="mt-0.5 shrink-0" />
       {draft.personalizationUsed}
     </p>

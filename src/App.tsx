@@ -13,6 +13,8 @@ import { DemoBanner } from './components/DemoBanner';
 import { OtherTabsNotice } from './components/OtherTabsNotice';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { useNavCounts } from './useNavCounts';
+import { Tour } from './tour/Tour';
+import { startTour, useTour } from './tour/tourState';
 
 export function App() {
   const { t, i18n } = useTranslation();
@@ -20,6 +22,12 @@ export function App() {
   const route = useRoute();
   const loaded = useSettingsLoaded();
   const counts = useNavCounts();
+  const tour = useTour();
+
+  // The tour starts once by itself, right after the welcome is completed.
+  useEffect(() => {
+    if (loaded && settings.firstRunDone && settings.tourState === 'queued' && !tour.active) void startTour();
+  }, [loaded, settings.firstRunDone, settings.tourState, tour.active]);
 
   useEffect(() => {
     document.title = `${t(`nav.${route}`)} · ${t('app.name')}`;
@@ -57,6 +65,15 @@ export function App() {
                   </a>
                 </li>
               ))}
+              <li>
+                <button
+                  type="button"
+                  onClick={() => void startTour()}
+                  className="block rounded-md px-3 py-1.5 text-sm font-medium whitespace-nowrap text-stone-600 hover:bg-stone-100 hover:text-stone-900"
+                >
+                  {t('tour.nav')}
+                </button>
+              </li>
             </ul>
           </nav>
           <div
@@ -93,6 +110,7 @@ export function App() {
       </main>
 
       {loaded && !settings.firstRunDone && <FirstRun />}
+      <Tour />
       <Toaster />
 
       <footer className="border-t border-stone-200 bg-white">

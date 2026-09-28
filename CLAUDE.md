@@ -353,7 +353,26 @@ README notes that swapping models is a one-line change.
 - **First run** stores the key typed there; "Skip the introduction" on every step.
 - **Language names**: pickers use endonyms (English / Français, never
   translated); sentences use `languagesInline` ("anglais" in French text).
-- **Testing** must use its own origin (e.g. `vite preview --port 4174`) when the
+- **Guided tour** (`src/tour/`, hand-written, no dependency): a highlight ring and a
+  non-modal card (`role="dialog"`, `aria-modal="false"`); the page underneath stays
+  fully usable. Steps follow the workflow: [sample contacts, only if there are none] →
+  contacts (notes) → Due now (schedule + Coming up) → generating → the review card →
+  export: five steps, six with the sample offer. The review step shows its two parts
+  in turn (the "Used" line, then the payload panel), under one step number.
+  - Starts once by itself after the welcome is **completed**; "Skip the introduction"
+    doesn't queue it. `settings.tourState` remembers skipped/finished, so it never
+    auto-starts again. "Show me around" in the nav always restarts it.
+  - With no drafts, the generating step offers "Write 3 example drafts": the demo
+    writer, forced even when an API key is set (`forceDemo`), so the tour never spends
+    or sends anything. Sample contacts are used first. They are ordinary drafts
+    labelled Example; the last step offers to remove them (and finish).
+  - Keys: Escape skips (unless a dialog or popover is open, which gets it first);
+    → or Enter moves on and ← goes back, only while focus is on the card or nowhere,
+    never while typing in a field. Focus moves to the step's heading and returns to
+    where it was when the tour ends. The last step has Finish instead of Skip.
+  - The card sits beside narrow targets and below/above wide ones, so it never covers
+    what it explains; on phones it is a bottom sheet.
+- - **Testing** must use its own origin (e.g. `vite preview --port 4174`) when the
   owner may have the app open: same-origin tabs share one IndexedDB.
 
 ### Phase 7 decisions

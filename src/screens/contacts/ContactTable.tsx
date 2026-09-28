@@ -99,7 +99,7 @@ export function ContactTable({
             {header('language', '', <HelpTip topic={t('fields.language')}>{t('help.languageAuto')}</HelpTip>)}
             {header('contactType')}
             {header('lastContacted')}
-            <th scope="col" className="px-2 py-2 text-left font-medium">
+            <th scope="col" data-tour="notes" className="px-2 py-2 text-left font-medium">
               {t('fields.notes')}
             </th>
             <th scope="col" className="w-10 px-2 py-2">
@@ -186,7 +186,7 @@ export function ContactTable({
                 </td>
                 <td className="px-2 py-1.5">
                   {c.notes ? (
-                    <span className="block w-[16rem] truncate text-stone-600" title={c.notes}>
+                    <span data-tour="notes-cell" className="block w-[16rem] truncate text-stone-600" title={c.notes}>
                       {c.notes}
                     </span>
                   ) : (
