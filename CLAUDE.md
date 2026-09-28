@@ -254,7 +254,7 @@ README notes that swapping models is a one-line change.
   clients; Late-summer planning **August** / 60 days / clients + prospects; Holiday
   greeting **November** / 0 days / everyone; Re-engagement February / 180 days /
   prospects; Post-event: no schedule (manual only). They are a starting point,
-  not advice: docs/templates.md tells users to set their own. The v2 schema
+  not advice: docs/templates.md tells users to set their own. The v3 schema
   upgrade moves unchanged built-ins from Sep/Dec to Aug/Nov; edited ones are kept.
 - **Due only in the rule's month.** Nothing carries over from last month; the
   "Coming up" list shows what the next scheduled templates will catch.

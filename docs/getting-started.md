@@ -81,7 +81,7 @@ You have three choices on this screen.
 
    ![Due now](screenshots/due-now.jpg)
 
-2. Read the list. Relance shows the people each template is meant for this month. Everyone is ticked to start with.
+2. Read the list. Relance shows the people each template is meant for this month. Everyone is ticked to start with. If nobody is due, the page says so and lists what is coming up in the next months (as in the picture above).
 3. Untick anyone you don't want to write to this time.
 
    If nobody is due this month, open **Choose contacts yourself** at the bottom of the page, tick the people you want, and pick any template.
@@ -115,7 +115,7 @@ You have three choices on this screen.
 
    ![Exporting](screenshots/export.jpg)
 
-2. Leave **Email files for Outlook** selected.
+2. Leave **Email files for Outlook** selected. (**Plain text files** is there as a fallback if the email files don't open properly.)
 3. Tick **Mark these contacts as contacted today** only if you will send the emails today. If you send them another day, leave it unticked and set the date afterwards in the **Last contacted** column on the Contacts page.
 4. Click **Download**. Your browser saves a .zip file, usually in your **Downloads** folder.
 5. Open your **Downloads** folder.

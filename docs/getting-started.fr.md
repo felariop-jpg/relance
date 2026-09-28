@@ -75,7 +75,7 @@ Cet écran propose trois choix.
 ## Partie 5 : Voir qui relancer
 
 1. Cliquez sur **À relancer** en haut de la page.
-2. Lisez la liste. Relance affiche les personnes concernées ce mois-ci par chaque modèle. Tout le monde est coché au départ.
+2. Lisez la liste. Relance affiche les personnes concernées ce mois-ci par chaque modèle. Tout le monde est coché au départ. Si personne n'est concerné, la page l'indique et montre ce qui arrive dans les prochains mois.
 3. Décochez les personnes à qui vous ne voulez pas écrire cette fois-ci.
 
    Si personne n'est à relancer ce mois-ci, ouvrez **Choisir les contacts vous-même** en bas de la page, cochez les personnes voulues et choisissez n'importe quel modèle.
@@ -103,7 +103,7 @@ Cet écran propose trois choix.
 ## Partie 7 : Envoyer vos e-mails
 
 1. Cliquez sur **Exporter les brouillons validés** en bas de la page Relecture.
-2. Laissez **Fichiers e-mail pour Outlook** sélectionné.
+2. Laissez **Fichiers e-mail pour Outlook** sélectionné. (**Fichiers texte** sert de solution de repli si les fichiers e-mail ne s'ouvrent pas correctement.)
 3. Cochez **Indiquer ces contacts comme contactés aujourd'hui** seulement si vous envoyez les e-mails aujourd'hui. Si vous les envoyez un autre jour, laissez la case décochée et indiquez la date ensuite dans la colonne **Dernier contact** de la page Contacts.
 4. Cliquez sur **Télécharger**. Votre navigateur enregistre un fichier .zip, en général dans le dossier **Téléchargements**.
 5. Ouvrez votre dossier **Téléchargements**.

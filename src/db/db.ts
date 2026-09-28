@@ -19,10 +19,12 @@ export class RelanceDB extends Dexie {
       settings: 'id',
     });
     // v2: deleted contacts are kept 30 days in a table every tab can see.
-    this.version(2)
-      .stores({ trash: 'id, deletedAt' })
+    this.version(2).stores({ trash: 'id, deletedAt' });
+    // v3: new default months (Sep → Aug, Dec → Nov) for built-ins nobody has
+    // changed. Its own version so it also runs for browsers already on v2.
+    this.version(3)
+      .stores({})
       .upgrade((tx) =>
-        // New default months (Sep → Aug, Dec → Nov) for built-ins nobody has changed.
         tx
           .table('templates')
           .toCollection()

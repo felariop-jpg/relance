@@ -36,7 +36,7 @@ describe('templates', () => {
   });
 });
 
-describe('schema upgrade to v2', () => {
+describe('schema upgrade (v3 schedule migration)', () => {
   it('moves unchanged built-in schedules to the new default months, and leaves edits alone', async () => {
     const { default: Dexie } = await import('dexie');
     const name = 'relance-upgrade-test';
@@ -55,5 +55,19 @@ describe('schema upgrade to v2', () => {
     expect(rows['builtin-holiday-fr']).toEqual({ month: 11, minGapDays: 0 });
     expect(rows['builtin-planning-fr']).toEqual({ month: 10, minGapDays: 30 }); // edited by the user: kept
     v2.close();
+  });
+
+  it('also runs for a browser that was already on v2', async () => {
+    const { default: Dexie } = await import('dexie');
+    const name = 'relance-upgrade-from-v2';
+    const old = new Dexie(name);
+    old.version(1).stores({ contacts: 'id', drafts: 'id', templates: 'id, family, language, isBuiltIn', settings: 'id' });
+    old.version(2).stores({ trash: 'id, deletedAt' });
+    await old.table('templates').add({ id: 'builtin-holiday-en', family: 'holiday', isBuiltIn: true, scheduleRule: { month: 12, minGapDays: 0 } });
+    old.close();
+    const { RelanceDB } = await import('./db');
+    const current = new RelanceDB(name);
+    expect((await current.templates.get('builtin-holiday-en'))?.scheduleRule).toEqual({ month: 11, minGapDays: 0 });
+    current.close();
   });
 });

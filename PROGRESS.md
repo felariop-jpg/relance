@@ -256,8 +256,10 @@ notice and no way back. Code review found more multi-tab hazards of the
 ### 3. Schedule defaults
 - Built-ins now: April (clients), August (clients + prospects), November
   (everyone), February (prospects). Post-event stays manual.
-- Existing browsers: the v2 upgrade moves built-in templates still on the old
-  September/December defaults; templates the user edited are untouched.
+- Existing browsers: a v3 schema upgrade moves built-in templates still on the old
+  September/December defaults; templates the user edited are untouched. (First
+  attached to v2, which missed browsers already upgraded to v2 while testing; moved
+  to its own version, with a test for both starting points.)
 - docs/templates.md (+ .fr): a table of the defaults, stated plainly as a
   starting point, with how to set your own months.
 
