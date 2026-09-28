@@ -6,21 +6,36 @@ export const MODEL = 'claude-sonnet-5';
 export const MAX_OUTPUT_TOKENS = 1024;
 
 /**
- * Prices in EUR per million tokens, used for the estimate and the actual cost.
- * Assumption: USD 3 input / USD 15 output per million tokens (Sonnet-class
- * pricing) at 0.92 EUR per USD. Check anthropic.com/pricing when changing MODEL.
+ * Anthropic's published prices for MODEL, in US dollars per million tokens.
+ * Claude Sonnet 5: $2 input, $10 output. Source: anthropic.com/pricing.
+ * Update these (and regenerate the prompt snapshot) whenever MODEL changes.
  */
-export const EUR_PER_MILLION_TOKENS = { input: 2.76, output: 13.8 } as const;
+export const USD_PER_MILLION_INPUT_TOKENS = 2;
+export const USD_PER_MILLION_OUTPUT_TOKENS = 10;
 
-/** Rough tokens for one draft: system prompt + contact + template, and the reply. */
-export const EST_TOKENS_PER_DRAFT = { input: 1800, output: 350 } as const;
+/**
+ * Fixed conversion used to show costs in euros: 1 USD = 0.86 EUR.
+ * Set 2026-09-28 (approximate ECB reference rate at the time). Anthropic bills
+ * in USD, so every euro figure in the app is an estimate. Update occasionally.
+ */
+export const EUR_PER_USD = 0.86;
 
-export function costEur(usage: { inputTokens: number; outputTokens: number }): number {
+/**
+ * Rough tokens for one draft (system prompt + template + contact in, the email
+ * out). Based on the first real drafts written with MODEL on 2026-09-28
+ * (about 2,200 in and 300 out each).
+ */
+export const EST_TOKENS_PER_DRAFT = { input: 2200, output: 300 } as const;
+
+export function costUsd(usage: { inputTokens: number; outputTokens: number }): number {
   return (
-    (usage.inputTokens * EUR_PER_MILLION_TOKENS.input +
-      usage.outputTokens * EUR_PER_MILLION_TOKENS.output) /
+    (usage.inputTokens * USD_PER_MILLION_INPUT_TOKENS + usage.outputTokens * USD_PER_MILLION_OUTPUT_TOKENS) /
     1_000_000
   );
+}
+
+export function costEur(usage: { inputTokens: number; outputTokens: number }): number {
+  return costUsd(usage) * EUR_PER_USD;
 }
 
 export function estimateCostEur(drafts: number): number {

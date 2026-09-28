@@ -242,3 +242,13 @@ notice and no way back. Code review found more multi-tab hazards of the
 - Regression tests (`src/db/multitab.test.ts`) run two connections to the same
   database with interleaved adds, imports, same-record edits of different fields,
   deletes, concurrent restores and concurrent settings edits, and assert nothing is lost.
+
+### 2. Pricing
+- Rates are now the published USD figures in their own constants
+  (`USD_PER_MILLION_INPUT_TOKENS` = 2, `USD_PER_MILLION_OUTPUT_TOKENS` = 10 for
+  Sonnet 5) and one separate `EUR_PER_USD` (0.86, dated 2026-09-28).
+- The per-draft token estimate now comes from the first real drafts (2,200 in /
+  300 out): about €0.006 per email instead of the old ~€0.010.
+- Settings, next to the running total: costs are estimates converted at a fixed
+  rate, plus a link to Anthropic's pricing page.
+- Docs, first-run text, snapshot script and CONTRIBUTING updated; new pricing tests.

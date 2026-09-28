@@ -9,6 +9,8 @@ import { updateSettings, useSettings } from '../../db/settings';
 import type { Lang } from '../../db/schema';
 import { formatDate } from '../../lib/dates';
 import { formatEur } from '../../lib/money';
+import { EUR_PER_USD } from '../../ai/model';
+import { PRICING_URL } from '../../config';
 import { showToast } from '../../lib/toast';
 import { Section } from './Section';
 
@@ -109,6 +111,12 @@ export function CostSection() {
           {t('settings.cost.reset')}
         </Button>
       </div>
+      <p className="mt-3 text-sm text-stone-500">
+        {t('settings.cost.estimateNote', { rate: EUR_PER_USD.toLocaleString(i18n.language) })}{' '}
+        <a href={PRICING_URL} target="_blank" rel="noreferrer" className="font-medium text-accent-700 underline underline-offset-4">
+          {t('settings.cost.pricing')}
+        </a>
+      </p>
     </Section>
   );
 }

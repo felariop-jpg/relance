@@ -30,6 +30,6 @@ Guide pas à pas : **[Premiers pas](docs/getting-started.fr.md)** · Autres guid
 
 ## Combien ça coûte
 
-Relance est gratuit. La rédaction avec l'IA utilise votre propre clé API Anthropic, que vous payez directement à Anthropic : environ **un centime d'euro par e-mail**. Relance affiche une estimation avant chaque lot, le coût réel ensuite, et un total dans les Réglages. Sans clé, Relance fonctionne en mode démo, et vous pouvez toujours écrire des e-mails à partir du texte des modèles, gratuitement.
+Relance est gratuit. La rédaction avec l'IA utilise votre propre clé API Anthropic, que vous payez directement à Anthropic : bien moins d'**un centime d'euro par e-mail** (environ 0,006 € aux prix actuels). Relance affiche une estimation avant chaque lot, le coût réel ensuite, et un total dans les Réglages. Sans clé, Relance fonctionne en mode démo, et vous pouvez toujours écrire des e-mails à partir du texte des modèles, gratuitement.
 
 La partie technique (installation pour développeurs) se trouve dans le [README en anglais](README.md#for-developers).

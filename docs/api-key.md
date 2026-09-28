@@ -11,7 +11,8 @@ You don't need a key to try Relance. Without one it runs in **demo mode** with e
 ## What it costs
 
 - Relance is free.
-- Anthropic charges for each draft the AI writes. With the model Relance uses, one email costs roughly **one euro cent**. A batch of 50 emails is roughly 50 cents.
+- Anthropic charges for each draft the AI writes. With the model Relance uses, one email costs well under **one euro cent** (about €0.006). A batch of 50 emails is roughly 30 cents.
+- Anthropic charges in US dollars ($2 per million tokens read, $10 per million written, for the model Relance uses). Relance shows costs in euros using a fixed exchange rate, so its figures are close estimates; your Anthropic account shows the exact amount.
 - Anthropic asks you to buy credit in advance. The smallest amount is a few euros, which is enough for hundreds of emails.
 - Relance shows an estimate before each batch, the real cost afterwards, and a running total in **Settings → AI costs**.
 

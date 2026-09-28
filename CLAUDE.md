@@ -220,10 +220,12 @@ README notes that swapping models is a one-line change.
   expands the message's JSON text and puts the message first for readability;
   Copy gives the exact bytes sent. Failed calls that reached the API still show
   their payload (it was sent); cards stopped before any call show none.
-- **Pricing assumption**: EUR 2.76 / 13.8 per million input/output tokens
-  (USD 3 / 15 at 0.92), `EST_TOKENS_PER_DRAFT` 1800 in / 350 out. Check
-  anthropic.com/pricing when changing `MODEL`. Malformed replies' tokens count
-  toward the real cost.
+- **Pricing** (corrected after deploy): published USD rates in
+  `USD_PER_MILLION_INPUT_TOKENS` / `USD_PER_MILLION_OUTPUT_TOKENS` (Sonnet 5:
+  $2 / $10), one separate `EUR_PER_USD` (0.86, set 2026-09-28) for display.
+  `EST_TOKENS_PER_DRAFT` 2200 in / 300 out, from the first real drafts. Settings
+  says costs are estimates converted at a fixed rate and links to Anthropic's
+  pricing. Malformed replies' tokens count toward the real cost.
 - **Demo mode** is simply "no API key". Demo drafts are marked `source: 'demo'`,
   labelled "Example" on the card, free, and use a 0.35–0.85 s delay. Sample
   contacts get note-based openings; anyone else gets a generic opening with a

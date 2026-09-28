@@ -8,7 +8,7 @@
  *
  *   ANTHROPIC_API_KEY=sk-ant-... npm run drafts:snapshot
  *
- * Cost: 10 contacts × 5 templates = 50 drafts, roughly €0.50.
+ * Cost: 10 contacts × 5 templates = 50 drafts, roughly €0.35.
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
@@ -23,7 +23,7 @@ import { resolveLanguage } from '../src/lib/language';
 
 const apiKey = process.env.ANTHROPIC_API_KEY;
 if (!apiKey) {
-  console.error('Set ANTHROPIC_API_KEY to run the snapshot. It calls the real API (about €0.50).');
+  console.error('Set ANTHROPIC_API_KEY to run the snapshot. It calls the real API (about €0.35).');
   process.exit(1);
 }
 

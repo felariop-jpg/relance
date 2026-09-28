@@ -44,7 +44,7 @@ Any change to the shared prompt (`src/ai/prompt.ts`), the model (`src/ai/model.t
 ANTHROPIC_API_KEY=sk-ant-... npm run drafts:snapshot
 ```
 
-This writes `fixtures/drafts-snapshot.md`: ten fixture contacts (`fixtures/contacts.json`) × every built-in template, against the real API, about €0.50. Reviewers read the diff to judge whether the drafts got better or worse. The script is a developer tool; it is not part of the app or of `npm test`.
+This writes `fixtures/drafts-snapshot.md`: ten fixture contacts (`fixtures/contacts.json`) × every built-in template, against the real API, about €0.35. Reviewers read the diff to judge whether the drafts got better or worse. The script is a developer tool; it is not part of the app or of `npm test`.
 
 ## Writing for users
 

@@ -353,9 +353,11 @@
     "cost": {
       "title": "Coûts de l'IA",
       "total": "Dépensé en IA depuis le {{date}} : {{cost}}",
-      "hint": "Calculé à partir de ce qu'Anthropic indique pour chaque brouillon, avec un prix approximatif. Votre compte Anthropic indique le montant exact.",
+      "hint": "Calculé à partir de ce qu'Anthropic indique pour chaque brouillon.",
       "reset": "Remettre à zéro",
-      "resetDone": "Total des coûts remis à zéro."
+      "resetDone": "Total des coûts remis à zéro.",
+      "estimateNote": "Les coûts sont des estimations. Anthropic facture en dollars américains ; Relance convertit à un taux fixe de 1 USD = {{rate}} EUR. Votre compte Anthropic indique le montant exact.",
+      "pricing": "Prix actuels d'Anthropic"
     },
     "jump": "Sur cette page",
     "you": {
@@ -568,7 +570,7 @@
     },
     "key": {
       "title": "Connecter l'IA (facultatif)",
-      "body": "Pour écrire des brouillons personnels, Relance utilise Claude, une IA d'Anthropic. Il vous faut votre propre clé API. Cela coûte environ un centime d'euro par e-mail, et la clé reste dans ce navigateur.",
+      "body": "Pour écrire des brouillons personnels, Relance utilise Claude, une IA d'Anthropic. Il vous faut votre propre clé API. Cela coûte bien moins d'un centime d'euro par e-mail, et la clé reste dans ce navigateur.",
       "guide": "Guide pas à pas pour obtenir une clé",
       "later": "Vous pouvez passer cette étape. Relance fonctionne alors en mode démo, avec des brouillons d'exemple, et vous pourrez ajouter une clé plus tard dans les Réglages."
     },

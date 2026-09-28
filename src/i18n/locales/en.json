@@ -332,9 +332,11 @@
     "cost": {
       "title": "AI costs",
       "total": "Spent on AI since {{date}}: {{cost}}",
-      "hint": "Worked out from what Anthropic reports for each draft, using an approximate price. Your Anthropic account shows the exact amount.",
+      "hint": "Worked out from what Anthropic reports for each draft.",
       "reset": "Reset to zero",
-      "resetDone": "Cost total reset."
+      "resetDone": "Cost total reset.",
+      "estimateNote": "Costs are estimates. Anthropic charges in US dollars; Relance converts at a fixed rate of 1 USD = {{rate}} EUR. Your Anthropic account shows the exact amount.",
+      "pricing": "Anthropic's current prices"
     },
     "jump": "On this page",
     "you": {
@@ -540,7 +542,7 @@
     },
     "key": {
       "title": "Connect the AI (optional)",
-      "body": "To write personal drafts, Relance uses Claude, an AI by Anthropic. You need your own API key. It costs roughly one euro cent per email, and the key stays in this browser.",
+      "body": "To write personal drafts, Relance uses Claude, an AI by Anthropic. You need your own API key. It costs well under one euro cent per email, and the key stays in this browser.",
       "guide": "Step-by-step guide to getting a key",
       "later": "You can skip this. Relance then runs in demo mode, with example drafts, and you can add a key later in Settings."
     },

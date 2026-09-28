@@ -11,7 +11,8 @@ Vous n'avez pas besoin de clé pour essayer Relance. Sans clé, il fonctionne en
 ## Combien ça coûte
 
 - Relance est gratuit.
-- Anthropic facture chaque brouillon rédigé par l'IA. Avec le modèle utilisé par Relance, un e-mail coûte environ **un centime d'euro**. Un lot de 50 e-mails coûte environ 50 centimes.
+- Anthropic facture chaque brouillon rédigé par l'IA. Avec le modèle utilisé par Relance, un e-mail coûte bien moins d'**un centime d'euro** (environ 0,006 €). Un lot de 50 e-mails coûte environ 30 centimes.
+- Anthropic facture en dollars américains (2 $ par million de jetons lus, 10 $ par million de jetons écrits, pour le modèle utilisé par Relance). Relance affiche les coûts en euros avec un taux de change fixe : ce sont donc des estimations proches ; votre compte Anthropic indique le montant exact.
 - Anthropic vous demande d'acheter du crédit à l'avance. Le montant minimum est de quelques euros, ce qui suffit pour des centaines d'e-mails.
 - Relance affiche une estimation avant chaque lot, le coût réel ensuite, et un total dans **Réglages → Coûts de l'IA**.
 
