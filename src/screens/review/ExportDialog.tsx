@@ -14,7 +14,8 @@ type Format = 'eml' | 'brevo';
 export function ExportDialog({ items, onClose }: { items: ExportItem[]; onClose: () => void }) {
   const { t } = useTranslation();
   const [format, setFormat] = useState<Format>('eml');
-  const [markContacted, setMarkContacted] = useState(true);
+  // Off by default: a wrong "last contacted" silently hides people from Due now.
+  const [markContacted, setMarkContacted] = useState(false);
   const [done, setDone] = useState<{ format: Format; fileName: string } | null>(null);
   const [failed, setFailed] = useState(false);
   const count = items.length;

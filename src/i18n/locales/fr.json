@@ -301,7 +301,7 @@
     "markContacted_one": "Indiquer ce contact comme contacté aujourd'hui",
     "markContacted_many": "Indiquer ces {{count}} contacts comme contactés aujourd'hui",
     "markContacted_other": "Indiquer ces {{count}} contacts comme contactés aujourd'hui",
-    "markContactedHint": "Cela garde la page « À relancer » à jour. Décochez si vous ne les envoyez pas aujourd'hui.",
+    "markContactedHint": "Cochez seulement si vous envoyez ces e-mails aujourd'hui. Relance utilise cette date pour savoir qui relancer ensuite : une date fausse fait disparaître des personnes de la page À relancer sans le signaler.",
     "submit": "Télécharger",
     "doneTitle": "Votre fichier est en cours de téléchargement",
     "fileName": "Fichier : {{name}}",

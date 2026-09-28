@@ -280,7 +280,7 @@
     "noEmail_other": "{{count}} drafts have no email address. Add them in your email program before sending.",
     "markContacted_one": "Mark this contact as contacted today",
     "markContacted_other": "Mark these {{count}} contacts as contacted today",
-    "markContactedHint": "This keeps “Due now” accurate. Untick it if you won't send them today.",
+    "markContactedHint": "Tick this only if you are sending these emails today. Relance uses this date to decide who is due next, so a wrong date quietly hides people from Due now.",
     "submit": "Download",
     "doneTitle": "Your file is downloading",
     "fileName": "File: {{name}}",

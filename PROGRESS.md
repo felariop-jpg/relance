@@ -260,3 +260,8 @@ notice and no way back. Code review found more multi-tab hazards of the
   September/December defaults; templates the user edited are untouched.
 - docs/templates.md (+ .fr): a table of the defaults, stated plainly as a
   starting point, with how to set your own months.
+
+### 4. Export default
+- "Mark these contacts as contacted today" now starts unticked, with a help line:
+  tick it only if sending today, because Relance uses the date to decide who is
+  due next. The getting-started guides explain setting the date later instead.

@@ -189,8 +189,9 @@ README notes that swapping models is a one-line change.
 - **A line whose placeholders are all empty is removed** (e.g. the booking-link
   line when there is no Calendly link). Unknown placeholders are left visible
   and flagged on the card.
-- **Export marks contacts as contacted today** by default (checkbox, can untick),
-  so Due now stays accurate. Exported drafts keep their status and show
+- **Export can mark contacts as contacted today**, **unticked by default**
+  (changed after deploy): a wrong date silently hides people from Due now, and
+  drafts are often sent days after export. The help line says when to tick it. Exported drafts keep their status and show
   "Exported <date>".
 - **.eml has no From or Date header** and sets `X-Unsent: 1`, so Outlook opens it
   as an editable new message from the user's own account.

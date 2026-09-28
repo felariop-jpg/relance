@@ -104,7 +104,7 @@ Cet écran propose trois choix.
 
 1. Cliquez sur **Exporter les brouillons validés** en bas de la page Relecture.
 2. Laissez **Fichiers e-mail pour Outlook** sélectionné.
-3. Laissez **Indiquer ces contacts comme contactés aujourd'hui** coché si vous envoyez les e-mails aujourd'hui.
+3. Cochez **Indiquer ces contacts comme contactés aujourd'hui** seulement si vous envoyez les e-mails aujourd'hui. Si vous les envoyez un autre jour, laissez la case décochée et indiquez la date ensuite dans la colonne **Dernier contact** de la page Contacts.
 4. Cliquez sur **Télécharger**. Votre navigateur enregistre un fichier .zip, en général dans le dossier **Téléchargements**.
 5. Ouvrez votre dossier **Téléchargements**.
 6. Double-cliquez sur le fichier .zip pour l'ouvrir.

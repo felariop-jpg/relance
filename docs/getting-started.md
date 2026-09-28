@@ -116,7 +116,7 @@ You have three choices on this screen.
    ![Exporting](screenshots/export.jpg)
 
 2. Leave **Email files for Outlook** selected.
-3. Leave **Mark these contacts as contacted today** ticked if you will send the emails today.
+3. Tick **Mark these contacts as contacted today** only if you will send the emails today. If you send them another day, leave it unticked and set the date afterwards in the **Last contacted** column on the Contacts page.
 4. Click **Download**. Your browser saves a .zip file, usually in your **Downloads** folder.
 5. Open your **Downloads** folder.
 6. Double-click the .zip file to open it.
