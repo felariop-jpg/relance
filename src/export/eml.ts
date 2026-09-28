@@ -1,5 +1,5 @@
 // Builds unsent .eml drafts. There is deliberately no From/Date header and
-// nothing here can send mail: the user opens the file and sends it herself.
+// nothing here can send mail: the user opens the file and sends it themselves.
 
 const CRLF = '\r\n';
 

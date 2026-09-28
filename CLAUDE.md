@@ -1,8 +1,8 @@
 # Relance — project rules
 
 Open-source follow-up drafting tool. Static site; drafts personalized follow-up
-emails with Claude; the user sends them herself. The primary user is non-technical
-and works in French and English. Anything that would intimidate a non-technical
+emails with Claude; the user sends them themselves. The primary users are non-technical
+and work in French and English. Anything that would intimidate a non-technical
 person is a bug. Nothing in code, UI, defaults or sample data may be specific to
 any one company, industry or country. Contact types stay generic: client,
 prospect, lead.
@@ -19,8 +19,8 @@ prospect, lead.
    it carries only the redacted subset below. The production build ships a
    Content-Security-Policy whose `connect-src` is `'self' https://api.anthropic.com`,
    so the browser itself enforces this.
-4. **No build step for the user.** She visits a URL. Her only setup is pasting an
-   API key once.
+4. **No build step for the user.** They visit a URL. Their only setup is pasting
+   an API key once.
 5. **Every user-facing string is translatable.** EN and FR from day one via
    react-i18next. No hardcoded strings in components. `src/i18n/i18n.test.ts`
    checks key parity and scans components for literal JSX text.

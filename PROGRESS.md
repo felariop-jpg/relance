@@ -187,3 +187,19 @@ further testing to port 4174. The real drafts confirmed generation with
   → Due now → 10 demo drafts → edit → approve → .eml zip export, with no
   account, key or card.
 - CI: tests and build pass on GitHub's Linux runner; Pages deploys from `main`.
+
+## Follow-up round (after deploy)
+
+### 0. Security check
+- History: no credentials. The only `sk-ant` strings are `sk-ant-...`
+  placeholders and three made-up test strings. No `.env`/secret/token file ever
+  committed; no other token formats.
+- `.gitignore` now covers `.env`, `.env.*` (except `.env.example`), `*.local`
+  and files exported from the app while testing.
+- Fixtures moved to reserved example domains (example.com/.net/.org; `.fr`,
+  `.ie`, `.be`, `.pt` are registrable). Import screenshot retaken.
+- Removed two soft hints of the original use case (a "return-to-office"
+  fixture detail; gendered references to "the user" in CLAUDE.md/code).
+- No source maps, local paths, usernames or machine names in the build.
+- Not fixable without rewriting history: commits carry the author's
+  university email address. Flagged to the owner; history left untouched.

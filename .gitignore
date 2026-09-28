@@ -1,5 +1,15 @@
 node_modules
 dist
-*.local
-.DS_Store
 coverage
+.DS_Store
+
+# Local environment and secrets: never commit these.
+.env
+.env.*
+!.env.example
+*.local
+
+# Browser exports made while testing (backups, drafts) never belong in the repo.
+relance-backup-*.json
+relance-drafts-*.zip
+relance-brevo-*.csv
