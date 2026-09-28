@@ -29,7 +29,7 @@ export type GenerateOutcome =
   | { ok: true; costEur: number; needsInput: boolean }
   | { ok: false; code: string; costEur: number };
 
-async function addToRunningTotal(cost: number): Promise<void> {
+export async function addToRunningTotal(cost: number): Promise<void> {
   if (cost <= 0) return;
   await db.settings
     .where('id')

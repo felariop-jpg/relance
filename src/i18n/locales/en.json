@@ -418,7 +418,28 @@
       "count": "{{count}} / {{max}} characters",
       "add": "Add an example email",
       "remove": "Remove example {{n}}",
-      "empty": "No examples yet. Drafts follow Relance's built-in tone: warm, short and without pressure."
+      "empty": "No examples yet. Drafts follow Relance's built-in tone: warm, short and without pressure.",
+      "compare": {
+        "title": "See what your examples change",
+        "body": "Relance writes the same email for one contact twice, once with your example emails and once without, and shows them side by side. Nothing is saved as a draft.",
+        "contact": "Contact",
+        "template": "Email",
+        "button": "Compare with and without",
+        "running": "Writing both versions…",
+        "with": "With your examples",
+        "without": "Without your examples",
+        "cost": "These two emails cost {{cost}}, added to your AI costs.",
+        "variation": "Any two drafts differ a little, so look at the tone, length, greeting and sign-off.",
+        "confirmTitle": "Write two versions?",
+        "confirmBody": "Relance will write two emails for {{name}} with the AI, about {{cost}} in total. They are not saved as drafts.",
+        "confirm": "Write both",
+        "unavailable": {
+          "noSamples": "Add at least one example email above first. Without one there is nothing to compare.",
+          "noKey": "This needs your API key. In demo mode the drafts are written in advance, so your examples can’t change them.",
+          "noContacts": "Add a contact first. The comparison writes an email for one of your contacts.",
+          "noTemplate": "None of your templates can be used for this contact."
+        }
+      }
     },
     "danger": {
       "title": "Delete everything",

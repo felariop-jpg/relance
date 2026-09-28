@@ -321,6 +321,14 @@ README notes that swapping models is a one-line change.
   built-in (shown as a note), and an override can change them.
 - **Voice samples** are capped by the textarea itself (maxLength 2000); the
   counter turns amber at the limit.
+- **Voice comparison** (Settings → Your writing style): one contact, one template,
+  written twice in parallel with the same request except `voiceSamples`. Not saved
+  as drafts (it's a demonstration, not something to send), so there is no payload
+  panel for it; both calls go through `buildRequest`/`redactForApi` like any draft.
+  Estimate + confirmation first; both costs go into the running total, failures
+  included. Unavailable, with the reason shown, without saved samples, without an
+  API key (demo drafts ignore samples), or without contacts. Defaults to the first
+  contact with notes.
 - **Templates**: either language version may be omitted; drafts for the missing
   language fall back to the other version (the write dialog says so). Custom
   families get `custom-<id>`. Built-ins stay `isBuiltIn` even when edited, so

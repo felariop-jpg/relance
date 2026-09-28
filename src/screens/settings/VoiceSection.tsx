@@ -7,6 +7,7 @@ import { PlusIcon, TrashIcon } from '../../components/icons';
 import { VOICE_SAMPLE_LIMIT, VOICE_SAMPLE_MAX_CHARS } from '../../db/schema';
 import { Section } from './Section';
 import { useSettingDraft } from './useSettingDraft';
+import { VoiceCompare } from './VoiceCompare';
 
 export function VoiceSection() {
   const { t } = useTranslation();
@@ -59,6 +60,7 @@ export function VoiceSection() {
             {t('settings.voice.add')}
           </Button>
         )}
+        <VoiceCompare />
       </div>
     </Section>
   );

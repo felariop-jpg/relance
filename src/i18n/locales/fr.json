@@ -441,7 +441,28 @@
       "count": "{{count}} / {{max}} caractères",
       "add": "Ajouter un e-mail d'exemple",
       "remove": "Retirer l'exemple {{n}}",
-      "empty": "Aucun exemple pour l'instant. Les brouillons suivent le ton intégré de Relance : chaleureux, court et sans pression."
+      "empty": "Aucun exemple pour l'instant. Les brouillons suivent le ton intégré de Relance : chaleureux, court et sans pression.",
+      "compare": {
+        "title": "Voir ce que changent vos exemples",
+        "body": "Relance rédige deux fois le même e-mail pour un contact, une fois avec vos e-mails d'exemple et une fois sans, et les affiche côte à côte. Rien n'est enregistré comme brouillon.",
+        "contact": "Contact",
+        "template": "E-mail",
+        "button": "Comparer avec et sans",
+        "running": "Rédaction des deux versions…",
+        "with": "Avec vos exemples",
+        "without": "Sans vos exemples",
+        "cost": "Ces deux e-mails ont coûté {{cost}}, ajoutés à vos coûts d'IA.",
+        "variation": "Deux brouillons diffèrent toujours un peu : regardez le ton, la longueur, la salutation et la formule de fin.",
+        "confirmTitle": "Rédiger deux versions ?",
+        "confirmBody": "Relance va rédiger deux e-mails pour {{name}} avec l'IA, environ {{cost}} au total. Ils ne sont pas enregistrés comme brouillons.",
+        "confirm": "Rédiger les deux",
+        "unavailable": {
+          "noSamples": "Ajoutez d'abord au moins un e-mail d'exemple ci-dessus. Sans exemple, il n'y a rien à comparer.",
+          "noKey": "Il faut votre clé API. En mode démo, les brouillons sont écrits à l'avance : vos exemples ne peuvent pas les changer.",
+          "noContacts": "Ajoutez d'abord un contact. La comparaison rédige un e-mail pour l'un de vos contacts.",
+          "noTemplate": "Aucun de vos modèles ne peut servir pour ce contact."
+        }
+      }
     },
     "danger": {
       "title": "Tout supprimer",
