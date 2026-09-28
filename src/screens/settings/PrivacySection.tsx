@@ -5,6 +5,7 @@ import { docUrl } from '../../config';
 import { API_FIELDS, type ApiField } from '../../db/schema';
 import { modifySettings, useSettings } from '../../db/settings';
 import { Section } from './Section';
+import { HelpTip } from '../../components/HelpTip';
 
 export function PrivacySection() {
   const { t, i18n } = useTranslation();
@@ -24,6 +25,7 @@ export function PrivacySection() {
     <Section
       id="privacy"
       title={t('settings.privacy.title')}
+      help={<HelpTip topic={t('settings.privacy.title')}>{t('help.whatAiSees')}</HelpTip>}
       description={
         <p>
           {t('settings.privacy.summary')}{' '}

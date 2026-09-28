@@ -11,6 +11,7 @@ export function Field({
   label,
   hint,
   error,
+  help,
   children,
   className = '',
 }: {
@@ -18,14 +19,25 @@ export function Field({
   label: ReactNode;
   hint?: ReactNode;
   error?: ReactNode;
+  /** A HelpTip shown after the label (outside it, so it isn't part of the field's name). */
+  help?: ReactNode;
   children: ReactNode;
   className?: string;
 }) {
   return (
     <div className={className}>
-      <label htmlFor={id} className="mb-1 block text-sm font-medium text-stone-800">
-        {label}
-      </label>
+      {help ? (
+        <div className="mb-1 flex items-center gap-1.5">
+          <label htmlFor={id} className="text-sm font-medium text-stone-800">
+            {label}
+          </label>
+          {help}
+        </div>
+      ) : (
+        <label htmlFor={id} className="mb-1 block text-sm font-medium text-stone-800">
+          {label}
+        </label>
+      )}
       {children}
       {hint && !error && (
         <p id={`${id}-hint`} className="mt-1 text-xs text-stone-500">

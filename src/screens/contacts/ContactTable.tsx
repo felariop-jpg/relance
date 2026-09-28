@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Checkbox } from '../../components/Checkbox';
+import { HelpTip } from '../../components/HelpTip';
 import { PencilIcon, SortIcon, WarningIcon } from '../../components/icons';
 import { updateContact } from '../../db/contacts';
 import {
@@ -54,7 +55,7 @@ export function ContactTable({
   const save = (id: string, patch: Partial<ContactInput>) =>
     updateContact(id, patch).catch(onSaveError);
 
-  const header = (key: SortKey, extra = '') => {
+  const header = (key: SortKey, extra = '', help?: ReactNode) => {
     const active = sort.key === key;
     const label = t(`fields.${key}`);
     return (
@@ -72,6 +73,7 @@ export function ContactTable({
           {label}
           <SortIcon dir={active ? sort.dir : null} className={active ? '' : 'opacity-40'} />
         </button>
+        {help && <span className="ml-1">{help}</span>}
       </th>
     );
   };
@@ -94,7 +96,7 @@ export function ContactTable({
             {header('company')}
             {header('email', 'hidden 2xl:table-cell')}
             {header('country')}
-            {header('language')}
+            {header('language', '', <HelpTip topic={t('fields.language')}>{t('help.languageAuto')}</HelpTip>)}
             {header('contactType')}
             {header('lastContacted')}
             <th scope="col" className="px-2 py-2 text-left font-medium">

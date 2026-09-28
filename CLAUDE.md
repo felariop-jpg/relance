@@ -208,6 +208,14 @@ README notes that swapping models is a one-line change.
   shifts the table.
 - **Backdrop click, Escape and ✕ all close dialogs**; the contact form asks
   before discarding unsaved changes.
+- **Inline help** (`HelpTip`): a 24 px "?" button next to "Left open" (contact form),
+  "What the AI sees" (Settings), the Language column header ("(auto)") and "Mark …
+  as contacted today" (export). One or two sentences each (`help.*` keys) that add
+  to the visible hint rather than repeat it. Uses the browser's popover (top layer,
+  so never clipped inside a scrolling dialog; Escape and clicking elsewhere close it,
+  and Escape inside a dialog closes only the popover). Without popover support it
+  falls back to an inline toggle. The button sits outside the `<label>`, so it isn't
+  read as part of the field's name.
 - **Layout width** is `max-w-screen-2xl` so the dense table fits on a laptop.
   Narrower screens scroll the table horizontally.
 

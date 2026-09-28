@@ -1,5 +1,6 @@
 import { useId, useMemo, useRef, useState, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
+import { HelpTip } from '../../components/HelpTip';
 import { Banner } from '../../components/Banner';
 import { Button } from '../../components/Button';
 import { Field, inputClass } from '../../components/Field';
@@ -278,7 +279,12 @@ export function ContactForm({
           />
         </Field>
 
-        <Field id={fid('openThread')} label={t('fields.openThread')} hint={t('form.openThreadHint')}>
+        <Field
+          id={fid('openThread')}
+          label={t('fields.openThread')}
+          hint={t('form.openThreadHint')}
+          help={<HelpTip topic={t('fields.openThread')}>{t('help.leftOpen')}</HelpTip>}
+        >
           <input
             id={fid('openThread')}
             className={inputClass}

@@ -647,5 +647,12 @@
   },
   "tabs": {
     "notice": "Relance is also open in another tab or window of this browser. Both show the same contacts and stay in step, so a change or deletion in one appears in the other."
+  },
+  "help": {
+    "label": "More about “{{topic}}”",
+    "leftOpen": "Write the one thing still unresolved between you, such as a question they asked or a decision they were weighing. The re-engagement email is built around it, so it can pick up the conversation where it stopped.",
+    "whatAiSees": "For each draft, the AI receives only the ticked fields, for that one contact. Surnames, email addresses and phone numbers never leave this computer, whatever you tick.",
+    "languageAuto": "“(auto)” means Relance chose the language from the contact’s country: French for France and Monaco, otherwise your choice in Settings → Email languages. Pick a language in this column to set it yourself.",
+    "markContacted": "Relance counts from this date to decide when someone is due again. If you send later, leave this unticked and change “Last contacted” on the Contacts page on the day you send."
   }
 }

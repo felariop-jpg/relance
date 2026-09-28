@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Banner } from '../../components/Banner';
+import { HelpTip } from '../../components/HelpTip';
 import { Button } from '../../components/Button';
 import { Checkbox } from '../../components/Checkbox';
 import { Modal } from '../../components/Modal';
@@ -97,17 +98,20 @@ export function ExportDialog({ items, onClose }: { items: ExportItem[]; onClose:
             {option('brevo', t('export.brevo'), t('export.brevoHint'))}
           </fieldset>
           {missingEmail > 0 && <Banner tone="warning">{t('export.noEmail', { count: missingEmail })}</Banner>}
-          <label className="flex items-start gap-3">
-            <Checkbox
-              className="mt-0.5"
-              checked={markContacted}
-              onChange={(e) => setMarkContacted(e.target.checked)}
-            />
-            <span>
-              <span className="block text-sm font-medium">{t('export.markContacted', { count })}</span>
-              <span className="block text-sm text-stone-500">{t('export.markContactedHint')}</span>
-            </span>
-          </label>
+          <div className="flex items-start gap-2">
+            <label className="flex flex-1 items-start gap-3">
+              <Checkbox
+                className="mt-0.5"
+                checked={markContacted}
+                onChange={(e) => setMarkContacted(e.target.checked)}
+              />
+              <span>
+                <span className="block text-sm font-medium">{t('export.markContacted', { count })}</span>
+                <span className="block text-sm text-stone-500">{t('export.markContactedHint')}</span>
+              </span>
+            </label>
+            <HelpTip topic={t('export.markContacted', { count })}>{t('help.markContacted')}</HelpTip>
+          </div>
         </div>
       )}
     </Modal>

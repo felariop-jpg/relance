@@ -683,5 +683,12 @@
   },
   "tabs": {
     "notice": "Relance est aussi ouvert dans un autre onglet ou une autre fenêtre de ce navigateur. Les deux affichent les mêmes contacts et restent synchronisés : une modification ou une suppression dans l'un apparaît dans l'autre."
+  },
+  "help": {
+    "label": "En savoir plus sur « {{topic}} »",
+    "leftOpen": "Notez la seule chose restée en suspens entre vous, par exemple une question posée ou une décision en cours. L'e-mail « Reprendre contact » est construit autour, pour reprendre la conversation là où elle s'est arrêtée.",
+    "whatAiSees": "Pour chaque brouillon, l'IA ne reçoit que les champs cochés, pour ce seul contact. Les noms de famille, adresses e-mail et numéros de téléphone ne quittent jamais cet ordinateur, quoi que vous cochiez.",
+    "languageAuto": "« (auto) » signifie que Relance a choisi la langue d'après le pays du contact : français pour la France et Monaco, sinon votre choix dans Réglages → Langue des e-mails. Choisissez une langue dans cette colonne pour la fixer vous-même.",
+    "markContacted": "Relance compte à partir de cette date pour savoir quand relancer quelqu'un. Si vous envoyez plus tard, laissez la case vide et changez « Dernier contact » sur la page Contacts le jour de l'envoi."
   }
 }
