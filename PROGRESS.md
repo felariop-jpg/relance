@@ -157,3 +157,26 @@ further testing to port 4174. The real drafts confirmed generation with
 ~€0.01 each).
 
 **Deferred**: nothing from this phase.
+
+## Phase 7 — docs, deploy, polish
+**Built**
+- Docs for non-technical readers, English and French: README (+ README.fr),
+  getting started, getting an API key, editing templates, PRIVACY (+ .fr).
+  Plus LICENSE (MIT) and a full CONTRIBUTING.md.
+- 18 screenshots of the real app (production build, sample data, demo drafts)
+  in `docs/screenshots/`, English and French, desktop and phone.
+- GitHub Pages workflow: test → build → deploy on every push to `main`
+  (pull requests are tested only).
+- Polish: a friendly error screen that keeps the rest of the app usable;
+  counters on the Due now and Review tabs; page titles per screen; an empty state
+  for the template list; the contact data now comes first in the payload (and
+  so in "What was sent to the AI"); the email column hides below 1536 px so
+  notes stay visible on laptops; wider import-mapping choices.
+- Guard tests for the hard constraints: no mail-sending code or packages, no
+  server dependencies, CSP limited to the site and api.anthropic.com, and
+  `fetch`/SDK use confined to the two expected files.
+
+**Deferred**
+- Screenshots of third-party screens (Outlook with an opened draft, the
+  Anthropic Console billing and key pages) are marked TODO in the guides.
+- `fixtures/drafts-snapshot.md` still needs its first real run (needs a key).

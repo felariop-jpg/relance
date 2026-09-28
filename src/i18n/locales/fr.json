@@ -8,7 +8,8 @@
     "contacts": "Contacts",
     "due": "À relancer",
     "review": "Relecture",
-    "settings": "Réglages"
+    "settings": "Réglages",
+    "countLabel": "{{label}} ({{count}})"
   },
   "header": {
     "uiLanguage": "Langue de l'interface"
@@ -547,7 +548,8 @@
       "senderName": "votre nom",
       "signature": "votre signature",
       "calendlyLink": "lien de rendez-vous"
-    }
+    },
+    "empty": "Il n'y a aucun modèle. Restaurez les modèles intégrés ou créez-en un nouveau."
   },
   "firstRun": {
     "skip": "Passer l'introduction",
@@ -581,5 +583,10 @@
   "languagesInline": {
     "en": "anglais",
     "fr": "français"
+  },
+  "crash": {
+    "title": "Un problème est survenu sur cet écran",
+    "body": "Vos contacts et brouillons sont en sécurité : ils sont enregistrés dans ce navigateur et n'ont pas été touchés. Recharger la page règle généralement le problème.",
+    "reload": "Recharger la page"
   }
 }

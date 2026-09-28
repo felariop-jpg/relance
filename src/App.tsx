@@ -10,12 +10,19 @@ import { ReviewScreen } from './screens/review/ReviewScreen';
 import { SettingsScreen } from './screens/settings/SettingsScreen';
 import { Toaster } from './components/Toaster';
 import { DemoBanner } from './components/DemoBanner';
+import { ErrorBoundary } from './components/ErrorBoundary';
+import { useNavCounts } from './useNavCounts';
 
 export function App() {
   const { t, i18n } = useTranslation();
   const settings = useSettings();
   const route = useRoute();
   const loaded = useSettingsLoaded();
+  const counts = useNavCounts();
+
+  useEffect(() => {
+    document.title = `${t(`nav.${route}`)} · ${t('app.name')}`;
+  }, [route, t, settings.uiLanguage]);
 
   useEffect(() => {
     void i18n.changeLanguage(settings.uiLanguage);
@@ -40,6 +47,12 @@ export function App() {
                     className="block rounded-md px-3 py-1.5 text-sm font-medium whitespace-nowrap text-stone-600 hover:bg-stone-100 hover:text-stone-900 aria-[current=page]:bg-accent-50 aria-[current=page]:text-accent-800"
                   >
                     {t(`nav.${r}`)}
+                    {counts[r] > 0 && (
+                      <span className="ml-1.5 rounded-full bg-accent-700 px-1.5 py-0.5 text-xs font-semibold text-white">
+                        <span className="sr-only">{' '}</span>
+                        {counts[r]}
+                      </span>
+                    )}
                   </a>
                 </li>
               ))}
@@ -69,10 +82,12 @@ export function App() {
       <DemoBanner />
 
       <main className="mx-auto w-full max-w-screen-2xl flex-1 px-4 py-6">
-        {route === 'contacts' && <ContactsScreen />}
-        {route === 'due' && <DueNowScreen />}
-        {route === 'review' && <ReviewScreen />}
-        {route === 'settings' && <SettingsScreen />}
+        <ErrorBoundary resetKey={route}>
+          {route === 'contacts' && <ContactsScreen />}
+          {route === 'due' && <DueNowScreen />}
+          {route === 'review' && <ReviewScreen />}
+          {route === 'settings' && <SettingsScreen />}
+        </ErrorBoundary>
       </main>
 
       {loaded && !settings.firstRunDone && <FirstRun />}

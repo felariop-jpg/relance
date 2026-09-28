@@ -42,7 +42,7 @@ export function ColumnMapper({
             <th scope="col" className="px-3 py-2 font-medium">
               {t('import.examples')}
             </th>
-            <th scope="col" className="w-64 px-3 py-2 font-medium">
+            <th scope="col" className="w-80 px-3 py-2 font-medium">
               {t('import.target')}
             </th>
           </tr>

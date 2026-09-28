@@ -8,7 +8,8 @@
     "contacts": "Contacts",
     "due": "Due now",
     "review": "Review",
-    "settings": "Settings"
+    "settings": "Settings",
+    "countLabel": "{{label}} ({{count}})"
   },
   "header": {
     "uiLanguage": "Interface language"
@@ -519,7 +520,8 @@
       "senderName": "your name",
       "signature": "your signature",
       "calendlyLink": "booking link"
-    }
+    },
+    "empty": "There are no templates. Restore the built-in ones or create a new one."
   },
   "firstRun": {
     "skip": "Skip the introduction",
@@ -553,5 +555,10 @@
   "languagesInline": {
     "en": "English",
     "fr": "French"
+  },
+  "crash": {
+    "title": "Something went wrong on this screen",
+    "body": "Your contacts and drafts are safe: they are stored in this browser and were not affected. Reloading the page usually fixes this.",
+    "reload": "Reload the page"
   }
 }

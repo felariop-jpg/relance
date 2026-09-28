@@ -30,6 +30,8 @@ function contentSecurityPolicy(): Plugin {
 
 export default defineConfig({
   base: './',
+  // One app bundle (~170 kB gzipped) plus the lazily loaded AI SDK. Fine for a tool.
+  build: { chunkSizeWarningLimit: 700 },
   plugins: [react(), tailwindcss(), contentSecurityPolicy()],
   test: {
     environment: 'node',

@@ -281,3 +281,16 @@ README notes that swapping models is a one-line change.
   translated); sentences use `languagesInline` ("anglais" in French text).
 - **Testing** must use its own origin (e.g. `vite preview --port 4174`) when the
   owner may have the app open: same-origin tabs share one IndexedDB.
+
+### Phase 7 decisions
+- **Docs are bilingual**: every user-facing guide has an `.fr.md` twin; the
+  developer sections stay English only.
+- **Screenshots are real** (production build on an isolated port). Third-party
+  screens (Outlook, Anthropic Console) are TODO placeholders for the owner.
+- **.eml guidance is honest about clients**: classic Outlook for Windows opens
+  it as a new message; Apple Mail needs "Send Again"; Thunderbird "Edit as New".
+- **Licence holder** is "The Relance contributors" (MIT, 2026).
+- **Deploy**: GitHub Pages via Actions from `main`; Node 22 in CI.
+- **Contact data first** in the prompt JSON so the payload panel leads with it.
+- **Tab counters**: Review = drafts not yet approved or skipped; Due now =
+  people due and not already drafted.

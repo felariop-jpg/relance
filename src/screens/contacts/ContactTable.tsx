@@ -54,14 +54,14 @@ export function ContactTable({
   const save = (id: string, patch: Partial<ContactInput>) =>
     updateContact(id, patch).catch(onSaveError);
 
-  const header = (key: SortKey) => {
+  const header = (key: SortKey, extra = '') => {
     const active = sort.key === key;
     const label = t(`fields.${key}`);
     return (
       <th
         scope="col"
         aria-sort={active ? (sort.dir === 'asc' ? 'ascending' : 'descending') : undefined}
-        className="px-2 py-2 text-left font-medium whitespace-nowrap"
+        className={`px-2 py-2 text-left font-medium whitespace-nowrap ${extra}`}
       >
         <button
           type="button"
@@ -92,7 +92,7 @@ export function ContactTable({
             {header('firstName')}
             {header('lastName')}
             {header('company')}
-            {header('email')}
+            {header('email', 'hidden 2xl:table-cell')}
             {header('country')}
             {header('language')}
             {header('contactType')}
@@ -134,7 +134,7 @@ export function ContactTable({
                 <td className="max-w-[11rem] truncate px-2 py-1.5" title={c.company}>
                   {c.company}
                 </td>
-                <td className="max-w-[13rem] truncate px-2 py-1.5 text-stone-600" title={c.email}>
+                <td className="hidden max-w-[13rem] truncate px-2 py-1.5 text-stone-600 2xl:table-cell" title={c.email}>
                   {c.email}
                 </td>
                 <td className="max-w-[8rem] truncate px-2 py-1.5" title={countryName(c.country, locale)}>

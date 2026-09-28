@@ -53,18 +53,19 @@ export interface PromptData {
 
 export function buildPromptData({ contact, template, settings, instruction }: PromptInput): PromptData {
   const samples = settings.voiceSamples.map((s) => s.trim()).filter(Boolean);
+  // Contact first: it is what a user checks in "What was sent to the AI".
   const data: PromptData = {
-    language: resolveLanguage(contact, settings),
-    reportLanguage: settings.uiLanguage,
+    contact: redactForApi(contact, settings),
     notesAvailable: notesAvailable(contact, settings),
     withheldByUser: [...settings.withheldFields],
+    language: resolveLanguage(contact, settings),
+    reportLanguage: settings.uiLanguage,
     template: {
       name: template.name,
       instructions: template.instructions,
       referenceSubject: template.subject,
       referenceText: template.body,
     },
-    contact: redactForApi(contact, settings),
   };
   if (samples.length > 0) data.voiceSamples = samples;
   if (instruction?.trim()) data.extraInstruction = instruction.trim();

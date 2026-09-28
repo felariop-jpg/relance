@@ -48,7 +48,8 @@ export function TemplatesSection() {
         </p>
       }
     >
-      <ul className="divide-y divide-stone-100 rounded-md border border-stone-200">
+      {templates && families.length === 0 && <p className="mb-3 text-sm text-stone-500">{t('templates.empty')}</p>}
+      <ul className={`divide-y divide-stone-100 rounded-md border border-stone-200 ${families.length === 0 ? 'hidden' : ''}`}>
         {families.map((f) => {
           const { rule, appliesTo } = familyRule(f);
           return (
