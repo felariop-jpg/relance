@@ -101,7 +101,8 @@
     "deleted_one": "{{count}} contact supprimé.",
     "deleted_many": "{{count}} contacts supprimés.",
     "deleted_other": "{{count}} contacts supprimés.",
-    "writeEmails": "Écrire des e-mails…"
+    "writeEmails": "Écrire des e-mails…",
+    "openContact": "Ouvrir {{name}}"
   },
   "form": {
     "addTitle": "Ajouter un contact",
@@ -271,7 +272,24 @@
       "readable": "Le texte du message est affiché développé pour faciliter la lecture. « Copier » donne le texte exact qui a été envoyé.",
       "copy": "Copier",
       "copied": "Copié"
-    }
+    },
+    "rewrite": "Réécrire",
+    "rewriteWith": "Réécrire avec une consigne",
+    "instruction": "Que faut-il changer ? (facultatif)",
+    "instructionPlaceholder": "Par exemple : plus court, mentionner la formation, plus formel",
+    "rewriteNow": "Réécrire maintenant",
+    "rewritten": "Brouillon réécrit.",
+    "lastInstruction": "Dernière consigne : {{text}}",
+    "bulk": {
+      "label": "Pour tous les brouillons affichés",
+      "approve": "Tout valider ({{count}})",
+      "retry": "Réessayer les échecs ({{count}})",
+      "remove": "Tout retirer ({{count}})",
+      "approved_one": "{{count}} brouillon validé.",
+      "approved_many": "{{count}} brouillons validés.",
+      "approved_other": "{{count}} brouillons validés."
+    },
+    "shortcutsHint": "Raccourcis clavier"
   },
   "export": {
     "title": "Exporter les brouillons validés",
@@ -370,5 +388,18 @@
     "demoCost": "Mode démo : aucun coût.",
     "authFailed": "Votre clé API n'a pas été acceptée, Relance s'est donc arrêté. Vérifiez la clé dans les Réglages, puis utilisez Réessayer sur chaque carte.",
     "dismiss": "Masquer"
+  },
+  "shortcuts": {
+    "title": "Raccourcis clavier",
+    "next": "Brouillon suivant",
+    "previous": "Brouillon précédent",
+    "approve": "Valider, ou annuler la validation",
+    "skip": "Écarter, ou annuler",
+    "edit": "Modifier le texte de l'e-mail",
+    "rewrite": "Réécrire le brouillon",
+    "leave": "Arrêter la modification",
+    "help": "Afficher cette liste",
+    "note": "Les raccourcis sont en pause pendant que vous tapez dans un champ. Appuyez d'abord sur Échap pour quitter le champ.",
+    "keyEsc": "Échap"
   }
 }

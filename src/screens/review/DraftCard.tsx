@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from 'react';
+import { forwardRef, useEffect, useId, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AutoTextarea } from '../../components/AutoTextarea';
 import { Banner } from '../../components/Banner';
@@ -12,28 +12,31 @@ import { unknownPlaceholders } from '../../lib/placeholders';
 import { formatEur } from '../../lib/money';
 import { enqueueDrafts } from '../../ai/batch';
 import { PayloadPanel } from './PayloadPanel';
+import { rewriteDraft } from '../../ai/rewrite';
 import { RefreshIcon } from '../../components/icons';
 
 const SAVE_DELAY_MS = 400;
 
 type SaveState = 'idle' | 'saving' | 'saved' | 'error';
 
-export function DraftCard({
-  draft,
-  contact,
-  template,
-  onRemove,
-}: {
-  draft: Draft;
-  contact: Contact | undefined;
-  template: Template | undefined;
-  onRemove: (draft: Draft) => void;
-}) {
+export const DraftCard = forwardRef<
+  HTMLElement,
+  {
+    draft: Draft;
+    contact: Contact | undefined;
+    template: Template | undefined;
+    active: boolean;
+    onActivate: () => void;
+    onRemove: (draft: Draft) => void;
+  }
+>(function DraftCard({ draft, contact, template, active, onActivate, onRemove }, ref) {
   const { t, i18n } = useTranslation();
   const id = useId();
   const [subject, setSubject] = useState(draft.subject);
   const [body, setBody] = useState(draft.body);
   const [saveState, setSaveState] = useState<SaveState>('idle');
+  const [asking, setAsking] = useState(false);
+  const [instruction, setInstruction] = useState('');
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pending = useRef<Partial<Pick<Draft, 'subject' | 'body'>>>({});
 
@@ -75,10 +78,21 @@ export function DraftCard({
   const busy = draft.status === 'pending' || draft.status === 'failed';
   const skipped = draft.status === 'skipped';
 
+  const rewrite = (text: string) => {
+    setAsking(false);
+    setInstruction('');
+    void rewriteDraft(draft.id, text, { done: t('review.rewritten') });
+  };
+
   return (
     <article
+      ref={ref}
+      tabIndex={-1}
+      data-draft-id={draft.id}
       aria-labelledby={`${id}-name`}
-      className={`rounded-xl border bg-white shadow-sm ${approved ? 'border-emerald-300' : skipped ? 'border-stone-200 opacity-70' : 'border-stone-200'}`}
+      onFocusCapture={onActivate}
+      onMouseDown={onActivate}
+      className={`scroll-mt-24 scroll-mb-24 rounded-xl border bg-white shadow-sm outline-none ${active ? 'ring-2 ring-accent-600/60' : ''} ${approved ? 'border-emerald-300' : skipped ? 'border-stone-200 opacity-70' : 'border-stone-200'}`}
     >
       <header className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2 border-b border-stone-100 px-4 py-3">
         <div className="min-w-0">
@@ -194,6 +208,24 @@ export function DraftCard({
         >
           {skipped ? t('review.skipped') : t('review.skip')}
         </Button>
+        <Button
+          className="min-h-11 sm:min-h-0"
+          disabled={draft.status === 'pending'}
+          onClick={() => rewrite('')}
+          title={t('review.rewrite')}
+        >
+          <RefreshIcon />
+          {t('review.rewrite')}
+        </Button>
+        <Button
+          variant="ghost"
+          className="min-h-11 sm:min-h-0"
+          disabled={draft.status === 'pending'}
+          aria-expanded={asking}
+          onClick={() => setAsking((v) => !v)}
+        >
+          {t('review.rewriteWith')}
+        </Button>
         <Button variant="ghost" className="min-h-11 sm:min-h-0" onClick={() => onRemove(draft)}>
           <TrashIcon />
           {t('review.remove')}
@@ -208,9 +240,41 @@ export function DraftCard({
           {saveState === 'error' && <span className="text-red-700">{t('review.saveFailed')}</span>}
         </span>
       </footer>
+      {asking && (
+        <form
+          className="flex flex-col gap-2 border-t border-stone-100 px-4 py-3 sm:flex-row sm:items-end"
+          onSubmit={(e) => {
+            e.preventDefault();
+            rewrite(instruction);
+          }}
+        >
+          <div className="flex-1">
+            <label htmlFor={`${id}-instruction`} className="mb-1 block text-xs font-medium text-stone-500">
+              {t('review.instruction')}
+            </label>
+            <input
+              id={`${id}-instruction`}
+              autoFocus
+              className={inputClass}
+              placeholder={t('review.instructionPlaceholder')}
+              value={instruction}
+              onChange={(e) => setInstruction(e.target.value)}
+            />
+          </div>
+          <Button type="submit" variant="primary" className="min-h-11 sm:min-h-10">
+            <RefreshIcon />
+            {t('review.rewriteNow')}
+          </Button>
+        </form>
+      )}
+      {draft.instruction && !asking && draft.status !== 'pending' && (
+        <p className="border-t border-stone-100 px-4 py-2 text-xs text-stone-500">
+          {t('review.lastInstruction', { text: draft.instruction })}
+        </p>
+      )}
     </article>
   );
-}
+});
 
 function Personalization({ draft }: { draft: Draft }) {
   const { t } = useTranslation();

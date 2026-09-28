@@ -232,3 +232,16 @@ README notes that swapping models is a one-line change.
 - **Voice samples** go in the payload only when present; the Settings hint will
   ask users to remove names and private details before pasting.
 - **Docs links** point to the GitHub repo (`REPO_URL` in `src/config.ts`).
+
+### Phase 4 decisions
+- **"Rewrite"**, not "Regenerate", in the UI (plainer). `r` rewrites at once
+  with no instruction; the instruction box is one click away. Every rewrite is
+  undoable from its toast (previous text and metadata kept in memory).
+- **Bulk actions act on the drafts in the current filter** (no per-card
+  checkboxes, which are fiddly on a phone): approve all, try failed again,
+  remove all.
+- **Approving from "To review" makes the next card active** (inbox style).
+- **Undoing an approval returns the draft to "New"** (`generated`); the
+  "Edited" marker isn't restored. Minor, and keeps the model simple.
+- **Contacts on phones**: a stacked list below 768 px (tap to edit, checkbox to
+  select). Inline table editing is desktop-only.

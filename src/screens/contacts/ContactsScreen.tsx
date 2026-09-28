@@ -16,6 +16,7 @@ import { useSettings } from '../../db/settings';
 import { loadSampleContacts, SAMPLE_CSV_URL } from '../../lib/sample';
 import { ContactForm } from './ContactForm';
 import { ContactTable } from './ContactTable';
+import { ContactList } from './ContactList';
 import { ImportDialog } from './ImportDialog';
 import { matchesQuery, sortContacts, type Sort, type SortKey } from './sorting';
 
@@ -247,17 +248,30 @@ export function ContactsScreen() {
               </Button>
             </div>
           ) : (
-            <ContactTable
-              contacts={visible}
-              settings={settings}
-              sort={sort}
-              onSort={onSort}
-              selected={selected}
-              onToggle={toggle}
-              onToggleAll={toggleAll}
-              onEdit={(contact) => setEditing({ contact })}
-              onSaveError={() => setNotice({ tone: 'error', text: t('contacts.saveFailed') })}
-            />
+            <>
+              <div className="hidden md:block">
+                <ContactTable
+                  contacts={visible}
+                  settings={settings}
+                  sort={sort}
+                  onSort={onSort}
+                  selected={selected}
+                  onToggle={toggle}
+                  onToggleAll={toggleAll}
+                  onEdit={(contact) => setEditing({ contact })}
+                  onSaveError={() => setNotice({ tone: 'error', text: t('contacts.saveFailed') })}
+                />
+              </div>
+              <div className="md:hidden">
+                <ContactList
+                  contacts={visible}
+                  settings={settings}
+                  selected={selected}
+                  onToggle={toggle}
+                  onEdit={(contact) => setEditing({ contact })}
+                />
+              </div>
+            </>
           )}
         </>
       )}

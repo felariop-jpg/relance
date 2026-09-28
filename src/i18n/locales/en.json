@@ -97,7 +97,8 @@
     "cellLabel": "{{field}}: {{name}}",
     "deleted_one": "Deleted {{count}} contact.",
     "deleted_other": "Deleted {{count}} contacts.",
-    "writeEmails": "Write emails…"
+    "writeEmails": "Write emails…",
+    "openContact": "Open {{name}}"
   },
   "form": {
     "addTitle": "Add a contact",
@@ -253,7 +254,23 @@
       "readable": "Shown with the message text expanded so it is easier to read. Copy gives the exact text that was sent.",
       "copy": "Copy",
       "copied": "Copied"
-    }
+    },
+    "rewrite": "Rewrite",
+    "rewriteWith": "Rewrite with an instruction",
+    "instruction": "What should change? (optional)",
+    "instructionPlaceholder": "For example: shorter, mention the training, plus formel",
+    "rewriteNow": "Rewrite now",
+    "rewritten": "Draft rewritten.",
+    "lastInstruction": "Last instruction: {{text}}",
+    "bulk": {
+      "label": "For all drafts shown",
+      "approve": "Approve all ({{count}})",
+      "retry": "Try failed again ({{count}})",
+      "remove": "Remove all ({{count}})",
+      "approved_one": "Approved {{count}} draft.",
+      "approved_other": "Approved {{count}} drafts."
+    },
+    "shortcutsHint": "Keyboard shortcuts"
   },
   "export": {
     "title": "Export approved drafts",
@@ -348,5 +365,18 @@
     "demoCost": "Demo mode: no cost.",
     "authFailed": "Your API key was not accepted, so Relance stopped. Check the key in Settings, then use Try again on each card.",
     "dismiss": "Hide"
+  },
+  "shortcuts": {
+    "title": "Keyboard shortcuts",
+    "next": "Next draft",
+    "previous": "Previous draft",
+    "approve": "Approve, or undo approval",
+    "skip": "Skip, or undo skip",
+    "edit": "Edit the email text",
+    "rewrite": "Rewrite the draft",
+    "leave": "Stop editing",
+    "help": "Show this list",
+    "note": "Shortcuts are paused while you type in a field. Press Esc to leave the field first.",
+    "keyEsc": "Esc"
   }
 }

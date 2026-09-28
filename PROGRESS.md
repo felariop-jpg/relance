@@ -70,3 +70,24 @@ intact.
   same reason (engine and parsing are unit-tested with fakes; the SDK path was
   verified up to the 401).
 - Voice-sample editing UI is Phase 6.
+
+## Phase 4 — review screen
+**Built**
+- Rewrite per card, immediately or with an instruction ("shorter", "plus
+  formel"); the previous version is restorable from the toast for 10 s. The last
+  instruction is shown on the card and travels in the payload.
+- Actions on all drafts in the current filter: approve all (undoable), try
+  failed again, remove all (undoable).
+- Keyboard-first review (addition D): j/k, a, s, e (caret at the end), r, Esc,
+  and ? for a translated overlay, discoverable from a "Keyboard shortcuts ?"
+  hint. Paused in text fields and while a dialog is open. Approving in the
+  "To review" list moves you to the next card, like an inbox.
+- Mobile (addition H): single column, full-width cards, 44 px tap targets,
+  auto-growing email text, fixed export bar; no horizontal scroll at 390 px.
+  Contacts show a stacked, tappable list below 768 px.
+
+**Verified in the browser**: keyboard flow (navigate, approve → next card,
+edit, Esc, skip), rewrite with "plus court" (instruction in payload, undo toast),
+bulk bar, phone-width Review and Contacts.
+
+**Deferred**: nothing from this phase.
