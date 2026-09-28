@@ -114,3 +114,46 @@ back on Due now those 9 show "Already has a draft"; French rule text; manual
 picker opens the write dialog.
 
 **Deferred**: nothing from this phase.
+
+## Phase 6 — settings, template editor, French, first run
+**Built**
+- Settings, one page with a jump list: AI connection, Your details (name,
+  signature, booking link, interface language), What the AI sees (two-sentence
+  privacy summary, one checkbox per allowlisted field, a visible warning on
+  notes that turns stronger when notes are unticked, the never-sent list),
+  Email languages (default language, FR/MC note, per-country override editor),
+  Your writing style (voice samples, addition B: up to 3, 2000 characters each,
+  live counter), Templates, AI costs, Backup, Delete everything.
+- Template editor: schedule (none, or month + minimum gap), intended contact
+  types, EN/FR tabs with name, subject, email text, AI instructions; clickable
+  placeholder chips that insert at the cursor; warnings for unknown
+  placeholders; either language version can be left out. New, delete (undoable),
+  "restore built-in templates". Closing with unsaved edits discards with Undo.
+- "Delete everything" is the only confirmation left: the user types DELETE /
+  SUPPRIMER (in the interface language, any case). It deletes the whole
+  database, then the welcome screen returns.
+- First run: three skippable steps (what it does and never does; optional API
+  key with the guide link; import, samples or empty). Language switch on the
+  welcome itself. Shown once (`firstRunDone`), never flashes for returning users.
+- French: every screen translated; inline language names ("anglais") are proper
+  forms rather than lower-cased labels.
+- Fixed: auto-growing text boxes could collapse to a sliver inside dialogs and
+  tabs; they now respect their row count and refit when shown.
+
+**Verified in the browser** (on a separate port, see note): welcome in French →
+samples; country override DE → Daniel becomes "French (auto)"; notes warning;
+voice-sample counter and payload; template edit with placeholder chip, French-only
+custom template scheduled in October for leads, delete/undo, restore built-ins,
+discard/undo; Delete everything with the typed word.
+
+**Note — shared test origin.** Midway through, drafts written with a real API
+key and a real signature appeared on http://localhost:4173: someone was using
+the app in another tab on the same origin, which shares the same IndexedDB.
+That explains 12 contacts vanishing between two of my scripted steps (not
+reproducible from the app's own code, checked step by step). Two of my scripted
+clicks then produced real AI drafts with that key (about €0.02). I moved all
+further testing to port 4174. The real drafts confirmed generation with
+`claude-sonnet-5` works end to end (French, ~80 words, correct personalisation,
+~€0.01 each).
+
+**Deferred**: nothing from this phase.

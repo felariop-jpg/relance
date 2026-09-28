@@ -288,7 +288,6 @@
   },
   "settings": {
     "title": "Settings",
-    "more": "More settings will appear here in a later version.",
     "backup": {
       "title": "Backup",
       "body": "Your contacts are stored only in this browser. Browsers sometimes clear stored data, so download a backup now and then and keep it somewhere safe. The backup does not include your API key.",
@@ -334,6 +333,70 @@
       "hint": "Worked out from what Anthropic reports for each draft, using an approximate price. Your Anthropic account shows the exact amount.",
       "reset": "Reset to zero",
       "resetDone": "Cost total reset."
+    },
+    "jump": "On this page",
+    "you": {
+      "title": "Your details",
+      "body": "Used to sign and complete your emails, on this computer only. None of this is sent to the AI: the drafts contain placeholders that are filled in here.",
+      "senderName": "Your name",
+      "signature": "Signature",
+      "signatureHint": "Added at the end of every email. If it is empty, your name is used.",
+      "calendly": "Booking link (optional)",
+      "calendlyHint": "For example a Calendly link. Templates that mention it leave the line out when this is empty.",
+      "calendlyInvalid": "This doesn't look like a web address. It should start with https://",
+      "uiLanguage": "Language of Relance itself",
+      "calendlyPlaceholder": "https://calendly.com/your-name"
+    },
+    "languages": {
+      "title": "Email languages",
+      "body": "Each contact gets emails in their own language. You can set it on the contact; otherwise Relance decides from their country, using the choices below.",
+      "default": "Language when nothing else applies",
+      "builtIn": "Contacts in France and Monaco get French unless you choose otherwise below.",
+      "overrides": "Countries with their own language",
+      "overridesHint": "For example, if your contacts in Luxembourg or Belgium usually write in French.",
+      "none": "No countries added yet.",
+      "country": "Country",
+      "language": "Language",
+      "add": "Add",
+      "remove": "Remove {{country}}",
+      "choose": "Choose a country"
+    },
+    "privacy": {
+      "title": "What the AI sees",
+      "summary": "Your contacts stay in this browser: Relance has no server, and the only thing it ever connects to is the AI service, when you ask it to write drafts. For each draft it sends only the fields ticked below, never surnames, email addresses or phone numbers, and every draft shows exactly what was sent.",
+      "readMore": "Read the full privacy explanation",
+      "sent": "Sent to the AI when writing a draft",
+      "neverSent": "Never sent: surname, email address, phone number, and your own details above.",
+      "notesWarning": "If you untick notes, drafts can't mention anything specific about the person. They will be polite but generic.",
+      "fields": {
+        "firstName": "First name",
+        "company": "Company",
+        "country": "Country",
+        "language": "Language",
+        "contactType": "Type (client, prospect, lead)",
+        "serviceHistory": "Work done together",
+        "notes": "Notes"
+      }
+    },
+    "voice": {
+      "title": "Your writing style",
+      "body": "Paste two or three emails you have written yourself. The AI copies your tone, sentence length, greetings and sign-offs, but never their content. They are sent with each draft, so remove names and private details first.",
+      "sample": "Example email {{n}}",
+      "count": "{{count}} / {{max}} characters",
+      "add": "Add an example email",
+      "remove": "Remove example {{n}}",
+      "empty": "No examples yet. Drafts follow Relance's built-in tone: warm, short and without pressure."
+    },
+    "danger": {
+      "title": "Delete everything",
+      "body": "Removes all contacts, drafts, templates and settings, including your API key, from this browser. Download a backup first if you might want them back.",
+      "button": "Delete everything…",
+      "dialogTitle": "Delete everything?",
+      "dialogBody": "This removes all your contacts, drafts, templates and settings from this browser. It can't be undone.",
+      "typeWord": "To confirm, type {{word}}",
+      "word": "DELETE",
+      "confirm": "Delete everything",
+      "failed": "Not everything could be deleted. Close other Relance tabs, then try again."
     }
   },
   "backupReminder": {
@@ -412,5 +475,83 @@
     "client": "clients",
     "prospect": "prospects",
     "lead": "leads"
+  },
+  "templates": {
+    "title": "Templates",
+    "body": "The starting point for each kind of email. With AI, the instructions guide how each email is written; without AI, the text is used as it is.",
+    "guide": "How to edit templates safely",
+    "noSchedule": "No schedule: choose contacts yourself",
+    "edit": "Edit",
+    "delete": "Delete",
+    "deleted": "Template “{{name}}” deleted.",
+    "new": "New template",
+    "restore": "Restore built-in templates",
+    "restored_one": "{{count}} built-in template restored.",
+    "restored_other": "{{count}} built-in templates restored.",
+    "restoredNone": "All built-in templates are already here.",
+    "editTitle": "Edit template",
+    "newTitle": "New template",
+    "schedule": "When is it due?",
+    "scheduleNone": "Never on its own (I choose the contacts)",
+    "scheduleMonth": "Every year in",
+    "gap": "Only if not contacted for at least",
+    "days": "days",
+    "appliesTo": "Meant for",
+    "appliesToHint": "Leave all unticked to include everyone.",
+    "version": "{{language}} version",
+    "includeVersion": "Include a version in {{language}}",
+    "name": "Name",
+    "subject": "Subject",
+    "bodyLabel": "Email text",
+    "instructions": "Instructions for the AI",
+    "instructionsHint": "Plain words about the purpose and tone, for example: “Short and warm. Ask how the year is going. No sales pitch.”",
+    "placeholders": "Insert a placeholder",
+    "placeholdersHint": "Placeholders are replaced with real details on this computer. Keep the double curly brackets.",
+    "unknown": "Relance doesn't know {{list}}. It will appear as it is in the email.",
+    "needVersion": "Give at least one version a name and some email text.",
+    "saved": "Template saved.",
+    "discarded": "Unsaved template changes discarded.",
+    "placeholder": {
+      "firstName": "first name",
+      "lastName": "surname",
+      "company": "company",
+      "email": "email address",
+      "senderName": "your name",
+      "signature": "your signature",
+      "calendlyLink": "booking link"
+    }
+  },
+  "firstRun": {
+    "skip": "Skip the introduction",
+    "next": "Next",
+    "back": "Back",
+    "step": "Step {{n}} of 3",
+    "welcome": {
+      "title": "Welcome to Relance",
+      "lead": "Relance helps you write personal follow-up emails to the people you work with, at the right time of year.",
+      "does1": "It suggests who to get back in touch with, based on when you last wrote.",
+      "does2": "It writes a draft for each person, using your notes about them, in their language.",
+      "does3": "You read and edit every draft, then send it yourself from your usual email program.",
+      "never": "Relance never sends email. It has no way to.",
+      "local": "Your contacts stay in this browser, on this computer. There is no account and no server."
+    },
+    "key": {
+      "title": "Connect the AI (optional)",
+      "body": "To write personal drafts, Relance uses Claude, an AI by Anthropic. You need your own API key. It costs roughly one euro cent per email, and the key stays in this browser.",
+      "guide": "Step-by-step guide to getting a key",
+      "later": "You can skip this. Relance then runs in demo mode, with example drafts, and you can add a key later in Settings."
+    },
+    "contacts": {
+      "title": "Add your contacts",
+      "body": "Import a spreadsheet of your contacts, or try Relance first with a few made-up people.",
+      "import": "Import a spreadsheet",
+      "sample": "Load sample contacts",
+      "empty": "Start with an empty list",
+      "done": "Get started"
+    }
+  },
+  "languagesInline": {
+    "en": "English",
+    "fr": "French"
   }
 }

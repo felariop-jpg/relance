@@ -258,3 +258,26 @@ README notes that swapping models is a one-line change.
   (open = not exported and not skipped). Exporting or skipping frees it.
 - **Days are whole calendar days** in the user's time zone.
 - **Manual mode** reuses the Write emails dialog (any template, any contacts).
+
+### Phase 6 decisions
+- **Settings is one long page with a jump list**, not tabs: easier to scan and
+  to find with the browser's search.
+- **Settings fields save themselves** ~0.4 s after typing stops (and on blur);
+  there is no Save button to forget.
+- **Privacy checkboxes are phrased as "sent"** (ticked = sent) so the default,
+  all ticked, reads naturally. Unticking notes turns its warning bold.
+- **Country overrides** are a small list with add/remove; FR and MC stay
+  built-in (shown as a note), and an override can change them.
+- **Voice samples** are capped by the textarea itself (maxLength 2000); the
+  counter turns amber at the limit.
+- **Templates**: either language version may be omitted; drafts for the missing
+  language fall back to the other version (the write dialog says so). Custom
+  families get `custom-<id>`. Built-ins stay `isBuiltIn` even when edited, so
+  "restore" never duplicates them.
+- **Delete everything** deletes the IndexedDB database outright (including the
+  API key) and reloads. The confirmation word follows the interface language.
+- **First run** stores the key typed there; "Skip the introduction" on every step.
+- **Language names**: pickers use endonyms (English / Français, never
+  translated); sentences use `languagesInline` ("anglais" in French text).
+- **Testing** must use its own origin (e.g. `vite preview --port 4174`) when the
+  owner may have the app open: same-origin tabs share one IndexedDB.

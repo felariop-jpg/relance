@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LANGUAGES } from './db/schema';
-import { updateSettings, useSettings } from './db/settings';
+import { updateSettings, useSettings, useSettingsLoaded } from './db/settings';
+import { FirstRun } from './screens/firstrun/FirstRun';
 import { href, ROUTES, useRoute } from './nav';
 import { ContactsScreen } from './screens/contacts/ContactsScreen';
 import { DueNowScreen } from './screens/due/DueNowScreen';
@@ -14,6 +15,7 @@ export function App() {
   const { t, i18n } = useTranslation();
   const settings = useSettings();
   const route = useRoute();
+  const loaded = useSettingsLoaded();
 
   useEffect(() => {
     void i18n.changeLanguage(settings.uiLanguage);
@@ -73,6 +75,7 @@ export function App() {
         {route === 'settings' && <SettingsScreen />}
       </main>
 
+      {loaded && !settings.firstRunDone && <FirstRun />}
       <Toaster />
 
       <footer className="border-t border-stone-200 bg-white">

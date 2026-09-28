@@ -1,6 +1,9 @@
 export const LANGUAGES = ['en', 'fr'] as const;
 export type Lang = (typeof LANGUAGES)[number];
 
+/** Each language's name in itself, for language pickers (never translated). */
+export const LANGUAGE_ENDONYMS: Record<Lang, string> = { en: 'English', fr: 'Français' };
+
 export const CONTACT_TYPES = ['client', 'prospect', 'lead'] as const;
 export type ContactType = (typeof CONTACT_TYPES)[number];
 

@@ -32,6 +32,11 @@ export async function updateSettings(patch: Partial<Omit<Settings, 'id'>>): Prom
   await db.settings.update(SETTINGS_ID, patch);
 }
 
+/** true once the stored settings have been read (so first-run never flashes). */
+export function useSettingsLoaded(): boolean {
+  return useLiveQuery(() => db.settings.get(SETTINGS_ID), []) !== undefined;
+}
+
 /** Live settings; defaults until the row has loaded, so callers never wait. */
 export function useSettings(): Settings {
   const row = useLiveQuery(() => db.settings.get(SETTINGS_ID), []);

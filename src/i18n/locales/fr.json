@@ -309,7 +309,6 @@
   },
   "settings": {
     "title": "Réglages",
-    "more": "D'autres réglages apparaîtront ici dans une prochaine version.",
     "backup": {
       "title": "Sauvegarde",
       "body": "Vos contacts sont enregistrés uniquement dans ce navigateur. Les navigateurs effacent parfois les données enregistrées : téléchargez une sauvegarde de temps en temps et gardez-la en lieu sûr. La sauvegarde ne contient pas votre clé API.",
@@ -355,6 +354,70 @@
       "hint": "Calculé à partir de ce qu'Anthropic indique pour chaque brouillon, avec un prix approximatif. Votre compte Anthropic indique le montant exact.",
       "reset": "Remettre à zéro",
       "resetDone": "Total des coûts remis à zéro."
+    },
+    "jump": "Sur cette page",
+    "you": {
+      "title": "Vos informations",
+      "body": "Utilisées pour signer et compléter vos e-mails, uniquement sur cet ordinateur. Rien de tout cela n'est envoyé à l'IA : les brouillons contiennent des emplacements qui sont remplis ici.",
+      "senderName": "Votre nom",
+      "signature": "Signature",
+      "signatureHint": "Ajoutée à la fin de chaque e-mail. Si elle est vide, votre nom est utilisé.",
+      "calendly": "Lien de prise de rendez-vous (facultatif)",
+      "calendlyHint": "Par exemple un lien Calendly. Les modèles qui le mentionnent omettent cette ligne s'il est vide.",
+      "calendlyInvalid": "Cela ne ressemble pas à une adresse web. Elle doit commencer par https://",
+      "uiLanguage": "Langue de Relance",
+      "calendlyPlaceholder": "https://calendly.com/votre-nom"
+    },
+    "languages": {
+      "title": "Langue des e-mails",
+      "body": "Chaque contact reçoit des e-mails dans sa langue. Vous pouvez la choisir sur le contact ; sinon, Relance la déduit de son pays, selon les choix ci-dessous.",
+      "default": "Langue quand rien d'autre ne s'applique",
+      "builtIn": "Les contacts en France et à Monaco reçoivent le français, sauf si vous choisissez autrement ci-dessous.",
+      "overrides": "Pays avec leur propre langue",
+      "overridesHint": "Par exemple, si vos contacts au Luxembourg ou en Belgique écrivent généralement en français.",
+      "none": "Aucun pays ajouté pour l'instant.",
+      "country": "Pays",
+      "language": "Langue",
+      "add": "Ajouter",
+      "remove": "Retirer {{country}}",
+      "choose": "Choisissez un pays"
+    },
+    "privacy": {
+      "title": "Ce que voit l'IA",
+      "summary": "Vos contacts restent dans ce navigateur : Relance n'a pas de serveur, et ne se connecte qu'au service d'IA, quand vous lui demandez d'écrire des brouillons. Pour chaque brouillon, il n'envoie que les champs cochés ci-dessous, jamais les noms de famille, adresses e-mail ou numéros de téléphone, et chaque brouillon montre exactement ce qui a été envoyé.",
+      "readMore": "Lire l'explication complète sur la confidentialité",
+      "sent": "Envoyé à l'IA pour écrire un brouillon",
+      "neverSent": "Jamais envoyé : nom de famille, adresse e-mail, numéro de téléphone, ni vos propres informations ci-dessus.",
+      "notesWarning": "Si vous décochez les notes, les brouillons ne pourront rien mentionner de précis sur la personne. Ils seront polis mais génériques.",
+      "fields": {
+        "firstName": "Prénom",
+        "company": "Entreprise",
+        "country": "Pays",
+        "language": "Langue",
+        "contactType": "Type (client, prospect, piste)",
+        "serviceHistory": "Travail réalisé ensemble",
+        "notes": "Notes"
+      }
+    },
+    "voice": {
+      "title": "Votre style d'écriture",
+      "body": "Collez deux ou trois e-mails que vous avez écrits vous-même. L'IA reprend votre ton, la longueur de vos phrases, vos formules d'appel et de politesse, mais jamais leur contenu. Ils sont envoyés avec chaque brouillon : retirez d'abord les noms et les détails privés.",
+      "sample": "E-mail d'exemple {{n}}",
+      "count": "{{count}} / {{max}} caractères",
+      "add": "Ajouter un e-mail d'exemple",
+      "remove": "Retirer l'exemple {{n}}",
+      "empty": "Aucun exemple pour l'instant. Les brouillons suivent le ton intégré de Relance : chaleureux, court et sans pression."
+    },
+    "danger": {
+      "title": "Tout supprimer",
+      "body": "Supprime de ce navigateur tous les contacts, brouillons, modèles et réglages, y compris votre clé API. Téléchargez d'abord une sauvegarde si vous pourriez en avoir besoin.",
+      "button": "Tout supprimer…",
+      "dialogTitle": "Tout supprimer ?",
+      "dialogBody": "Cela supprime de ce navigateur tous vos contacts, brouillons, modèles et réglages. C'est définitif.",
+      "typeWord": "Pour confirmer, tapez {{word}}",
+      "word": "SUPPRIMER",
+      "confirm": "Tout supprimer",
+      "failed": "Tout n'a pas pu être supprimé. Fermez les autres onglets Relance, puis réessayez."
     }
   },
   "backupReminder": {
@@ -439,5 +502,84 @@
     "client": "clients",
     "prospect": "prospects",
     "lead": "pistes"
+  },
+  "templates": {
+    "title": "Modèles",
+    "body": "Le point de départ de chaque type d'e-mail. Avec l'IA, les consignes guident l'écriture de chaque e-mail ; sans IA, le texte est utilisé tel quel.",
+    "guide": "Comment modifier les modèles sans risque",
+    "noSchedule": "Sans calendrier : vous choisissez les contacts",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "deleted": "Modèle « {{name}} » supprimé.",
+    "new": "Nouveau modèle",
+    "restore": "Restaurer les modèles intégrés",
+    "restored_one": "{{count}} modèle intégré restauré.",
+    "restored_many": "{{count}} modèles intégrés restaurés.",
+    "restored_other": "{{count}} modèles intégrés restaurés.",
+    "restoredNone": "Tous les modèles intégrés sont déjà présents.",
+    "editTitle": "Modifier le modèle",
+    "newTitle": "Nouveau modèle",
+    "schedule": "Quand est-il à envoyer ?",
+    "scheduleNone": "Jamais automatiquement (je choisis les contacts)",
+    "scheduleMonth": "Chaque année en",
+    "gap": "Seulement sans contact depuis au moins",
+    "days": "jours",
+    "appliesTo": "Destiné aux",
+    "appliesToHint": "Ne cochez rien pour inclure tout le monde.",
+    "version": "Version en {{language}}",
+    "includeVersion": "Inclure une version en {{language}}",
+    "name": "Nom",
+    "subject": "Objet",
+    "bodyLabel": "Texte de l'e-mail",
+    "instructions": "Consignes pour l'IA",
+    "instructionsHint": "Des mots simples sur le but et le ton, par exemple : « Court et chaleureux. Demander comment se passe l'année. Aucune offre commerciale. »",
+    "placeholders": "Insérer un emplacement",
+    "placeholdersHint": "Les emplacements sont remplacés par les vraies informations sur cet ordinateur. Gardez les doubles accolades.",
+    "unknown": "Relance ne connaît pas {{list}}. Il apparaîtra tel quel dans l'e-mail.",
+    "needVersion": "Donnez à au moins une version un nom et un texte.",
+    "saved": "Modèle enregistré.",
+    "discarded": "Modifications du modèle abandonnées.",
+    "placeholder": {
+      "firstName": "prénom",
+      "lastName": "nom de famille",
+      "company": "entreprise",
+      "email": "adresse e-mail",
+      "senderName": "votre nom",
+      "signature": "votre signature",
+      "calendlyLink": "lien de rendez-vous"
+    }
+  },
+  "firstRun": {
+    "skip": "Passer l'introduction",
+    "next": "Suivant",
+    "back": "Retour",
+    "step": "Étape {{n}} sur 3",
+    "welcome": {
+      "title": "Bienvenue dans Relance",
+      "lead": "Relance vous aide à écrire des e-mails de suivi personnels aux personnes avec qui vous travaillez, au bon moment de l'année.",
+      "does1": "Il vous suggère qui recontacter, selon la date de votre dernier échange.",
+      "does2": "Il rédige un brouillon pour chaque personne, à partir de vos notes, dans sa langue.",
+      "does3": "Vous relisez et modifiez chaque brouillon, puis vous l'envoyez vous-même depuis votre messagerie habituelle.",
+      "never": "Relance n'envoie jamais d'e-mail. Il n'en a pas la possibilité.",
+      "local": "Vos contacts restent dans ce navigateur, sur cet ordinateur. Pas de compte, pas de serveur."
+    },
+    "key": {
+      "title": "Connecter l'IA (facultatif)",
+      "body": "Pour écrire des brouillons personnels, Relance utilise Claude, une IA d'Anthropic. Il vous faut votre propre clé API. Cela coûte environ un centime d'euro par e-mail, et la clé reste dans ce navigateur.",
+      "guide": "Guide pas à pas pour obtenir une clé",
+      "later": "Vous pouvez passer cette étape. Relance fonctionne alors en mode démo, avec des brouillons d'exemple, et vous pourrez ajouter une clé plus tard dans les Réglages."
+    },
+    "contacts": {
+      "title": "Ajoutez vos contacts",
+      "body": "Importez un tableur de vos contacts, ou essayez d'abord Relance avec quelques personnes fictives.",
+      "import": "Importer un tableur",
+      "sample": "Charger les contacts d'exemple",
+      "empty": "Commencer avec une liste vide",
+      "done": "Commencer"
+    }
+  },
+  "languagesInline": {
+    "en": "anglais",
+    "fr": "français"
   }
 }

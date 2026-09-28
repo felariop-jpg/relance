@@ -126,8 +126,8 @@ export function CreateDraftsDialog({
             <Banner key={l} tone="info">
               {t('create.fallback', {
                 count: byLanguage[l],
-                language: t(`languages.${l}`).toLowerCase(),
-                fallback: t(`languages.${l === 'en' ? 'fr' : 'en'}`).toLowerCase(),
+                language: t(`languagesInline.${l}`),
+                fallback: t(`languagesInline.${l === 'en' ? 'fr' : 'en'}`),
               })}
             </Banner>
           ))}
