@@ -32,7 +32,12 @@ export function Modal({
   useEffect(() => {
     const dialog = ref.current;
     if (!dialog) return;
-    if (open && !dialog.open) dialog.showModal();
+    if (open && !dialog.open) {
+      dialog.showModal();
+      // React's autoFocus runs before the dialog is shown, so it has no effect here;
+      // showModal() would focus the close button. Mark the field to start in instead.
+      dialog.querySelector<HTMLElement>('[data-autofocus]')?.focus();
+    }
     if (!open && dialog.open) dialog.close();
   }, [open]);
 

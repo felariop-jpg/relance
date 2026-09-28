@@ -1,4 +1,4 @@
-import { useId, useMemo, useState, type FormEvent } from 'react';
+import { useId, useMemo, useRef, useState, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Banner } from '../../components/Banner';
 import { Button } from '../../components/Button';
@@ -53,6 +53,10 @@ export function ContactForm({
   const [errors, setErrors] = useState<ContactErrors>({});
   const [saving, setSaving] = useState(false);
   const [saveFailed, setSaveFailed] = useState<false | 'error' | 'gone'>(false);
+  // "Save and add another": set just before submitting, read once by submit().
+  const addAnother = useRef(false);
+  const formRef = useRef<HTMLFormElement>(null);
+  const [lastAdded, setLastAdded] = useState<string | null>(null);
 
   const countries = useMemo(() => countryOptions(i18n.language), [i18n.language]);
   const dirty =
@@ -65,6 +69,8 @@ export function ContactForm({
 
   async function submit(e: FormEvent) {
     e.preventDefault();
+    const another = addAnother.current;
+    addAnother.current = false;
     const found = validateContact(draft);
     setErrors(found);
     const firstInvalid = (['firstName', 'email', 'lastContacted'] as const).find((k) => found[k]);
@@ -85,6 +91,15 @@ export function ContactForm({
           return;
         }
       } else await addContact(draft);
+      if (another && !contact) {
+        // Keep the form open and empty for the next person.
+        setLastAdded([draft.firstName.trim(), draft.lastName.trim()].filter(Boolean).join(' '));
+        setDraft(emptyContact());
+        setErrors({});
+        setSaving(false);
+        document.getElementById(`${id}-firstName`)?.focus();
+        return;
+      }
       onClose();
     } catch {
       setSaveFailed('error');
@@ -121,7 +136,7 @@ export function ContactForm({
         aria-invalid={Boolean(errors[name as keyof ContactErrors])}
         aria-describedby={described(name, false)}
         autoComplete="off"
-        autoFocus={name === 'firstName' && !contact}
+        data-autofocus={name === 'firstName' && !contact ? true : undefined}
       />
     </Field>
   );
@@ -139,6 +154,18 @@ export function ContactForm({
         </Button>
       )}
       <Button onClick={requestClose}>{t('common.cancel')}</Button>
+      {!contact && (
+        // type="button" so that Enter in a field still means plain Save.
+        <Button
+          disabled={saving}
+          onClick={() => {
+            addAnother.current = true;
+            formRef.current?.requestSubmit();
+          }}
+        >
+          {t('form.saveAndAddAnother')}
+        </Button>
+      )}
       <Button variant="primary" type="submit" form={fid('form')} disabled={saving}>
         {t('common.save')}
       </Button>
@@ -154,7 +181,12 @@ export function ContactForm({
       title={contact ? t('form.editTitle') : t('form.addTitle')}
       footer={footer}
     >
-      <form id={fid('form')} onSubmit={submit} noValidate className="space-y-4">
+      <form id={fid('form')} ref={formRef} onSubmit={submit} noValidate className="space-y-4">
+        {lastAdded && !saveFailed && (
+          <p role="status" className="rounded-md bg-accent-50 px-3 py-2 text-sm text-accent-800">
+            {t('form.addedNext', { name: lastAdded })}
+          </p>
+        )}
         {saveFailed && (
           <Banner tone="error">{saveFailed === 'gone' ? t('form.deletedElsewhere') : t('form.saveFailed')}</Banner>
         )}

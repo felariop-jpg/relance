@@ -120,7 +120,9 @@
     "deletedElsewhere": "Ce contact a été supprimé, peut-être dans un autre onglet : vos modifications n'ont pas pu être enregistrées. Vous pouvez le restaurer depuis « Supprimés récemment » dans la page Contacts.",
     "whereMetHint": "Par exemple : « Forum RH de Bruxelles, {{when}} ». Le modèle « Suite à une rencontre » en a besoin.",
     "openThreadHint": "Ce que vous attendez, ou ce à quoi vous n'avez jamais donné suite. L'e-mail « Reprendre contact » est construit autour de cela. S'il est vide, ces brouillons reviennent avec un passage à compléter vous-même.",
-    "openThreadPlaceholder": "ex. : en attente de leur décision budgétaire ; doivent revenir vers nous au printemps"
+    "openThreadPlaceholder": "ex. : en attente de leur décision budgétaire ; doivent revenir vers nous au printemps",
+    "saveAndAddAnother": "Enregistrer et en ajouter un autre",
+    "addedNext": "Contact enregistré : {{name}}. Ajoutez le suivant, ou fermez quand vous avez terminé."
   },
   "import": {
     "title": "Importer des contacts depuis un tableur",

@@ -183,6 +183,13 @@ README notes that swapping models is a one-line change.
 - **Inline editing**: type, language and last-contacted are edited in the table;
   everything else in the contact form.
 - **Unsaved form changes** ask "Discard changes?" before closing.
+- **"Save and add another"** (Add contact only) saves, clears every field, keeps the
+  dialog open with "<name> is saved", and puts the cursor back in First name. It is a
+  plain button, so Enter in a field still means Save (and close).
+- **Dialogs start in the field marked `data-autofocus`**, focused by `Modal` right
+  after `showModal()`. React's `autoFocus` runs before the dialog is shown and
+  silently lost to the close button, so the Add contact form used to open with the
+  cursor on ✕.
 - **UI language** starts from the browser language (fr* → French, else English)
   and is stored in settings. A small EN/FR switch sits in the header.
 - **Persistent storage** is requested once, after the first contacts are added

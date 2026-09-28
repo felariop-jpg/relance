@@ -50,7 +50,7 @@ function DeleteEverythingDialog({ onClose }: { onClose: () => void }) {
       title={t('settings.danger.dialogTitle')}
       footer={
         <>
-          <Button onClick={onClose} autoFocus>
+          <Button onClick={onClose} data-autofocus>
             {t('common.cancel')}
           </Button>
           <Button variant="danger" onClick={confirm} disabled={!matches || busy}>
