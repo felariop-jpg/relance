@@ -146,3 +146,22 @@ describe('placeholder check', () => {
     ]);
   });
 });
+
+describe('inference check', () => {
+  it('flags hedged consequences and feelings stated back, and passes clean drafts', async () => {
+    const { inferenceCheck } = await import('./snapshot-format');
+    const e = (body: string): Entry => ({ kind: 'ok', body: okBody({ subject: 's', personalizationUsed: 'p', body }) });
+    const lines = inferenceCheck([
+      { label: 'fx-11 planning', notes: 'Left the partnership.', entry: e('I imagine leaving the partnership means your plans look different.') },
+      { label: 'fx-09 reengage', notes: 'A bit nervous about the four-day week.', entry: e("Surtout avec l'appréhension que cela suscitait.") },
+      { label: 'fx-09 clean', notes: 'A bit nervous about the four-day week.', entry: e('Comment se passe la semaine de quatre jours ?') },
+      { label: 'fr hedge', notes: '', entry: e('Cela doit être un grand changement.') },
+    ]);
+    expect(lines[0]).toContain('2:');
+    expect(lines).toContain('- fx-11 planning: "I imagine"');
+    expect(lines.find((l) => l.startsWith('- fr hedge'))).toContain('Cela doit');
+    expect(lines.find((l) => l.startsWith('**Feelings'))).toContain('1:');
+    expect(lines.some((l) => l.startsWith('- fx-09 reengage'))).toBe(true);
+    expect(lines.some((l) => l.startsWith('- fx-09 clean'))).toBe(false);
+  });
+});

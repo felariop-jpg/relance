@@ -250,3 +250,38 @@ export function placeholderCheck(items: { label: string; entry: Entry }[], find:
     ...hits,
   ];
 }
+
+/** Hedged guesses at a consequence or someone's situation ("I imagine…", « cela doit… »). */
+export const HEDGED_GUESS =
+  /\b(I imagine|I expect|I suspect|I'?m sure|I am sure|I bet|I guess|that must|this must|must have been|must be (quite|a|so)|no doubt|presumably)\b|(j['’]imagine|je suppose|je suis (sûre?|certaine?) que|cela doit|ça doit|doit être (un|une|très|assez)|a dû|sans doute)/iu;
+
+/** Words for feelings; the stem is enough ("nerv" matches nervous, nerveux, nervosité). */
+const FEELINGS = [
+  'nerv', 'anxi', 'worr', 'stress', 'apprehens', 'appréhens', 'afraid', 'scared', 'fear', 'upset', 'frustrat', 'overwhelm',
+  'inquiet', 'inquiét', 'peur', 'angoiss', 'crain', 'débord', 'soucieu', 'tendu', 'tension',
+];
+const feelingIn = (text: string) => FEELINGS.find((f) => text.toLowerCase().includes(f)) ?? null;
+
+/** Check: guesses at consequences, and feelings from the notes stated back. */
+export function inferenceCheck(items: { label: string; entry: Entry; notes: string }[]): string[] {
+  const hedges: string[] = [];
+  const feelings: string[] = [];
+  for (const { label, entry, notes } of items) {
+    const d = readDraft(entry);
+    if (!d) continue;
+    const text = `${d.subject}\n${d.body}`;
+    const hedge = HEDGED_GUESS.exec(text)?.[0];
+    if (hedge) hedges.push(`- ${label}: "${hedge}"`);
+    if (feelingIn(notes)) {
+      const echoed = feelingIn(text);
+      if (echoed) feelings.push(`- ${label}: the notes record a feeling and the email mentions one ("${echoed}…")`);
+    }
+  }
+  return [
+    `**Hedged guesses** ("I imagine", « cela doit »…): ${hedges.length === 0 ? 'none.' : `${hedges.length}:`}`,
+    ...hedges,
+    '',
+    `**Feelings stated back** (a feeling from the notes echoed in the email): ${feelings.length === 0 ? 'none.' : `${feelings.length}:`}`,
+    ...feelings,
+  ];
+}

@@ -416,3 +416,18 @@ notice and no way back. Code review found more multi-tab hazards of the
   - None of the three manufactured a missing prerequisite, so none is gated.
 - Schema v6: migrates the old flag, adds `openThread`, gates built-in re-engagement,
   and refreshes the re-engagement and holiday briefs where unedited.
+
+### 2 + 3. Consequences and feelings
+- Facts rule (now 5) forbids stating or implying a consequence, implication,
+  resulting change or knock-on effect of a stated fact, hedged or not, with EN/FR
+  hedge examples; acknowledging a fact and asking an open question stays allowed.
+- New rule 6: feelings recorded in the notes may guide tone and subject but are
+  never stated back, paraphrased or alluded to; let the contact raise them.
+- Snapshot checks: "Hedged guesses" (EN/FR hedge patterns) and "Feelings stated
+  back" (a feeling word in the notes and one in the email). Both are signals for
+  review, not proof.
+- Baseline on the second snapshot: 9 hedged guesses (fx-11's "I imagine leaving the
+  partnership means…", plus eight more of the same kind: "I imagine that finish line
+  was a great feeling", « a dû demander beaucoup d'énergie », « la voile reste,
+  j'imagine, une belle façon de décrocher », …) and 1 feeling stated back (fx-09's
+  « l'appréhension »). All nine checked by reading them: each is a real guess.

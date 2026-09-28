@@ -85,6 +85,11 @@ README notes that swapping models is a one-line change.
   circumstance or context. `personalizationUsed` quotes, exactly and in double
   quotes, every source phrase used. The snapshot's "Source check" verifies each
   quote exists in the contact's data; fixture fx-11 is bait for embellishment.
+- No stated or implied consequence of a fact, hedged or not ("I imagine…",
+  « cela doit… »): acknowledge and ask, never narrate what it led to.
+- Feelings recorded in notes guide tone and subject only; never stated back,
+  paraphrased or alluded to. Snapshot checks "Hedged guesses" and "Feelings
+  stated back" measure both.
 - No pressure, no artificial urgency, no "just following up" / "circling back" /
   "I wanted to reach out".
 - End with a low-commitment invitation, not a meeting request.

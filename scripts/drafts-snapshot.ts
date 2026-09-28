@@ -22,7 +22,7 @@ import { createHash } from 'node:crypto';
 import { createInterface } from 'node:readline/promises';
 import { anthropicSend } from '../src/ai/anthropic';
 import { alwaysOnline, classifyError, dualForm, generateWithRetries } from '../src/ai/engine';
-import { failedBody, key, okBody, parseSnapshot, pendingBody, renderSnapshot, dualFormCheck, openingCheck, placeholderCheck, sourceCheck, type Entry, type Job } from './snapshot-format';
+import { failedBody, key, okBody, parseSnapshot, pendingBody, renderSnapshot, dualFormCheck, inferenceCheck, openingCheck, placeholderCheck, sourceCheck, type Entry, type Job } from './snapshot-format';
 import { costEur, costUsd, EST_TOKENS_PER_DRAFT, MODEL } from '../src/ai/model';
 import { buildRequest, SYSTEM_PROMPT } from '../src/ai/prompt';
 import type { Contact } from '../src/db/schema';
@@ -145,6 +145,8 @@ const checks = () => {
     ...openingCheck(openings),
     '',
     ...placeholderCheck(items, inputPlaceholders),
+    '',
+    ...inferenceCheck(plan.map((p, i) => ({ ...items[i], notes: p.contact.notes }))),
     '',
     ...sourceCheck(items),
     '',
