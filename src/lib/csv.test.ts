@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import {
   applyMapping,
+  countIssues,
   decodeCsvBytes,
   hasNameColumn,
   looksLikeSpreadsheet,
@@ -126,8 +127,12 @@ describe('applyMapping', () => {
   });
 
   it('counts values it could not read', () => {
-    expect(result.unknownCountry).toBe(1);
-    expect(result.unknownDate).toBe(1);
+    expect(countIssues(result)).toEqual({ unknownCountry: 1, unknownDate: 1 });
+  });
+
+  it('does not count problems on rows later skipped as duplicates', () => {
+    // Bo (index 1) has the unknown country and date; pretend Bo was a duplicate.
+    expect(countIssues(result, [1])).toEqual({ unknownCountry: 0, unknownDate: 0 });
   });
 
   it('prefers a dedicated first-name column over a split full name', () => {

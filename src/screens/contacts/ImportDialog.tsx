@@ -10,18 +10,22 @@ import { importContacts, type ImportResult } from '../../db/contacts';
 import { CONTACT_TYPES, type ContactType } from '../../db/schema';
 import {
   applyMapping,
+  countIssues,
   hasNameColumn,
   looksLikeSpreadsheet,
   parseCsvText,
   readCsvFile,
   suggestMapping,
   type ColumnMapping,
-  type MappingResult,
 } from '../../lib/csv';
 import { ColumnMapper } from './ColumnMapper';
 
 type Step = 'choose' | 'map' | 'done';
-type Outcome = ImportResult & Omit<MappingResult, 'contacts'>;
+type Outcome = Pick<ImportResult, 'added' | 'duplicates'> & {
+  missingName: number;
+  unknownCountry: number;
+  unknownDate: number;
+};
 
 export function ImportDialog({ onClose }: { onClose: () => void }) {
   const { t } = useTranslation();
@@ -75,8 +79,13 @@ export function ImportDialog({ onClose }: { onClose: () => void }) {
     setError(null);
     try {
       const result = await importContacts(preview.contacts);
-      const { contacts: _contacts, ...counts } = preview;
-      setOutcome({ ...result, ...counts });
+      // Only count unreadable values on rows that were actually added.
+      setOutcome({
+        added: result.added,
+        duplicates: result.duplicates,
+        missingName: preview.missingName,
+        ...countIssues(preview, result.duplicateIndexes),
+      });
       setStep('done');
     } catch {
       setError(t('import.importFailed'));

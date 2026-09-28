@@ -6,12 +6,16 @@ import { Button } from '../../components/Button';
 import { inputBase, inputClass } from '../../components/Field';
 import { PlusIcon, SearchIcon, TrashIcon, UploadIcon } from '../../components/icons';
 import { db } from '../../db/db';
-import { CONTACT_TYPES, type Contact, type ContactType } from '../../db/schema';
+import { CONTACT_TYPES, type Contact, type ContactInput, type ContactType } from '../../db/schema';
+import { deleteContacts, restoreContacts } from '../../db/contacts';
+import { showToast } from '../../lib/toast';
+import { BackupReminder } from '../settings/BackupReminder';
+import { CreateDraftsDialog } from '../review/CreateDraftsDialog';
+import { MailIcon } from '../../components/icons';
 import { useSettings } from '../../db/settings';
 import { loadSampleContacts, SAMPLE_CSV_URL } from '../../lib/sample';
 import { ContactForm } from './ContactForm';
 import { ContactTable } from './ContactTable';
-import { DeleteDialog } from './DeleteDialog';
 import { ImportDialog } from './ImportDialog';
 import { matchesQuery, sortContacts, type Sort, type SortKey } from './sorting';
 
@@ -27,9 +31,11 @@ export function ContactsScreen() {
   const [typeFilter, setTypeFilter] = useState<ContactType | ''>('');
   const [sort, setSort] = useState<Sort>({ key: 'firstName', dir: 'asc' });
   const [selected, setSelected] = useState<Set<string>>(new Set());
-  const [editing, setEditing] = useState<Contact | 'new' | null>(null);
+  const [editing, setEditing] = useState<{ contact: Contact | null; draft?: ContactInput } | null>(
+    null,
+  );
   const [importing, setImporting] = useState(false);
-  const [pendingDelete, setPendingDelete] = useState<string[] | null>(null);
+  const [writingFor, setWritingFor] = useState<string[] | null>(null);
   const [notice, setNotice] = useState<Notice | null>(null);
   const [sampleBusy, setSampleBusy] = useState(false);
 
@@ -66,6 +72,31 @@ export function ContactsScreen() {
       return next;
     });
 
+  // Deleting is immediate; the toast's Undo puts everything back for 10 seconds.
+  async function remove(ids: string[]) {
+    try {
+      const removed = await deleteContacts(ids);
+      const gone = new Set(ids);
+      setSelected((s) => new Set([...s].filter((id) => !gone.has(id))));
+      showToast({
+        tone: 'info',
+        message: t('contacts.deleted', { count: removed.contacts.length }),
+        undo: () => restoreContacts(removed),
+      });
+    } catch {
+      setNotice({ tone: 'error', text: t('contacts.saveFailed') });
+    }
+  }
+
+  function discard(contact: Contact | null, draft: ContactInput) {
+    setEditing(null);
+    showToast({
+      tone: 'info',
+      message: t('form.discarded'),
+      undo: () => setEditing({ contact, draft }),
+    });
+  }
+
   async function loadSample() {
     setSampleBusy(true);
     try {
@@ -82,7 +113,6 @@ export function ContactsScreen() {
     }
   }
 
-  const editingContact = editing === 'new' ? null : editing;
   const total = contacts?.length ?? 0;
   const filtering = query.trim() !== '' || typeFilter !== '';
 
@@ -104,7 +134,7 @@ export function ContactsScreen() {
             <UploadIcon />
             {t('contacts.import')}
           </Button>
-          <Button variant="primary" onClick={() => setEditing('new')}>
+          <Button variant="primary" onClick={() => setEditing({ contact: null })}>
             <PlusIcon />
             {t('contacts.add')}
           </Button>
@@ -117,6 +147,8 @@ export function ContactsScreen() {
         </Banner>
       )}
 
+      {contacts && <BackupReminder contactCount={total} />}
+
       {!contacts && <p className="py-10 text-center text-stone-500">{t('common.loading')}</p>}
 
       {contacts && total === 0 && (
@@ -128,7 +160,7 @@ export function ContactsScreen() {
               <Button variant="primary" size="sm" onClick={() => setImporting(true)}>
                 {t('contacts.import')}
               </Button>
-              <Button size="sm" onClick={() => setEditing('new')}>
+              <Button size="sm" onClick={() => setEditing({ contact: null })}>
                 {t('contacts.add')}
               </Button>
               <Button size="sm" onClick={loadSample} disabled={sampleBusy}>
@@ -188,9 +220,13 @@ export function ContactsScreen() {
                 <Button size="sm" variant="ghost" onClick={() => setSelected(new Set())}>
                   {t('contacts.clearSelection')}
                 </Button>
-                <Button size="sm" variant="danger" onClick={() => setPendingDelete(selectedVisible)}>
+                <Button size="sm" variant="danger" onClick={() => void remove(selectedVisible)}>
                   <TrashIcon />
                   {t('contacts.deleteSelected')}
+                </Button>
+                <Button size="sm" variant="primary" onClick={() => setWritingFor(selectedVisible)}>
+                  <MailIcon />
+                  {t('contacts.writeEmails')}
                 </Button>
               </div>
             )}
@@ -219,7 +255,7 @@ export function ContactsScreen() {
               selected={selected}
               onToggle={toggle}
               onToggleAll={toggleAll}
-              onEdit={setEditing}
+              onEdit={(contact) => setEditing({ contact })}
               onSaveError={() => setNotice({ tone: 'error', text: t('contacts.saveFailed') })}
             />
           )}
@@ -228,25 +264,21 @@ export function ContactsScreen() {
 
       {editing && (
         <ContactForm
-          key={editingContact?.id ?? 'new'}
-          contact={editingContact}
+          key={editing.contact?.id ?? 'new'}
+          contact={editing.contact}
+          initialDraft={editing.draft}
           settings={settings}
           onClose={() => setEditing(null)}
-          onDeleteRequest={(c) => setPendingDelete([c.id])}
+          onDiscard={(draft) => discard(editing.contact, draft)}
+          onDeleteRequest={(c) => {
+            setEditing(null);
+            void remove([c.id]);
+          }}
         />
       )}
       {importing && <ImportDialog onClose={() => setImporting(false)} />}
-      {pendingDelete && (
-        <DeleteDialog
-          ids={pendingDelete}
-          onClose={() => setPendingDelete(null)}
-          onDeleted={() => {
-            const gone = new Set(pendingDelete);
-            setSelected((s) => new Set([...s].filter((id) => !gone.has(id))));
-            if (editingContact && gone.has(editingContact.id)) setEditing(null);
-            setPendingDelete(null);
-          }}
-        />
+      {writingFor && (
+        <CreateDraftsDialog contactIds={writingFor} onClose={() => setWritingFor(null)} />
       )}
     </section>
   );

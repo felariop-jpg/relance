@@ -137,12 +137,23 @@ export interface MappingOptions {
 
 export interface MappingResult {
   contacts: ContactInput[];
+  /** Per contact (same order): which values could not be read and were left blank. */
+  issues: { unknownCountry: boolean; unknownDate: boolean }[];
   /** Rows skipped because no first name could be found. */
   missingName: number;
-  /** Contacts whose country could not be recognised (left blank). */
-  unknownCountry: number;
-  /** Contacts whose last-contacted date could not be read (left blank). */
-  unknownDate: number;
+}
+
+/** Counts unreadable values among the contacts that were actually added. */
+export function countIssues(
+  result: MappingResult,
+  skippedIndexes: number[] = [],
+): { unknownCountry: number; unknownDate: number } {
+  const skipped = new Set(skippedIndexes);
+  const kept = result.issues.filter((_, i) => !skipped.has(i));
+  return {
+    unknownCountry: kept.filter((i) => i.unknownCountry).length,
+    unknownDate: kept.filter((i) => i.unknownDate).length,
+  };
 }
 
 export function applyMapping(
@@ -154,7 +165,7 @@ export function applyMapping(
   const dateCol = col('lastContacted');
   const dayFirst = dateCol >= 0 ? detectDayFirst(parsed.rows.map((r) => r[dateCol])) : true;
 
-  const result: MappingResult = { contacts: [], missingName: 0, unknownCountry: 0, unknownDate: 0 };
+  const result: MappingResult = { contacts: [], issues: [], missingName: 0 };
 
   for (const row of parsed.rows) {
     const get = (target: ImportTarget) => {
@@ -179,11 +190,12 @@ export function applyMapping(
 
     const countryRaw = get('country');
     const country = parseCountry(countryRaw);
-    if (country === null) result.unknownCountry++;
-
     const dateRaw = get('lastContacted');
     const lastContacted = parseDate(dateRaw, dayFirst);
-    if (dateRaw && lastContacted === null) result.unknownDate++;
+    result.issues.push({
+      unknownCountry: country === null,
+      unknownDate: Boolean(dateRaw) && lastContacted === null,
+    });
 
     result.contacts.push({
       ...emptyContact(),

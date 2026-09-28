@@ -75,3 +75,36 @@ export const InfoIcon = (p: IconProps) => (
     <path d="M10 9v4.5M10 6.5v.01" />
   </Icon>
 );
+export const MailIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <rect x="3" y="4.5" width="14" height="11" rx="1.5" />
+    <path d="M3.5 5.5 10 10.5l6.5-5" />
+  </Icon>
+);
+export const DownloadIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M10 3v10M6 9l4 4 4-4M3.5 13v3.5h13V13" />
+  </Icon>
+);
+export const RefreshIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M16 10a6 6 0 1 1-1.8-4.3M16 3.5v3.5h-3.5" />
+  </Icon>
+);
+export const ChevronIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M7.5 5l5 5-5 5" />
+  </Icon>
+);
+export const CopyIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <rect x="7" y="7" width="9.5" height="9.5" rx="1.5" />
+    <path d="M13 7V4.5A1.5 1.5 0 0 0 11.5 3h-7A1.5 1.5 0 0 0 3 4.5v7A1.5 1.5 0 0 0 4.5 13H7" />
+  </Icon>
+);
+export const KeyboardIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <rect x="2.5" y="5" width="15" height="10" rx="1.5" />
+    <path d="M6 8.5h.01M9 8.5h.01M12 8.5h.01M15 8.5h.01M6.5 12h7" />
+  </Icon>
+);

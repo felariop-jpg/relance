@@ -28,8 +28,38 @@ export interface Contact {
 
 export type ContactInput = Omit<Contact, 'id' | 'createdAt' | 'updatedAt'>;
 
-export const DRAFT_STATUSES = ['generated', 'edited', 'approved', 'skipped'] as const;
+/**
+ * pending/failed are generation lifecycle states; the four review states
+ * (generated, edited, approved, skipped) come from the spec.
+ */
+export const DRAFT_STATUSES = [
+  'pending',
+  'failed',
+  'generated',
+  'edited',
+  'approved',
+  'skipped',
+] as const;
 export type DraftStatus = (typeof DRAFT_STATUSES)[number];
+
+/** ai = written by the model; demo = canned example (no API key); template = template text only. */
+export type DraftSource = 'ai' | 'demo' | 'template';
+
+export const DRAFT_ERROR_CODES = [
+  'network',
+  'auth',
+  'rate_limit',
+  'overloaded',
+  'malformed',
+  'interrupted',
+  'unknown',
+] as const;
+export type DraftErrorCode = (typeof DRAFT_ERROR_CODES)[number];
+
+export interface TokenUsage {
+  inputTokens: number;
+  outputTokens: number;
+}
 
 export interface Draft {
   id: string;
@@ -41,7 +71,19 @@ export interface Draft {
   /** The model's own report of which detail it used. */
   personalizationUsed: string;
   status: DraftStatus;
+  source: DraftSource;
+  /** False when notes were empty or withheld: the card shows a warning. */
+  notesAvailable: boolean;
+  /** Exact JSON request body sent to the API (or that would have been, in demo mode). */
+  payloadJson: string | null;
+  usage: TokenUsage | null;
+  costEur: number;
+  error: { code: DraftErrorCode; detail: string } | null;
+  /** Last extra instruction given when regenerating ("shorter", "plus formel"). */
+  instruction: string;
+  exportedAt: string | null;
   createdAt: string;
+  updatedAt: string;
 }
 
 /** Due in `month` (1–12) if at least `minGapDays` have passed since last contact. */
@@ -61,6 +103,8 @@ export interface Template {
   /** Natural-language guidance passed to the model. */
   instructions: string;
   scheduleRule: ScheduleRule | null;
+  /** Contact types this template is meant for. Empty = everyone. */
+  appliesTo: ContactType[];
   isBuiltIn: boolean;
 }
 
@@ -95,5 +139,17 @@ export interface Settings {
   countryLanguageOverrides: Record<string, Lang>;
   /** API fields the user chose never to send. Global, not per contact. */
   withheldFields: ApiField[];
+  /** Up to 3 emails the user wrote, used as a style reference. */
+  voiceSamples: string[];
+  /** Running total of what generation has cost, in EUR. */
+  costTotalEur: number;
+  /** When the running total was last reset (ISO). */
+  costSince: string;
+  lastBackupAt: string | null;
+  backupReminderSnoozedUntil: string | null;
+  templatesSeeded: boolean;
   firstRunDone: boolean;
 }
+
+export const VOICE_SAMPLE_LIMIT = 3;
+export const VOICE_SAMPLE_MAX_CHARS = 2000;

@@ -30,7 +30,8 @@
     "edit": "Edit",
     "loading": "Loading…",
     "optional": "optional",
-    "required": "required"
+    "required": "required",
+    "undo": "Undo"
   },
   "languages": {
     "en": "English",
@@ -93,7 +94,10 @@
     "sortBy": "Sort by {{column}}",
     "actions": "Actions",
     "saveFailed": "That change couldn't be saved. Please try again.",
-    "cellLabel": "{{field}}: {{name}}"
+    "cellLabel": "{{field}}: {{name}}",
+    "deleted_one": "Deleted {{count}} contact.",
+    "deleted_other": "Deleted {{count}} contacts.",
+    "writeEmails": "Write emails…"
   },
   "form": {
     "addTitle": "Add a contact",
@@ -106,20 +110,10 @@
     "notesHint": "The most important field. Write what you'd want to remember before emailing this person: what you talked about, what's happening for them, anything they mentioned.",
     "serviceHistoryHint": "What you've done together, if anything.",
     "lastContactedHint": "Leave empty if you've never been in touch.",
-    "discardTitle": "Discard your changes?",
-    "discardBody": "The changes you made to this contact won't be saved.",
-    "keepEditing": "Keep editing",
-    "discard": "Discard changes",
     "deleteContact": "Delete contact",
     "saveFailed": "The contact couldn't be saved. Please try again.",
-    "dateInvalid": "Enter a full date, or leave it empty."
-  },
-  "delete": {
-    "title_one": "Delete {{count}} contact?",
-    "title_other": "Delete {{count}} contacts?",
-    "body": "Any drafts written for them are deleted too. This can't be undone.",
-    "confirm_one": "Delete contact",
-    "confirm_other": "Delete {{count}} contacts"
+    "dateInvalid": "Enter a full date, or leave it empty.",
+    "discarded": "Unsaved changes discarded."
   },
   "import": {
     "title": "Import contacts from a spreadsheet",
@@ -167,5 +161,123 @@
     "title": "Relance can’t store your contacts in this browser",
     "body": "Relance keeps everything on your own computer, inside the browser. This browser is currently not allowing that, which often happens in a private or incognito window.",
     "fix": "Open this page in a normal browser window. If that doesn’t help, try another browser such as Chrome, Edge, Firefox or Safari."
+  },
+  "create": {
+    "title": "Write emails",
+    "for_one": "For {{count}} contact.",
+    "for_other": "For {{count}} contacts.",
+    "template": "Template",
+    "method": "How should they be written?",
+    "methodTemplate": "Use the template text as it is",
+    "methodTemplateHint": "Fills in names and your signature. No AI and no cost.",
+    "fallback_one": "This template has no {{language}} version, so the {{fallback}} version will be used for {{count}} contact.",
+    "fallback_other": "This template has no {{language}} version, so the {{fallback}} version will be used for {{count}} contacts.",
+    "submit_one": "Write {{count}} email",
+    "submit_other": "Write {{count}} emails",
+    "done_one": "{{count}} draft is ready to review.",
+    "done_other": "{{count}} drafts are ready to review.",
+    "noTemplates": "There are no templates yet. You can add one in Settings.",
+    "failed": "The drafts couldn't be created. Please try again."
+  },
+  "review": {
+    "title": "Review",
+    "filters": {
+      "label": "Show",
+      "toReview": "To review",
+      "approved": "Approved",
+      "skipped": "Skipped",
+      "all": "All"
+    },
+    "empty": {
+      "title": "No drafts yet",
+      "body": "To write emails, select contacts on the Contacts page and choose “Write emails”, or see who is due on the Due now page."
+    },
+    "emptyFilter": "No drafts in this list.",
+    "noEmail": "No email address",
+    "subject": "Subject",
+    "body": "Email text",
+    "source": {
+      "template": "Template text",
+      "ai": "Written with AI",
+      "demo": "Example"
+    },
+    "status": {
+      "pending": "Writing…",
+      "failed": "Not written",
+      "generated": "New",
+      "edited": "Edited",
+      "approved": "Approved",
+      "skipped": "Skipped"
+    },
+    "notPersonal": "Template text, not personalised.",
+    "approve": "Approve",
+    "approved": "Approved",
+    "skip": "Skip",
+    "skipped": "Skipped",
+    "remove": "Remove",
+    "removed_one": "Removed {{count}} draft.",
+    "removed_other": "Removed {{count}} drafts.",
+    "saving": "Saving…",
+    "saved": "Saved",
+    "saveFailed": "Not saved. Check that this page is still open, then type again.",
+    "exported": "Exported {{date}}",
+    "deletedContact": "Deleted contact",
+    "unknownPlaceholders": "This email still contains {{list}}. Replace it before sending.",
+    "exportApproved_one": "Export {{count}} approved draft",
+    "exportApproved_other": "Export {{count}} approved drafts",
+    "noneApproved": "Approve the drafts you want to send, then export them here."
+  },
+  "export": {
+    "title": "Export approved drafts",
+    "format": "Format",
+    "eml": "Email files for Outlook (.eml files in a .zip)",
+    "emlHint": "Each draft opens in Outlook as a new email, ready for you to read and send.",
+    "brevo": "Spreadsheet for Brevo (.csv)",
+    "brevoHint": "One row per draft with email, first name, last name, subject and text, to import into a Brevo campaign.",
+    "noEmail_one": "{{count}} draft has no email address. Add it in your email program before sending.",
+    "noEmail_other": "{{count}} drafts have no email address. Add them in your email program before sending.",
+    "markContacted_one": "Mark this contact as contacted today",
+    "markContacted_other": "Mark these {{count}} contacts as contacted today",
+    "markContactedHint": "This keeps “Due now” accurate. Untick it if you won't send them today.",
+    "submit": "Download",
+    "doneTitle": "Your file is downloading",
+    "fileName": "File: {{name}}",
+    "doneEml": "Find the .zip file in your Downloads folder and double-click it to open it. Then open each email file: Outlook shows it as a new message. Read it, then press Send.",
+    "doneBrevo": "In Brevo, import this file as contacts. The SUBJECT and BODY columns become contact attributes that you can use in a campaign.",
+    "failed": "The export didn't work. Please try again."
+  },
+  "settings": {
+    "title": "Settings",
+    "more": "More settings will appear here in a later version.",
+    "backup": {
+      "title": "Backup",
+      "body": "Your contacts are stored only in this browser. Browsers sometimes clear stored data, so download a backup now and then and keep it somewhere safe. The backup does not include your API key.",
+      "download": "Download a backup",
+      "last": "Last backup: {{date}}",
+      "never": "No backup yet.",
+      "restore": "Restore from a backup",
+      "downloaded": "Backup saved as {{name}}.",
+      "failed": "The backup couldn't be created. Please try again."
+    },
+    "restore": {
+      "title": "Restore from a backup",
+      "summary": "Backup from {{date}}. Contacts: {{contacts}} · Drafts: {{drafts}} · Templates: {{templates}}",
+      "merge": "Add to what is already here",
+      "mergeHint": "Keeps your current contacts and settings, and adds anything from the backup that is missing.",
+      "replace": "Replace everything here",
+      "replaceHint": "Your current contacts, drafts, templates and settings are replaced by the backup. Your API key is kept.",
+      "submit": "Restore",
+      "done": "Restored. Contacts: {{contacts}} · Drafts: {{drafts}} · Templates: {{templates}}",
+      "notJson": "This file isn't a Relance backup. Choose the .json file that you downloaded from Relance.",
+      "notBackup": "This file isn't a Relance backup, or it is damaged.",
+      "tooNew": "This backup was made by a newer version of Relance. Reload this page to get the latest version, then try again.",
+      "failed": "The restore didn't finish, and nothing was changed."
+    }
+  },
+  "backupReminder": {
+    "title": "Time for a backup",
+    "body": "You have {{count}} contacts stored only in this browser. Download a backup so you don't lose them if the browser clears its data.",
+    "download": "Download a backup",
+    "later": "Remind me in a week"
   }
 }

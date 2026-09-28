@@ -31,20 +31,25 @@ import { languageForCountry } from '../../lib/language';
 export function ContactForm({
   contact,
   settings,
+  initialDraft,
   onClose,
+  onDiscard,
   onDeleteRequest,
 }: {
   contact: Contact | null;
   settings: Settings;
+  /** Restores unsaved edits after an Undo. */
+  initialDraft?: ContactInput;
   onClose: () => void;
+  /** Called instead of onClose when closing would lose edits; the caller offers Undo. */
+  onDiscard: (unsaved: ContactInput) => void;
   onDeleteRequest: (contact: Contact) => void;
 }) {
   const { t, i18n } = useTranslation();
   const id = useId();
   const initial = useMemo(() => (contact ? contactToInput(contact) : emptyContact()), [contact]);
-  const [draft, setDraft] = useState<ContactInput>(initial);
+  const [draft, setDraft] = useState<ContactInput>(initialDraft ?? initial);
   const [errors, setErrors] = useState<ContactErrors>({});
-  const [confirmingDiscard, setConfirmingDiscard] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saveFailed, setSaveFailed] = useState(false);
 
@@ -55,7 +60,7 @@ export function ContactForm({
   const set = <K extends keyof ContactInput>(key: K, value: ContactInput[K]) =>
     setDraft((d) => ({ ...d, [key]: value }));
 
-  const requestClose = () => (dirty ? setConfirmingDiscard(true) : onClose());
+  const requestClose = () => (dirty ? onDiscard(draft) : onClose());
 
   async function submit(e: FormEvent) {
     e.preventDefault();
@@ -112,22 +117,7 @@ export function ContactForm({
     </Field>
   );
 
-  const footer = confirmingDiscard ? (
-    <div className="flex w-full flex-wrap items-center gap-3" role="alert">
-      <div className="min-w-[14rem] flex-1">
-        <p className="font-semibold">{t('form.discardTitle')}</p>
-        <p className="text-sm text-stone-600">{t('form.discardBody')}</p>
-      </div>
-      <div className="flex gap-2">
-        <Button onClick={() => setConfirmingDiscard(false)} autoFocus>
-          {t('form.keepEditing')}
-        </Button>
-        <Button variant="danger" onClick={onClose}>
-          {t('form.discard')}
-        </Button>
-      </div>
-    </div>
-  ) : (
+  const footer = (
     <>
       {contact && (
         <Button

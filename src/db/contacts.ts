@@ -1,5 +1,5 @@
 import { db } from './db';
-import type { Contact, ContactInput } from './schema';
+import type { Contact, ContactInput, Draft } from './schema';
 import { requestPersistentStorage } from './storage';
 import { isPlausibleDate } from '../lib/dates';
 
@@ -71,12 +71,29 @@ export async function updateContact(id: string, patch: Partial<ContactInput>): P
   await db.contacts.update(id, { ...next, updatedAt: now() });
 }
 
-/** Deletes contacts and every draft written for them. */
-export async function deleteContacts(ids: string[]): Promise<void> {
-  if (ids.length === 0) return;
-  await db.transaction('rw', db.contacts, db.drafts, async () => {
-    await db.drafts.where('contactId').anyOf(ids).delete();
+/** Everything removed by a delete, kept in memory so it can be undone. */
+export interface DeletedContacts {
+  contacts: Contact[];
+  drafts: Draft[];
+}
+
+/** Deletes contacts and every draft written for them; returns what was removed. */
+export async function deleteContacts(ids: string[]): Promise<DeletedContacts> {
+  if (ids.length === 0) return { contacts: [], drafts: [] };
+  return db.transaction('rw', db.contacts, db.drafts, async () => {
+    const contacts = (await db.contacts.bulkGet(ids)).filter((c): c is Contact => Boolean(c));
+    const drafts = await db.drafts.where('contactId').anyOf(ids).toArray();
+    await db.drafts.bulkDelete(drafts.map((d) => d.id));
     await db.contacts.bulkDelete(ids);
+    return { contacts, drafts };
+  });
+}
+
+/** Puts deleted contacts and their drafts back exactly as they were. */
+export async function restoreContacts(deleted: DeletedContacts): Promise<void> {
+  await db.transaction('rw', db.contacts, db.drafts, async () => {
+    await db.contacts.bulkPut(deleted.contacts);
+    await db.drafts.bulkPut(deleted.drafts);
   });
 }
 
@@ -84,6 +101,8 @@ export interface ImportResult {
   added: number;
   /** Skipped because a contact with the same email already exists. */
   duplicates: number;
+  /** Positions (in the input array) of the rows skipped as duplicates. */
+  duplicateIndexes: number[];
 }
 
 /**
@@ -96,19 +115,19 @@ export async function importContacts(inputs: ContactInput[]): Promise<ImportResu
     const seen = new Set(existing.map((c) => c.email.toLowerCase()).filter(Boolean));
     const stamp = now();
     const toAdd: Contact[] = [];
-    let duplicates = 0;
-    for (const raw of inputs) {
+    const duplicateIndexes: number[] = [];
+    inputs.forEach((raw, index) => {
       const input = normalizeContact(raw);
       const key = input.email.toLowerCase();
       if (key && seen.has(key)) {
-        duplicates++;
-        continue;
+        duplicateIndexes.push(index);
+        return;
       }
       if (key) seen.add(key);
       toAdd.push({ ...input, id: crypto.randomUUID(), createdAt: stamp, updatedAt: stamp });
-    }
+    });
     await db.contacts.bulkAdd(toAdd);
-    return { added: toAdd.length, duplicates };
+    return { added: toAdd.length, duplicates: duplicateIndexes.length, duplicateIndexes };
   });
   if (result.added > 0) void requestPersistentStorage();
   return result;

@@ -172,3 +172,33 @@ README notes that swapping models is a one-line change.
   before discarding unsaved changes.
 - **Layout width** is `max-w-screen-2xl` so the dense table fits on a laptop.
   Narrower screens scroll the table horizontally.
+
+### Phase 2 decisions
+- **Draft lifecycle** adds `pending` and `failed` to the four review statuses, so a
+  card can exist while it is being written or after it failed. Drafts also carry
+  `source` (ai / demo / template), `notesAvailable`, `payloadJson`, `usage`,
+  `costEur`, `error`, `instruction`, `exportedAt`, `updatedAt`.
+- **Templates** gain `appliesTo` (contact types; empty = everyone) so
+  "Re-engagement" targets prospects, "Post-event" leads and prospects, etc.
+- **Built-ins are seeded once** (`settings.templatesSeeded`), so a user who
+  deletes one doesn't get it back on reload. Settings will offer "restore
+  built-in templates".
+- **French template wording is gender-neutral** for both sender and recipient
+  ("je reprendrais volontiers" rather than "je serais heureux").
+- **`{{signature}}` falls back to the sender name** when no signature is set.
+- **A line whose placeholders are all empty is removed** (e.g. the booking-link
+  line when there is no Calendly link). Unknown placeholders are left visible
+  and flagged on the card.
+- **Export marks contacts as contacted today** by default (checkbox, can untick),
+  so Due now stays accurate. Exported drafts keep their status and show
+  "Exported <date>".
+- **.eml has no From or Date header** and sets `X-Unsent: 1`, so Outlook opens it
+  as an editable new message from the user's own account.
+- **Brevo CSV columns**: EMAIL, FIRSTNAME, LASTNAME, SUBJECT, BODY.
+- **Backup** excludes the API key. Restore "merge" keeps current settings and adds
+  missing records (newest `updatedAt` wins; same email under another id is
+  skipped). "Replace" swaps everything but keeps the API key. Both are undoable.
+- **Backup reminder** shows on Contacts above 50 contacts with no backup in 30
+  days; "Remind me in a week" snoozes 7 days.
+- **Undo window** is 10 s; deleted rows live only in the toast's closure.
+  Toasts sit above the Review screen's bottom export bar.

@@ -5,10 +5,12 @@ import {
   deleteContacts,
   emptyContact,
   importContacts,
+  restoreContacts,
   updateContact,
   validateContact,
 } from './contacts';
 import { ensureSettings, updateSettings } from './settings';
+import { newDraft } from './drafts';
 
 beforeEach(async () => {
   await Promise.all(db.tables.map((table) => table.clear()));
@@ -38,22 +40,17 @@ describe('contacts', () => {
   it('deletes contacts together with their drafts', async () => {
     const keep = await addContact(person('Keep'));
     const drop = await addContact(person('Drop'));
-    const draft = {
-      templateId: 't',
-      subject: '',
-      body: '',
-      language: 'en' as const,
-      personalizationUsed: '',
-      status: 'generated' as const,
-      createdAt: '',
-    };
     await db.drafts.bulkAdd([
-      { ...draft, id: 'd1', contactId: keep },
-      { ...draft, id: 'd2', contactId: drop },
+      newDraft({ id: 'd1', contactId: keep, templateId: 't', language: 'en' }),
+      newDraft({ id: 'd2', contactId: drop, templateId: 't', language: 'en' }),
     ]);
-    await deleteContacts([drop]);
+    const removed = await deleteContacts([drop]);
     expect((await db.contacts.toArray()).map((c) => c.firstName)).toEqual(['Keep']);
     expect((await db.drafts.toArray()).map((d) => d.id)).toEqual(['d1']);
+
+    await restoreContacts(removed);
+    expect(await db.contacts.count()).toBe(2);
+    expect((await db.drafts.toArray()).map((d) => d.id).sort()).toEqual(['d1', 'd2']);
   });
 
   it('imports while skipping duplicate emails, case-insensitively', async () => {
@@ -65,7 +62,7 @@ describe('contacts', () => {
       person('No email one'),
       person('No email two'),
     ]);
-    expect(result).toEqual({ added: 3, duplicates: 2 });
+    expect(result).toEqual({ added: 3, duplicates: 2, duplicateIndexes: [0, 2] });
     expect(await db.contacts.count()).toBe(4);
   });
 

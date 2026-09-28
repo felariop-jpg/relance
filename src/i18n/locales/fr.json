@@ -30,7 +30,8 @@
     "edit": "Modifier",
     "loading": "Chargement…",
     "optional": "facultatif",
-    "required": "obligatoire"
+    "required": "obligatoire",
+    "undo": "Annuler"
   },
   "languages": {
     "en": "Anglais",
@@ -96,7 +97,11 @@
     "sortBy": "Trier par {{column}}",
     "actions": "Actions",
     "saveFailed": "Cette modification n'a pas pu être enregistrée. Veuillez réessayer.",
-    "cellLabel": "{{field}} : {{name}}"
+    "cellLabel": "{{field}} : {{name}}",
+    "deleted_one": "{{count}} contact supprimé.",
+    "deleted_many": "{{count}} contacts supprimés.",
+    "deleted_other": "{{count}} contacts supprimés.",
+    "writeEmails": "Écrire des e-mails…"
   },
   "form": {
     "addTitle": "Ajouter un contact",
@@ -109,22 +114,10 @@
     "notesHint": "Le champ le plus important. Notez ce que vous voudriez vous rappeler avant d'écrire à cette personne : ce dont vous avez parlé, ce qu'elle vit en ce moment, ce qu'elle a mentionné.",
     "serviceHistoryHint": "Ce que vous avez fait ensemble, le cas échéant.",
     "lastContactedHint": "Laissez vide si vous n'avez jamais été en contact.",
-    "discardTitle": "Abandonner vos modifications ?",
-    "discardBody": "Les modifications apportées à ce contact ne seront pas enregistrées.",
-    "keepEditing": "Continuer la modification",
-    "discard": "Abandonner les modifications",
     "deleteContact": "Supprimer le contact",
     "saveFailed": "Le contact n'a pas pu être enregistré. Veuillez réessayer.",
-    "dateInvalid": "Saisissez une date complète, ou laissez le champ vide."
-  },
-  "delete": {
-    "title_one": "Supprimer {{count}} contact ?",
-    "title_many": "Supprimer {{count}} contacts ?",
-    "title_other": "Supprimer {{count}} contacts ?",
-    "body": "Les brouillons écrits pour eux sont également supprimés. Cette action est définitive.",
-    "confirm_one": "Supprimer le contact",
-    "confirm_many": "Supprimer {{count}} contacts",
-    "confirm_other": "Supprimer {{count}} contacts"
+    "dateInvalid": "Saisissez une date complète, ou laissez le champ vide.",
+    "discarded": "Modifications non enregistrées abandonnées."
   },
   "import": {
     "title": "Importer des contacts depuis un tableur",
@@ -180,5 +173,131 @@
     "title": "Relance ne peut pas enregistrer vos contacts dans ce navigateur",
     "body": "Relance conserve tout sur votre propre ordinateur, dans le navigateur. Ce navigateur ne le permet pas actuellement, ce qui arrive souvent en navigation privée.",
     "fix": "Ouvrez cette page dans une fenêtre normale du navigateur. Si cela ne suffit pas, essayez un autre navigateur, comme Chrome, Edge, Firefox ou Safari."
+  },
+  "create": {
+    "title": "Écrire des e-mails",
+    "for_one": "Pour {{count}} contact.",
+    "for_many": "Pour {{count}} contacts.",
+    "for_other": "Pour {{count}} contacts.",
+    "template": "Modèle",
+    "method": "Comment les écrire ?",
+    "methodTemplate": "Utiliser le texte du modèle tel quel",
+    "methodTemplateHint": "Remplit les noms et votre signature. Sans IA et sans frais.",
+    "fallback_one": "Ce modèle n'a pas de version en {{language}} : la version en {{fallback}} sera utilisée pour {{count}} contact.",
+    "fallback_many": "Ce modèle n'a pas de version en {{language}} : la version en {{fallback}} sera utilisée pour {{count}} contacts.",
+    "fallback_other": "Ce modèle n'a pas de version en {{language}} : la version en {{fallback}} sera utilisée pour {{count}} contacts.",
+    "submit_one": "Écrire {{count}} e-mail",
+    "submit_many": "Écrire {{count}} e-mails",
+    "submit_other": "Écrire {{count}} e-mails",
+    "done_one": "{{count}} brouillon est prêt à relire.",
+    "done_many": "{{count}} brouillons sont prêts à relire.",
+    "done_other": "{{count}} brouillons sont prêts à relire.",
+    "noTemplates": "Il n'y a encore aucun modèle. Vous pouvez en ajouter un dans les Réglages.",
+    "failed": "Les brouillons n'ont pas pu être créés. Veuillez réessayer."
+  },
+  "review": {
+    "title": "Relecture",
+    "filters": {
+      "label": "Afficher",
+      "toReview": "À relire",
+      "approved": "Validés",
+      "skipped": "Écartés",
+      "all": "Tous"
+    },
+    "empty": {
+      "title": "Aucun brouillon pour l'instant",
+      "body": "Pour écrire des e-mails, sélectionnez des contacts dans la page Contacts et choisissez « Écrire des e-mails », ou consultez la page À relancer."
+    },
+    "emptyFilter": "Aucun brouillon dans cette liste.",
+    "noEmail": "Aucune adresse e-mail",
+    "subject": "Objet",
+    "body": "Texte de l'e-mail",
+    "source": {
+      "template": "Texte du modèle",
+      "ai": "Écrit avec l'IA",
+      "demo": "Exemple"
+    },
+    "status": {
+      "pending": "Rédaction…",
+      "failed": "Non rédigé",
+      "generated": "Nouveau",
+      "edited": "Modifié",
+      "approved": "Validé",
+      "skipped": "Écarté"
+    },
+    "notPersonal": "Texte du modèle, non personnalisé.",
+    "approve": "Valider",
+    "approved": "Validé",
+    "skip": "Écarter",
+    "skipped": "Écarté",
+    "remove": "Retirer",
+    "removed_one": "{{count}} brouillon retiré.",
+    "removed_many": "{{count}} brouillons retirés.",
+    "removed_other": "{{count}} brouillons retirés.",
+    "saving": "Enregistrement…",
+    "saved": "Enregistré",
+    "saveFailed": "Non enregistré. Vérifiez que cette page est toujours ouverte, puis tapez à nouveau.",
+    "exported": "Exporté le {{date}}",
+    "deletedContact": "Contact supprimé",
+    "unknownPlaceholders": "Cet e-mail contient encore {{list}}. Remplacez-le avant l'envoi.",
+    "exportApproved_one": "Exporter {{count}} brouillon validé",
+    "exportApproved_many": "Exporter {{count}} brouillons validés",
+    "exportApproved_other": "Exporter {{count}} brouillons validés",
+    "noneApproved": "Validez les brouillons que vous voulez envoyer, puis exportez-les ici."
+  },
+  "export": {
+    "title": "Exporter les brouillons validés",
+    "format": "Format",
+    "eml": "Fichiers e-mail pour Outlook (fichiers .eml dans un .zip)",
+    "emlHint": "Chaque brouillon s'ouvre dans Outlook comme un nouvel e-mail, prêt à être relu et envoyé.",
+    "brevo": "Tableur pour Brevo (.csv)",
+    "brevoHint": "Une ligne par brouillon avec l'e-mail, le prénom, le nom, l'objet et le texte, à importer dans une campagne Brevo.",
+    "noEmail_one": "{{count}} brouillon n'a pas d'adresse e-mail. Ajoutez-la dans votre messagerie avant l'envoi.",
+    "noEmail_many": "{{count}} brouillons n'ont pas d'adresse e-mail. Ajoutez-les dans votre messagerie avant l'envoi.",
+    "noEmail_other": "{{count}} brouillons n'ont pas d'adresse e-mail. Ajoutez-les dans votre messagerie avant l'envoi.",
+    "markContacted_one": "Indiquer ce contact comme contacté aujourd'hui",
+    "markContacted_many": "Indiquer ces {{count}} contacts comme contactés aujourd'hui",
+    "markContacted_other": "Indiquer ces {{count}} contacts comme contactés aujourd'hui",
+    "markContactedHint": "Cela garde la page « À relancer » à jour. Décochez si vous ne les envoyez pas aujourd'hui.",
+    "submit": "Télécharger",
+    "doneTitle": "Votre fichier est en cours de téléchargement",
+    "fileName": "Fichier : {{name}}",
+    "doneEml": "Retrouvez le fichier .zip dans votre dossier Téléchargements et double-cliquez dessus pour l'ouvrir. Ouvrez ensuite chaque fichier e-mail : Outlook l'affiche comme un nouveau message. Relisez-le, puis cliquez sur Envoyer.",
+    "doneBrevo": "Dans Brevo, importez ce fichier comme des contacts. Les colonnes SUBJECT et BODY deviennent des attributs de contact utilisables dans une campagne.",
+    "failed": "L'export n'a pas fonctionné. Veuillez réessayer."
+  },
+  "settings": {
+    "title": "Réglages",
+    "more": "D'autres réglages apparaîtront ici dans une prochaine version.",
+    "backup": {
+      "title": "Sauvegarde",
+      "body": "Vos contacts sont enregistrés uniquement dans ce navigateur. Les navigateurs effacent parfois les données enregistrées : téléchargez une sauvegarde de temps en temps et gardez-la en lieu sûr. La sauvegarde ne contient pas votre clé API.",
+      "download": "Télécharger une sauvegarde",
+      "last": "Dernière sauvegarde : {{date}}",
+      "never": "Aucune sauvegarde pour l'instant.",
+      "restore": "Restaurer une sauvegarde",
+      "downloaded": "Sauvegarde enregistrée sous {{name}}.",
+      "failed": "La sauvegarde n'a pas pu être créée. Veuillez réessayer."
+    },
+    "restore": {
+      "title": "Restaurer une sauvegarde",
+      "summary": "Sauvegarde du {{date}}. Contacts : {{contacts}} · Brouillons : {{drafts}} · Modèles : {{templates}}",
+      "merge": "Ajouter à ce qui est déjà ici",
+      "mergeHint": "Conserve vos contacts et réglages actuels, et ajoute ce qui manque depuis la sauvegarde.",
+      "replace": "Tout remplacer",
+      "replaceHint": "Vos contacts, brouillons, modèles et réglages actuels sont remplacés par la sauvegarde. Votre clé API est conservée.",
+      "submit": "Restaurer",
+      "done": "Restauration terminée. Contacts : {{contacts}} · Brouillons : {{drafts}} · Modèles : {{templates}}",
+      "notJson": "Ce fichier n'est pas une sauvegarde Relance. Choisissez le fichier .json téléchargé depuis Relance.",
+      "notBackup": "Ce fichier n'est pas une sauvegarde Relance, ou il est endommagé.",
+      "tooNew": "Cette sauvegarde a été créée par une version plus récente de Relance. Rechargez cette page pour obtenir la dernière version, puis réessayez.",
+      "failed": "La restauration n'a pas abouti et rien n'a été modifié."
+    }
+  },
+  "backupReminder": {
+    "title": "Pensez à faire une sauvegarde",
+    "body": "Vous avez {{count}} contacts enregistrés uniquement dans ce navigateur. Téléchargez une sauvegarde pour ne pas les perdre si le navigateur efface ses données.",
+    "download": "Télécharger une sauvegarde",
+    "later": "Me le rappeler dans une semaine"
   }
 }
