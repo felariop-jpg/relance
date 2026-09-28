@@ -10,6 +10,7 @@ import { ReviewScreen } from './screens/review/ReviewScreen';
 import { SettingsScreen } from './screens/settings/SettingsScreen';
 import { Toaster } from './components/Toaster';
 import { DemoBanner } from './components/DemoBanner';
+import { OtherTabsNotice } from './components/OtherTabsNotice';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { useNavCounts } from './useNavCounts';
 
@@ -80,6 +81,7 @@ export function App() {
         </div>
       </header>
       <DemoBanner />
+      <OtherTabsNotice />
 
       <main className="mx-auto w-full max-w-screen-2xl flex-1 px-4 py-6">
         <ErrorBoundary resetKey={route}>

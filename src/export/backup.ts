@@ -214,6 +214,30 @@ export async function restoreBackup(backup: Backup, mode: 'merge' | 'replace'): 
   });
 }
 
+/**
+ * Undoes a restore record by record: puts back every record as it was before,
+ * and removes only records the restore itself added. Anything created in the
+ * meantime (for example in another tab) is left alone.
+ */
+export async function undoRestore(before: Backup, restored: Backup): Promise<void> {
+  const current = await getSettings();
+  await db.transaction('rw', [db.contacts, db.drafts, db.templates, db.settings], async () => {
+    const tables = [
+      [db.contacts, before.contacts, restored.contacts],
+      [db.drafts, before.drafts, restored.drafts],
+      [db.templates, before.templates, restored.templates],
+    ] as const;
+    for (const [table, was, added] of tables) {
+      const keep = new Set(was.map((r) => r.id));
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await (table as any).bulkDelete(added.map((r) => r.id).filter((id) => !keep.has(id)));
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await (table as any).bulkPut(was);
+    }
+    await db.settings.put({ ...defaultSettings(current.uiLanguage), ...before.settings, id: SETTINGS_ID, apiKey: current.apiKey });
+  });
+}
+
 export function backupFileName(today: string): string {
   return `relance-backup-${today}.json`;
 }

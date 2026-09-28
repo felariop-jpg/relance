@@ -94,11 +94,11 @@
     "actions": "Actions",
     "saveFailed": "Cette modification n'a pas pu être enregistrée. Veuillez réessayer.",
     "cellLabel": "{{field}} : {{name}}",
-    "deleted_one": "{{count}} contact supprimé.",
-    "deleted_many": "{{count}} contacts supprimés.",
-    "deleted_other": "{{count}} contacts supprimés.",
     "writeEmails": "Écrire des e-mails…",
-    "openContact": "Ouvrir {{name}}"
+    "openContact": "Ouvrir {{name}}",
+    "deletedRecoverable_one": "{{count}} contact supprimé. Il reste dans « Supprimés récemment » pendant 30 jours.",
+    "deletedRecoverable_many": "{{count}} contacts supprimés. Ils restent dans « Supprimés récemment » pendant 30 jours.",
+    "deletedRecoverable_other": "{{count}} contacts supprimés. Ils restent dans « Supprimés récemment » pendant 30 jours."
   },
   "form": {
     "addTitle": "Ajouter un contact",
@@ -114,7 +114,8 @@
     "deleteContact": "Supprimer le contact",
     "saveFailed": "Le contact n'a pas pu être enregistré. Veuillez réessayer.",
     "dateInvalid": "Saisissez une date complète, ou laissez le champ vide.",
-    "discarded": "Modifications non enregistrées abandonnées."
+    "discarded": "Modifications non enregistrées abandonnées.",
+    "deletedElsewhere": "Ce contact a été supprimé, peut-être dans un autre onglet : vos modifications n'ont pas pu être enregistrées. Vous pouvez le restaurer depuis « Supprimés récemment » dans la page Contacts."
   },
   "import": {
     "title": "Importer des contacts depuis un tableur",
@@ -588,5 +589,26 @@
     "title": "Un problème est survenu sur cet écran",
     "body": "Vos contacts et brouillons sont en sécurité : ils sont enregistrés dans ce navigateur et n'ont pas été touchés. Recharger la page règle généralement le problème.",
     "reload": "Recharger la page"
+  },
+  "trash": {
+    "open": "Supprimés récemment ({{count}})",
+    "title": "Supprimés récemment",
+    "body": "Les contacts que vous supprimez sont conservés ici pendant {{days}} jours, quel que soit l'onglet ou la fenêtre où ils ont été supprimés, puis effacés définitivement.",
+    "none": "Rien ici.",
+    "deletedAt": "Supprimé le {{date}}",
+    "andMore_one": "et {{count}} autre",
+    "andMore_many": "et {{count}} autres",
+    "andMore_other": "et {{count}} autres",
+    "restore_one": "Restaurer",
+    "restore_many": "Tout restaurer ({{count}})",
+    "restore_other": "Tout restaurer ({{count}})",
+    "restored_one": "{{count}} contact restauré.",
+    "restored_many": "{{count}} contacts restaurés.",
+    "restored_other": "{{count}} contacts restaurés.",
+    "empty": "Tout effacer définitivement",
+    "emptied": "Contacts supprimés récemment effacés définitivement."
+  },
+  "tabs": {
+    "notice": "Relance est aussi ouvert dans un autre onglet ou une autre fenêtre de ce navigateur. Les deux affichent les mêmes contacts et restent synchronisés : une modification ou une suppression dans l'un apparaît dans l'autre."
   }
 }

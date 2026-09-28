@@ -6,6 +6,7 @@ import { App } from './App';
 import { ensureSettings } from './db/settings';
 import { ensureTemplatesSeeded } from './db/templates';
 import { markInterruptedDrafts } from './db/drafts';
+import { purgeTrash } from './db/contacts';
 import { StorageUnavailable } from './screens/StorageUnavailable';
 
 const root = createRoot(document.getElementById('root')!);
@@ -14,6 +15,7 @@ async function start() {
   await ensureSettings();
   await ensureTemplatesSeeded();
   await markInterruptedDrafts();
+  await purgeTrash();
 }
 
 start().then(

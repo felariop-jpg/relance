@@ -64,37 +64,98 @@ export async function addContact(input: ContactInput): Promise<string> {
   return id;
 }
 
-export async function updateContact(id: string, patch: Partial<ContactInput>): Promise<void> {
-  const current = await db.contacts.get(id);
-  if (!current) return;
-  const next = normalizeContact({ ...contactToInput(current), ...patch });
-  await db.contacts.update(id, { ...next, updatedAt: now() });
+/**
+ * Writes only the fields given, never the whole record, inside one
+ * transaction, so an edit made meanwhile in another tab (or by an export
+ * marking "last contacted") is never overwritten. Returns false if the
+ * contact no longer exists (for example, deleted in another tab).
+ */
+export async function updateContact(id: string, patch: Partial<ContactInput>): Promise<boolean> {
+  return db.transaction('rw', db.contacts, async () => {
+    const current = await db.contacts.get(id);
+    if (!current) return false;
+    const normalized = normalizeContact({ ...contactToInput(current), ...patch });
+    const changes: Partial<Contact> = {};
+    for (const key of Object.keys(patch) as (keyof ContactInput)[]) {
+      (changes as Record<string, unknown>)[key] = normalized[key];
+    }
+    await db.contacts.update(id, { ...changes, updatedAt: now() });
+    return true;
+  });
 }
 
-/** Everything removed by a delete, kept in memory so it can be undone. */
+/** The fields of `draft` that differ from `initial`, for saving a form without clobbering. */
+export function changedFields(initial: ContactInput, draft: ContactInput): Partial<ContactInput> {
+  const a = normalizeContact(initial);
+  const b = normalizeContact(draft);
+  const out: Partial<ContactInput> = {};
+  for (const key of Object.keys(b) as (keyof ContactInput)[]) {
+    if (a[key] !== b[key]) (out as Record<string, unknown>)[key] = draft[key];
+  }
+  return out;
+}
+
+/** Everything removed by a delete, also kept in the shared trash for 30 days. */
 export interface DeletedContacts {
+  trashId: string;
   contacts: Contact[];
   drafts: Draft[];
 }
 
-/** Deletes contacts and every draft written for them; returns what was removed. */
+/**
+ * Deletes contacts and their drafts, and files them in "Recently deleted" in
+ * the same transaction. Every tab can see and restore that entry, so a delete
+ * made in one tab is never unrecoverable from another.
+ */
 export async function deleteContacts(ids: string[]): Promise<DeletedContacts> {
-  if (ids.length === 0) return { contacts: [], drafts: [] };
-  return db.transaction('rw', db.contacts, db.drafts, async () => {
+  const trashId = crypto.randomUUID();
+  if (ids.length === 0) return { trashId, contacts: [], drafts: [] };
+  return db.transaction('rw', db.contacts, db.drafts, db.trash, async () => {
     const contacts = (await db.contacts.bulkGet(ids)).filter((c): c is Contact => Boolean(c));
     const drafts = await db.drafts.where('contactId').anyOf(ids).toArray();
+    if (contacts.length > 0) {
+      await db.trash.add({ id: trashId, deletedAt: now(), contacts, drafts });
+    }
     await db.drafts.bulkDelete(drafts.map((d) => d.id));
-    await db.contacts.bulkDelete(ids);
-    return { contacts, drafts };
+    await db.contacts.bulkDelete(contacts.map((c) => c.id));
+    return { trashId, contacts, drafts };
   });
 }
 
-/** Puts deleted contacts and their drafts back exactly as they were. */
-export async function restoreContacts(deleted: DeletedContacts): Promise<void> {
-  await db.transaction('rw', db.contacts, db.drafts, async () => {
-    await db.contacts.bulkPut(deleted.contacts);
-    await db.drafts.bulkPut(deleted.drafts);
+/**
+ * Puts a trash entry back. Only adds records that are missing, so nothing
+ * created or edited since is overwritten. Safe to run twice or from two tabs.
+ */
+export async function restoreFromTrash(trashId: string): Promise<{ contacts: number; drafts: number }> {
+  return db.transaction('rw', db.contacts, db.drafts, db.trash, async () => {
+    const entry = await db.trash.get(trashId);
+    if (!entry) return { contacts: 0, drafts: 0 };
+    const haveContacts = new Set(
+      (await db.contacts.bulkGet(entry.contacts.map((c) => c.id))).filter(Boolean).map((c) => c!.id),
+    );
+    const haveDrafts = new Set(
+      (await db.drafts.bulkGet(entry.drafts.map((d) => d.id))).filter(Boolean).map((d) => d!.id),
+    );
+    const contacts = entry.contacts.filter((c) => !haveContacts.has(c.id));
+    const drafts = entry.drafts.filter((d) => !haveDrafts.has(d.id));
+    await db.contacts.bulkAdd(contacts);
+    await db.drafts.bulkAdd(drafts);
+    await db.trash.delete(trashId);
+    return { contacts: contacts.length, drafts: drafts.length };
   });
+}
+
+/** Undo for a delete: same as restoring its trash entry. */
+export async function restoreContacts(deleted: DeletedContacts): Promise<void> {
+  await restoreFromTrash(deleted.trashId);
+}
+
+export const TRASH_DAYS = 30;
+
+/** Permanently removes trash entries older than 30 days. Called at start-up. */
+export async function purgeTrash(now = new Date()): Promise<number> {
+  const cutoff = new Date(now.getTime() - TRASH_DAYS * 86_400_000).toISOString();
+  return db.trash.where('deletedAt').below(cutoff).delete();
 }
 
 export interface ImportResult {

@@ -32,6 +32,22 @@ export async function updateSettings(patch: Partial<Omit<Settings, 'id'>>): Prom
   await db.settings.update(SETTINGS_ID, patch);
 }
 
+/**
+ * Changes settings with a function applied inside one transaction to the
+ * latest stored row. Use this for lists and maps (country overrides, withheld
+ * fields) so two tabs changing different entries never undo each other.
+ */
+export async function modifySettings(change: (settings: Settings) => void): Promise<void> {
+  await ensureSettings();
+  await db.transaction('rw', db.settings, async () => {
+    const row = await db.settings.get(SETTINGS_ID);
+    if (!row) return;
+    const next = withDefaults(row);
+    change(next);
+    await db.settings.put(next);
+  });
+}
+
 /** true once the stored settings have been read (so first-run never flashes). */
 export function useSettingsLoaded(): boolean {
   return useLiveQuery(() => db.settings.get(SETTINGS_ID), []) !== undefined;

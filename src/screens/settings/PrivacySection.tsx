@@ -3,7 +3,7 @@ import { Checkbox } from '../../components/Checkbox';
 import { WarningIcon } from '../../components/icons';
 import { REPO_URL } from '../../config';
 import { API_FIELDS, type ApiField } from '../../db/schema';
-import { updateSettings, useSettings } from '../../db/settings';
+import { modifySettings, useSettings } from '../../db/settings';
 import { Section } from './Section';
 
 export function PrivacySection() {
@@ -12,12 +12,13 @@ export function PrivacySection() {
   const withheld = new Set(settings.withheldFields);
   const privacyUrl = `${REPO_URL}/blob/main/${i18n.language === 'fr' ? 'PRIVACY.fr.md' : 'PRIVACY.md'}`;
 
-  const toggle = (field: ApiField, sent: boolean) => {
-    const next = new Set(withheld);
-    if (sent) next.delete(field);
-    else next.add(field);
-    void updateSettings({ withheldFields: API_FIELDS.filter((f) => next.has(f)) });
-  };
+  const toggle = (field: ApiField, sent: boolean) =>
+    void modifySettings((s) => {
+      const next = new Set(s.withheldFields);
+      if (sent) next.delete(field);
+      else next.add(field);
+      s.withheldFields = API_FIELDS.filter((f) => next.has(f));
+    });
 
   return (
     <Section

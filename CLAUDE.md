@@ -145,8 +145,8 @@ README notes that swapping models is a one-line change.
 - **Sample data** is fictional: made-up people and companies, `example.com`/
   `example.org` addresses, no industry-specific content. "Load sample contacts"
   imports it directly (duplicate check makes it safe to click twice).
-- **Deleting a contact also deletes its drafts.** Always confirmed in a dialog
-  that states the count.
+- **Deleting a contact also deletes its drafts**, and both go to "Recently deleted"
+  (see Multi-tab rules).
 - **Bulk actions act on the selected rows that are currently visible**; changing
   the search or filter narrows the selection.
 - **Inline editing**: type, language and last-contacted are edited in the table;
@@ -294,3 +294,17 @@ README notes that swapping models is a one-line change.
 - **Contact data first** in the prompt JSON so the payload panel leads with it.
 - **Tab counters**: Review = drafts not yet approved or skipped; Due now =
   people due and not already drafted.
+
+### Multi-tab rules (after the Phase 6 data-loss investigation)
+- **Never read a collection or record into memory, change it, and write it back
+  whole.** Write only the fields that changed (`changedFields`, field-scoped
+  `updateContact`), or change lists and maps inside a transaction on the latest row
+  (`modifySettings`, Dexie `modify`).
+- **Deletes are recoverable from any tab**: contacts and their drafts go to the
+  `trash` table (schema v2) in the same transaction, kept 30 days (`purgeTrash` at
+  start-up). Undo = restore from trash; restore only adds missing records.
+- **Undo of a restore is a record-level inverse** (`undoRestore`): it never clears a
+  table, so records another tab created meanwhile survive.
+- **Live sync between tabs** is Dexie 4's built-in BroadcastChannel propagation.
+  `OtherTabsNotice` tells the user when another tab is open.
+- Any new write path needs a case in `src/db/multitab.test.ts`.

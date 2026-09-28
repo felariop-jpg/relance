@@ -63,6 +63,14 @@ Requests go to Anthropic's API using **your own** API key, under **your own** ag
 
 Your key is stored in this browser only. It is sent to Anthropic with each request (that is how Anthropic knows the request is yours) and nowhere else. It is **not** included in backup files. See [Getting an API key](docs/api-key.md) for how to keep it safe.
 
+## Deleted contacts
+
+When you delete contacts, Relance keeps them for **30 days** under **Recently deleted** on the Contacts page, in case the deletion was a mistake (for example, made in another tab). After 30 days they are removed for good. To remove them sooner, open **Recently deleted** and choose **Remove all for good**.
+
+## Using Relance in several tabs
+
+If Relance is open in two tabs or windows of the same browser, both show the same contacts and stay in step. Relance shows a notice when this happens. Two *different* browsers or computers do not share anything: each has its own separate list.
+
 ## Removing everything
 
 **Settings → Delete everything** removes all of Relance's information from this browser, including your API key. It cannot be undone, so download a backup first if you might want your contacts again.

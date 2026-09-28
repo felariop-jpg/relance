@@ -5,7 +5,7 @@ import { Button } from '../../components/Button';
 import { DownloadIcon, UploadIcon } from '../../components/icons';
 import { Modal } from '../../components/Modal';
 import { useSettings } from '../../db/settings';
-import { createBackup, parseBackup, restoreBackup, type Backup } from '../../export/backup';
+import { createBackup, parseBackup, restoreBackup, undoRestore, type Backup } from '../../export/backup';
 import { downloadBackup } from '../../export/backupActions';
 import { formatDate } from '../../lib/dates';
 import { showToast } from '../../lib/toast';
@@ -91,7 +91,7 @@ function RestoreDialog({ backup, onClose }: { backup: Backup; onClose: () => voi
       showToast({
         tone: 'success',
         message: t('settings.restore.done', { ...result }),
-        undo: () => void restoreBackup(before, 'replace'),
+        undo: () => void undoRestore(before, backup),
       });
     } catch {
       setFailed(true);

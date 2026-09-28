@@ -64,10 +64,12 @@ export async function editDraftText(
   id: string,
   patch: Partial<Pick<Draft, 'subject' | 'body'>>,
 ): Promise<void> {
-  const draft = await db.drafts.get(id);
-  if (!draft) return;
-  const status: DraftStatus = draft.status === 'generated' ? 'edited' : draft.status;
-  await updateDraft(id, { ...patch, status });
+  await db.transaction('rw', db.drafts, async () => {
+    const draft = await db.drafts.get(id);
+    if (!draft) return;
+    const status: DraftStatus = draft.status === 'generated' ? 'edited' : draft.status;
+    await db.drafts.update(id, { ...patch, status, updatedAt: new Date().toISOString() });
+  });
 }
 
 export async function setDraftStatus(ids: string[], status: DraftStatus): Promise<void> {

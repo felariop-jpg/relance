@@ -12,6 +12,8 @@ import { showToast } from '../../lib/toast';
 import { BackupReminder } from '../settings/BackupReminder';
 import { CreateDraftsDialog } from '../review/CreateDraftsDialog';
 import { MailIcon } from '../../components/icons';
+import { useTrash } from '../../db/trash';
+import { TrashDialog } from './TrashDialog';
 import { useSettings } from '../../db/settings';
 import { loadSampleContacts, SAMPLE_CSV_URL } from '../../lib/sample';
 import { ContactForm } from './ContactForm';
@@ -37,6 +39,8 @@ export function ContactsScreen() {
   );
   const [importing, setImporting] = useState(false);
   const [writingFor, setWritingFor] = useState<string[] | null>(null);
+  const [showTrash, setShowTrash] = useState(false);
+  const trash = useTrash();
   const [notice, setNotice] = useState<Notice | null>(null);
   const [sampleBusy, setSampleBusy] = useState(false);
 
@@ -81,7 +85,7 @@ export function ContactsScreen() {
       setSelected((s) => new Set([...s].filter((id) => !gone.has(id))));
       showToast({
         tone: 'info',
-        message: t('contacts.deleted', { count: removed.contacts.length }),
+        message: t('contacts.deletedRecoverable', { count: removed.contacts.length }),
         undo: () => restoreContacts(removed),
       });
     } catch {
@@ -131,6 +135,11 @@ export function ContactsScreen() {
           )}
         </div>
         <div className="flex flex-wrap gap-2">
+          {trash && trash.length > 0 && (
+            <Button variant="ghost" onClick={() => setShowTrash(true)}>
+              {t('trash.open', { count: trash.reduce((n, e) => n + e.contacts.length, 0) })}
+            </Button>
+          )}
           <Button onClick={() => setImporting(true)}>
             <UploadIcon />
             {t('contacts.import')}
@@ -291,6 +300,7 @@ export function ContactsScreen() {
         />
       )}
       {importing && <ImportDialog onClose={() => setImporting(false)} />}
+      {showTrash && <TrashDialog onClose={() => setShowTrash(false)} />}
       {writingFor && (
         <CreateDraftsDialog contactIds={writingFor} onClose={() => setWritingFor(null)} />
       )}

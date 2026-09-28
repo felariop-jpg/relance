@@ -155,5 +155,13 @@ export interface Settings {
   firstRunDone: boolean;
 }
 
+/** Contacts (with their drafts) removed together, kept 30 days so any tab can restore them. */
+export interface TrashEntry {
+  id: string;
+  deletedAt: string;
+  contacts: Contact[];
+  drafts: Draft[];
+}
+
 export const VOICE_SAMPLE_LIMIT = 3;
 export const VOICE_SAMPLE_MAX_CHARS = 2000;

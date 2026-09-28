@@ -91,10 +91,10 @@
     "actions": "Actions",
     "saveFailed": "That change couldn't be saved. Please try again.",
     "cellLabel": "{{field}}: {{name}}",
-    "deleted_one": "Deleted {{count}} contact.",
-    "deleted_other": "Deleted {{count}} contacts.",
     "writeEmails": "Write emails…",
-    "openContact": "Open {{name}}"
+    "openContact": "Open {{name}}",
+    "deletedRecoverable_one": "Deleted {{count}} contact. It stays in “Recently deleted” for 30 days.",
+    "deletedRecoverable_other": "Deleted {{count}} contacts. They stay in “Recently deleted” for 30 days."
   },
   "form": {
     "addTitle": "Add a contact",
@@ -110,7 +110,8 @@
     "deleteContact": "Delete contact",
     "saveFailed": "The contact couldn't be saved. Please try again.",
     "dateInvalid": "Enter a full date, or leave it empty.",
-    "discarded": "Unsaved changes discarded."
+    "discarded": "Unsaved changes discarded.",
+    "deletedElsewhere": "This contact was deleted, possibly in another tab, so your changes couldn't be saved. You can restore it from “Recently deleted” on the Contacts page."
   },
   "import": {
     "title": "Import contacts from a spreadsheet",
@@ -560,5 +561,23 @@
     "title": "Something went wrong on this screen",
     "body": "Your contacts and drafts are safe: they are stored in this browser and were not affected. Reloading the page usually fixes this.",
     "reload": "Reload the page"
+  },
+  "trash": {
+    "open": "Recently deleted ({{count}})",
+    "title": "Recently deleted",
+    "body": "Contacts you delete are kept here for {{days}} days, whichever tab or window deleted them, then removed for good.",
+    "none": "Nothing here.",
+    "deletedAt": "Deleted {{date}}",
+    "andMore_one": "and {{count}} more",
+    "andMore_other": "and {{count}} more",
+    "restore_one": "Restore",
+    "restore_other": "Restore all {{count}}",
+    "restored_one": "Restored {{count}} contact.",
+    "restored_other": "Restored {{count}} contacts.",
+    "empty": "Remove all for good",
+    "emptied": "Recently deleted contacts removed for good."
+  },
+  "tabs": {
+    "notice": "Relance is also open in another tab or window of this browser. Both show the same contacts and stay in step, so a change or deletion in one appears in the other."
   }
 }

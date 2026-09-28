@@ -6,6 +6,7 @@ import {
   emptyContact,
   importContacts,
   restoreContacts,
+  purgeTrash,
   updateContact,
   validateContact,
 } from './contacts';
@@ -48,7 +49,9 @@ describe('contacts', () => {
     expect((await db.contacts.toArray()).map((c) => c.firstName)).toEqual(['Keep']);
     expect((await db.drafts.toArray()).map((d) => d.id)).toEqual(['d1']);
 
+    expect(await db.trash.count()).toBe(1);
     await restoreContacts(removed);
+    expect(await db.trash.count()).toBe(0);
     expect(await db.contacts.count()).toBe(2);
     expect((await db.drafts.toArray()).map((d) => d.id).sort()).toEqual(['d1', 'd2']);
   });
@@ -71,6 +74,18 @@ describe('contacts', () => {
     expect(validateContact(person('Ann', 'not-an-email'))).toEqual({ email: 'invalid' });
     expect(validateContact(person('Ann', 'ann@example.com'))).toEqual({});
     expect(validateContact(person('Ann'))).toEqual({});
+  });
+});
+
+describe('trash', () => {
+  it('purges entries older than 30 days only', async () => {
+    const old = await addContact(person('Old'));
+    const recent = await addContact(person('Recent'));
+    const a = await deleteContacts([old]);
+    await db.trash.update(a.trashId, { deletedAt: '2020-01-01T00:00:00.000Z' });
+    await deleteContacts([recent]);
+    expect(await purgeTrash()).toBe(1);
+    expect((await db.trash.toArray())[0].contacts[0].firstName).toBe('Recent');
   });
 });
 

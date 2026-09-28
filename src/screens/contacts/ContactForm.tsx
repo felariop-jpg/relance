@@ -7,6 +7,7 @@ import { TrashIcon } from '../../components/icons';
 import { Modal } from '../../components/Modal';
 import {
   addContact,
+  changedFields,
   contactToInput,
   emptyContact,
   normalizeContact,
@@ -51,7 +52,7 @@ export function ContactForm({
   const [draft, setDraft] = useState<ContactInput>(initialDraft ?? initial);
   const [errors, setErrors] = useState<ContactErrors>({});
   const [saving, setSaving] = useState(false);
-  const [saveFailed, setSaveFailed] = useState(false);
+  const [saveFailed, setSaveFailed] = useState<false | 'error' | 'gone'>(false);
 
   const countries = useMemo(() => countryOptions(i18n.language), [i18n.language]);
   const dirty =
@@ -74,11 +75,19 @@ export function ContactForm({
     setSaving(true);
     setSaveFailed(false);
     try {
-      if (contact) await updateContact(contact.id, draft);
-      else await addContact(draft);
+      if (contact) {
+        // Only what was changed in this form: edits made meanwhile in another
+        // tab (or by an export) to other fields are kept.
+        const saved = await updateContact(contact.id, changedFields(initial, draft));
+        if (!saved) {
+          setSaveFailed('gone');
+          setSaving(false);
+          return;
+        }
+      } else await addContact(draft);
       onClose();
     } catch {
-      setSaveFailed(true);
+      setSaveFailed('error');
       setSaving(false);
     }
   }
@@ -146,7 +155,9 @@ export function ContactForm({
       footer={footer}
     >
       <form id={fid('form')} onSubmit={submit} noValidate className="space-y-4">
-        {saveFailed && <Banner tone="error">{t('form.saveFailed')}</Banner>}
+        {saveFailed && (
+          <Banner tone="error">{saveFailed === 'gone' ? t('form.deletedElsewhere') : t('form.saveFailed')}</Banner>
+        )}
         <div className="grid gap-4 sm:grid-cols-2">
           {text('firstName')}
           {text('lastName')}

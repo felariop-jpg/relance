@@ -63,6 +63,14 @@ Les demandes sont envoyées à l'API d'Anthropic avec **votre propre** clé, dan
 
 Votre clé est enregistrée uniquement dans ce navigateur. Elle est envoyée à Anthropic avec chaque demande (c'est ainsi qu'Anthropic sait que la demande vient de vous), et nulle part ailleurs. Elle n'est **pas** incluse dans les fichiers de sauvegarde. Voir [Obtenir une clé API](docs/api-key.fr.md).
 
+## Contacts supprimés
+
+Quand vous supprimez des contacts, Relance les conserve **30 jours** dans **Supprimés récemment**, sur la page Contacts, au cas où la suppression serait une erreur (par exemple, faite dans un autre onglet). Au bout de 30 jours, ils sont effacés définitivement. Pour les effacer plus tôt, ouvrez **Supprimés récemment** et choisissez **Tout effacer définitivement**.
+
+## Utiliser Relance dans plusieurs onglets
+
+Si Relance est ouvert dans deux onglets ou fenêtres du même navigateur, les deux affichent les mêmes contacts et restent synchronisés. Relance affiche un avis dans ce cas. Deux navigateurs ou ordinateurs *différents* ne partagent rien : chacun a sa propre liste.
+
 ## Tout effacer
 
 **Réglages → Tout supprimer** efface toutes les informations de Relance de ce navigateur, y compris votre clé API. C'est définitif : téléchargez d'abord une sauvegarde si vous pourriez avoir besoin de vos contacts.

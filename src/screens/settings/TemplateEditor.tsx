@@ -122,8 +122,32 @@ export function TemplateEditor({
       };
     });
     const removed = LANGUAGES.filter((l) => !state.versions[l].include).map((l) => state.versions[l].id);
+    const base = JSON.parse(snapshot.current) as EditorState;
+    const ruleChanged =
+      base.scheduleOn !== state.scheduleOn ||
+      base.month !== state.month ||
+      base.minGapDays !== state.minGapDays ||
+      JSON.stringify(base.appliesTo) !== JSON.stringify(state.appliesTo);
     await db.transaction('rw', db.templates, async () => {
-      await db.templates.bulkPut(rows);
+      for (const row of rows) {
+        const existing = await db.templates.get(row.id);
+        if (!existing) {
+          await db.templates.add(row);
+          continue;
+        }
+        // Only what changed in this editor, so edits saved from another tab
+        // to other fields of the same template are kept.
+        const was = base.versions[row.language];
+        const patch: Partial<Template> = {};
+        for (const key of ['name', 'subject', 'body', 'instructions'] as const) {
+          if (was[key].trim() !== row[key]) patch[key] = row[key];
+        }
+        if (ruleChanged) {
+          patch.scheduleRule = row.scheduleRule;
+          patch.appliesTo = row.appliesTo;
+        }
+        if (Object.keys(patch).length > 0) await db.templates.update(row.id, patch);
+      }
       await db.templates.bulkDelete(removed);
     });
     showToast({ tone: 'success', message: t('templates.saved') });

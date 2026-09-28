@@ -203,3 +203,42 @@ further testing to port 4174. The real drafts confirmed generation with
 - No source maps, local paths, usernames or machine names in the build.
 - Not fixable without rewriting history: commits carry the author's
   university email address. Flagged to the owner; history left untouched.
+
+### 1. Multi-tab data loss
+**What the evidence shows.** When the 12 contacts vanished, the database still held the 10
+templates and every setting written seconds earlier. That rules out a
+whole-database deletion (tested: "Delete everything" in one tab makes other tabs reopen
+onto an empty database with default settings) and a replace-restore (rewrites settings
+and templates). The only other path that removes contact records is `deleteContacts`,
+the user's Delete action, and no script of mine ran one in that window. The loss was a delete made in the
+other tab.
+
+**The actual bug.** Deletes were immediate, and their Undo lived in memory, in that one
+tab, for 10 seconds. Every other tab just saw rows disappear through live sync, with no
+notice and no way back. Code review found more multi-tab hazards of the
+"read, modify, write back wholesale" kind:
+- the contact form saved the whole record as it was when opened, reverting other
+  tabs' edits and the export's "last contacted" date;
+- `updateContact` read and wrote outside a transaction and wrote every field;
+- undoing a backup restore cleared whole tables, deleting contacts another tab had
+  added meanwhile;
+- country overrides and withheld fields were rewritten from a possibly stale copy;
+- the template editor wrote whole rows.
+
+**Fixes.**
+- Deletions go to a shared "Recently deleted" table (Dexie schema v2) in the same
+  transaction, kept 30 days and visible from any tab. Undo restores from it. Restore
+  only adds missing records and is safe to run twice or from two tabs.
+- Writes are record- and field-scoped: the contact form sends only changed fields;
+  `updateContact` patches only the given fields inside a transaction and reports a
+  contact deleted elsewhere; settings lists and maps change one entry at a time in a
+  transaction (`modifySettings`); template saves patch changed fields; draft edits run
+  in a transaction; undoing a restore is a record-by-record inverse.
+- Cross-tab propagation: Dexie 4's built-in BroadcastChannel propagation already keeps
+  every tab live (verified with two tabs). `dexie-observable` is a Dexie 2/3 add-on
+  and not needed.
+- A non-blocking notice appears when another tab of Relance is open (BroadcastChannel
+  presence).
+- Regression tests (`src/db/multitab.test.ts`) run two connections to the same
+  database with interleaved adds, imports, same-record edits of different fields,
+  deletes, concurrent restores and concurrent settings edits, and assert nothing is lost.

@@ -4,7 +4,7 @@ import { Button } from '../../components/Button';
 import { Field, inputBase, inputClass } from '../../components/Field';
 import { CloseIcon } from '../../components/icons';
 import { LANGUAGES, type Lang } from '../../db/schema';
-import { updateSettings, useSettings } from '../../db/settings';
+import { modifySettings, updateSettings, useSettings } from '../../db/settings';
 import { countryName, countryOptions } from '../../lib/country';
 import { Section } from './Section';
 
@@ -20,7 +20,14 @@ export function LanguagesSection() {
     countryName(a, i18n.language).localeCompare(countryName(b, i18n.language), i18n.language),
   );
 
-  const setOverrides = (next: Record<string, Lang>) => void updateSettings({ countryLanguageOverrides: next });
+  // One country at a time, applied to the latest stored map (never a stale copy).
+  const setOverride = (code: string, lang: Lang | null) =>
+    void modifySettings((s) => {
+      const next = { ...s.countryLanguageOverrides };
+      if (lang) next[code] = lang;
+      else delete next[code];
+      s.countryLanguageOverrides = next;
+    });
 
   return (
     <Section id="languages" title={t('settings.languages.title')} description={<p>{t('settings.languages.body')}</p>}>
@@ -55,7 +62,7 @@ export function LanguagesSection() {
                     aria-label={t('contacts.cellLabel', { field: t('settings.languages.language'), name: countryName(code, i18n.language) })}
                     className={`${inputBase} py-1.5`}
                     value={lang}
-                    onChange={(e) => setOverrides({ ...overrides, [code]: e.target.value as Lang })}
+                    onChange={(e) => setOverride(code, e.target.value as Lang)}
                   >
                     {LANGUAGES.map((l) => (
                       <option key={l} value={l}>
@@ -67,10 +74,7 @@ export function LanguagesSection() {
                     type="button"
                     aria-label={t('settings.languages.remove', { country: countryName(code, i18n.language) })}
                     className="h-9 w-9 rounded p-2.5 text-stone-500 hover:bg-stone-100 hover:text-stone-900"
-                    onClick={() => {
-                      const { [code]: _removed, ...rest } = overrides;
-                      setOverrides(rest);
-                    }}
+                    onClick={() => setOverride(code, null)}
                   >
                     <CloseIcon />
                   </button>
@@ -83,7 +87,7 @@ export function LanguagesSection() {
             onSubmit={(e) => {
               e.preventDefault();
               if (!country) return;
-              setOverrides({ ...overrides, [country]: language });
+              setOverride(country, language);
               setCountry('');
             }}
           >
