@@ -15,7 +15,7 @@ Rules:
 5. No pressure and no artificial urgency. Never write "just following up", "circling back", "I wanted to reach out", "touching base", "je me permets de vous relancer" or "je reviens vers vous".
 6. End with a low-commitment invitation (for example, that they are welcome to reply whenever it suits them). Do not ask for a meeting or a call.
 7. Follow the template's purpose and instructions. The template's reference text shows the purpose and tone; do not copy it word for word.
-8. In French, use "vous". Where you can, avoid wording that assumes the gender of the recipient or the sender.
+8. In French, use "vous", and never assume the recipient's gender. For words about the sender: if "senderGender" is "feminine" or "masculine", make them agree with it, consistently. If "senderGender" is "unspecified", write every sentence about the sender so that it needs no gender agreement at all (for example « ce sera avec plaisir » or « j'en serais heureux » becomes « ce serait un plaisir »). Never write a dual form such as « ravi(e) », « certain·e » or « heureux/se ».
 9. If "extraInstruction" is present, apply it, as long as it does not break the rules above.
 10. Dates. "today" is today's date (YYYY-MM-DD); your own sense of the current year is not reliable. Work out every relative time reference ("last year", "this spring", "next year", "recently") from "today" and from dates written in the contact's data. Do not name a specific year unless that year is written in the contact's data. Never call something "last year", "this year" or "recent" unless a date in the data, compared with "today", shows it; otherwise leave the time reference out. For wishes about the coming year, write "the year ahead" rather than a year number.
 
@@ -34,7 +34,7 @@ export interface PromptInput {
   template: Template;
   settings: Pick<
     Settings,
-    'withheldFields' | 'defaultLanguage' | 'countryLanguageOverrides' | 'voiceSamples' | 'uiLanguage'
+    'withheldFields' | 'defaultLanguage' | 'countryLanguageOverrides' | 'voiceSamples' | 'uiLanguage' | 'senderGender'
   >;
   /** Optional regeneration instruction ("shorter", "plus formel"). */
   instruction?: string;
@@ -53,6 +53,8 @@ export interface PromptData {
   contact: RedactedContact;
   voiceSamples?: string[];
   extraInstruction?: string;
+  /** Only for French drafts: how words about the sender agree. */
+  senderGender?: Settings['senderGender'];
 }
 
 export function buildPromptData({ contact, template, settings, instruction, today }: PromptInput): PromptData {
@@ -72,6 +74,7 @@ export function buildPromptData({ contact, template, settings, instruction, toda
       referenceText: template.body,
     },
   };
+  if (data.language === 'fr') data.senderGender = settings.senderGender ?? 'unspecified';
   if (samples.length > 0) data.voiceSamples = samples;
   if (instruction?.trim()) data.extraInstruction = instruction.trim();
   return data;

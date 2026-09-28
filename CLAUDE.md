@@ -87,6 +87,10 @@ README notes that swapping models is a one-line change.
 - No pressure, no artificial urgency, no "just following up" / "circling back" /
   "I wanted to reach out".
 - End with a low-commitment invitation, not a meeting request.
+- **French agreement for the sender** comes from `settings.senderGender`
+  (unspecified | feminine | masculine; default unspecified), sent only with French
+  drafts. Unspecified = wording that needs no agreement. Dual forms like « ravi(e) »
+  make a reply malformed (retried once); the snapshot counts them.
 - The model gets `today` (YYYY-MM-DD). All relative time references are worked out
   from it; no year number unless the year is in the contact's data; no "last
   year"/"this year" without a dated fact to anchor it. The snapshot uses a pinned

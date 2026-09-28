@@ -2,7 +2,7 @@ import { useId } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AutoTextarea } from '../../components/AutoTextarea';
 import { Field, inputClass } from '../../components/Field';
-import { LANGUAGE_ENDONYMS, LANGUAGES } from '../../db/schema';
+import { LANGUAGE_ENDONYMS, LANGUAGES, SENDER_GENDERS, type SenderGender } from '../../db/schema';
 import { updateSettings, useSettings } from '../../db/settings';
 import { Section } from './Section';
 import { useSettingDraft } from './useSettingDraft';
@@ -32,6 +32,26 @@ export function YouSection() {
             {LANGUAGES.map((lang) => (
               <option key={lang} value={lang} lang={lang}>
                 {LANGUAGE_ENDONYMS[lang]}
+              </option>
+            ))}
+          </select>
+        </Field>
+        <Field
+          id={`${id}-gender`}
+          label={t('settings.you.gender')}
+          hint={t('settings.you.genderHint')}
+          className="sm:col-span-2"
+        >
+          <select
+            id={`${id}-gender`}
+            className={`${inputClass} sm:max-w-md`}
+            value={settings.senderGender}
+            onChange={(e) => void updateSettings({ senderGender: e.target.value as SenderGender })}
+            aria-describedby={`${id}-gender-hint`}
+          >
+            {SENDER_GENDERS.map((g) => (
+              <option key={g} value={g}>
+                {t(`settings.you.genders.${g}`)}
               </option>
             ))}
           </select>

@@ -352,7 +352,14 @@
       "calendlyHint": "For example a Calendly link. Templates that mention it leave the line out when this is empty.",
       "calendlyInvalid": "This doesn't look like a web address. It should start with https://",
       "uiLanguage": "Language of Relance itself",
-      "calendlyPlaceholder": "https://calendly.com/your-name"
+      "calendlyPlaceholder": "https://calendly.com/your-name",
+      "gender": "In French emails, words about you agree as",
+      "genderHint": "French adjectives change with the writer (« ravi » or « ravie »). This only affects French emails. With neutral wording, Relance writes sentences that need no agreement.",
+      "genders": {
+        "unspecified": "Neutral wording (recommended if unsure)",
+        "feminine": "Feminine (« ravie »)",
+        "masculine": "Masculine (« ravi »)"
+      }
     },
     "languages": {
       "title": "Email languages",

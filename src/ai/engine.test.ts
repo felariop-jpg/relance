@@ -4,6 +4,7 @@ import { defaultSettings } from '../db/settings';
 import { BUILT_IN_TEMPLATES } from '../db/seed';
 import {
   classifyError,
+  dualForm,
   GenerationError,
   generateWithRetries,
   MAX_BUSY_RETRIES,
@@ -158,5 +159,22 @@ describe('network failures', () => {
     const send = scripted([apiError(401), good]);
     await expect(generateWithRetries(request, 'en', send, { sleep: noSleep, connectivity: online })).rejects.toMatchObject({ code: 'auth' });
     expect(send.calls).toBe(1);
+  });
+});
+
+describe('French dual gender forms', () => {
+  it('recognises « ravi(e) », « certain·e », « heureux/se » and leaves normal text alone', () => {
+    expect(dualForm('je serais ravi(e) de vous revoir')).toBe('ravi(e)');
+    expect(dualForm('je suis certain·e que')).toBe('certain·e');
+    expect(dualForm('heureux/se de vous lire')).toBe('heureux/se');
+    expect(dualForm('Ce serait un plaisir (vraiment) de vous lire, et/ou de vous voir.')).toBeNull();
+  });
+
+  it('retries a reply with a dual form, then fails it as malformed', async () => {
+    const fr = { subject: 'Bonjour', body: 'Je serais ravi(e) de vous lire.', language: 'fr', personalizationUsed: 'x' };
+    const send = scripted([fr, fr]);
+    await expect(generateWithRetries(request, 'fr', send, { sleep: noSleep })).rejects.toMatchObject({ code: 'malformed' });
+    const fixed = scripted([fr, { ...fr, body: 'Ce serait un plaisir de vous lire.' }]);
+    expect((await generateWithRetries(request, 'fr', fixed, { sleep: noSleep })).output.body).toContain('plaisir');
   });
 });

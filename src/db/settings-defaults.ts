@@ -12,6 +12,7 @@ export function defaultSettings(uiLanguage: Lang = browserLanguage()): Settings 
     defaultLanguage: 'en',
     countryLanguageOverrides: {},
     withheldFields: [],
+    senderGender: 'unspecified',
     voiceSamples: [],
     costTotalEur: 0,
     costSince: new Date().toISOString(),

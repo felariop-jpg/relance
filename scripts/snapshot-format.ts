@@ -181,3 +181,13 @@ export function sourceCheck(
     ...problems,
   ];
 }
+
+/** Check: French drafts must not use dual gender forms such as « ravi(e) ». */
+export function dualFormCheck(items: { label: string; entry: Entry }[], find: (text: string) => string | null): string[] {
+  const hits = items.flatMap(({ label, entry }) => {
+    const d = readDraft(entry);
+    const f = d ? find(`${d.subject}\n${d.body}`) : null;
+    return f ? [`- ${label}: "${f}"`] : [];
+  });
+  return [`**Dual gender forms:** ${hits.length === 0 ? 'none.' : `${hits.length}:`}`, ...hits];
+}

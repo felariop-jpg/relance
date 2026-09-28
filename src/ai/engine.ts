@@ -93,6 +93,14 @@ export function backoffMs(attempt: number, suggested?: number): number {
   return Math.min(30_000, suggested ?? 2000 * 2 ** attempt) + Math.floor(Math.random() * 400);
 }
 
+/**
+ * A gendered dual form such as « ravi(e) », « certain·e » or « heureux/se »:
+ * reads like a form letter, so the reply counts as malformed.
+ */
+export function dualForm(text: string): string | null {
+  return /\p{L}+(?:\((?:e|es|ne|nes|se|ses|le|les|ve|ves|ice|trice)\)|·(?:e|es|ne|se|rice)\b|\/(?:e|se|ve|ne)\b)/iu.exec(text)?.[0] ?? null;
+}
+
 export interface GenerateResult {
   output: DraftOutput;
   /** Summed over every attempt, including a discarded malformed one. */
@@ -159,12 +167,15 @@ export async function generateWithRetries(
     usage.inputTokens += reply.usage.inputTokens;
     usage.outputTokens += reply.usage.outputTokens;
     const parsed = draftOutputSchema.safeParse(reply.toolInput);
-    if (parsed.success && parsed.data.language === expectedLanguage) return { output: parsed.data, usage };
+    const dual = parsed.success ? dualForm(`${parsed.data.subject}\n${parsed.data.body}`) : null;
+    if (parsed.success && parsed.data.language === expectedLanguage && !dual) return { output: parsed.data, usage };
     malformed++;
     if (malformed >= 2) {
-      const detail = parsed.success
-        ? `language ${parsed.data.language}, expected ${expectedLanguage}`
-        : parsed.error.issues.map((i) => `${i.path.join('.') || 'reply'}: ${i.message}`).join('; ');
+      const detail = !parsed.success
+        ? parsed.error.issues.map((i) => `${i.path.join('.') || 'reply'}: ${i.message}`).join('; ')
+        : dual
+          ? `dual gender form "${dual}"`
+          : `language ${parsed.data.language}, expected ${expectedLanguage}`;
       const failure = new GenerationError('malformed', detail);
       Object.assign(failure, { usage });
       throw failure;

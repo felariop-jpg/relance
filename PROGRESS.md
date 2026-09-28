@@ -341,3 +341,12 @@ notice and no way back. Code review found more multi-tab hazards of the
   without a dated fact, "the year ahead" instead of a year number in wishes.
 - Snapshot: pinned `DEFAULT_SNAPSHOT_DATE` (2026-09-28, or `--date=`), shown in the
   header; `--retry-failed` refuses if the date differs.
+
+### 4. French gender agreement
+- New setting `senderGender` (unspecified / feminine / masculine, default
+  unspecified) in Settings → Your details, labelled as French-only with a translated
+  explanation. Sent only with French drafts.
+- Prompt: agree consistently when set; when unspecified, phrase around it; never a
+  dual form. The engine rejects « ravi(e) », « certain·e », « heureux/se » (retry
+  once, then malformed). Snapshot "Dual gender forms" check.
+- PRIVACY (EN/FR) mentions the setting is sent for French drafts.

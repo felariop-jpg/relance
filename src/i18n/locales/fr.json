@@ -373,7 +373,14 @@
       "calendlyHint": "Par exemple un lien Calendly. Les modèles qui le mentionnent omettent cette ligne s'il est vide.",
       "calendlyInvalid": "Cela ne ressemble pas à une adresse web. Elle doit commencer par https://",
       "uiLanguage": "Langue de Relance",
-      "calendlyPlaceholder": "https://calendly.com/votre-nom"
+      "calendlyPlaceholder": "https://calendly.com/votre-nom",
+      "gender": "Dans les e-mails en français, les mots qui vous concernent s'accordent au",
+      "genderHint": "En français, les adjectifs s'accordent avec la personne qui écrit (« ravi » ou « ravie »). Ce réglage ne concerne que les e-mails en français. Avec la formulation neutre, Relance écrit des phrases qui ne demandent aucun accord.",
+      "genders": {
+        "unspecified": "Formulation neutre (conseillé en cas de doute)",
+        "feminine": "Féminin (« ravie »)",
+        "masculine": "Masculin (« ravi »)"
+      }
     },
     "languages": {
       "title": "Langue des e-mails",

@@ -149,3 +149,17 @@ describe('dates', () => {
     expect(request.system).toContain('Do not name a specific year unless that year is written in the contact');
   });
 });
+
+describe('sender gender', () => {
+  const template = BUILT_IN_TEMPLATES[0];
+  it('is sent only for French drafts, defaulting to unspecified', () => {
+    const fr = JSON.parse(buildRequest({ contact: sensitiveContact({ country: 'FR' }), template, settings, today: '2026-09-28' }).messages[0].content);
+    expect(fr.senderGender).toBe('unspecified');
+    const en = JSON.parse(buildRequest({ contact: sensitiveContact({ country: 'GB' }), template, settings, today: '2026-09-28' }).messages[0].content);
+    expect(en).not.toHaveProperty('senderGender');
+    const fem = JSON.parse(
+      buildRequest({ contact: sensitiveContact({ country: 'FR' }), template, settings: { ...settings, senderGender: 'feminine' }, today: '2026-09-28' }).messages[0].content,
+    );
+    expect(fem.senderGender).toBe('feminine');
+  });
+});

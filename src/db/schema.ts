@@ -143,6 +143,11 @@ export interface Settings {
   countryLanguageOverrides: Record<string, Lang>;
   /** API fields the user chose never to send. Global, not per contact. */
   withheldFields: ApiField[];
+  /**
+   * Grammatical gender for French agreement about the sender ("ravi" / "ravie").
+   * Used only for French drafts; "unspecified" means wording that needs no agreement.
+   */
+  senderGender: SenderGender;
   /** Up to 3 emails the user wrote, used as a style reference. */
   voiceSamples: string[];
   /** Running total of what generation has cost, in EUR. */
@@ -162,6 +167,9 @@ export interface TrashEntry {
   contacts: Contact[];
   drafts: Draft[];
 }
+
+export const SENDER_GENDERS = ['unspecified', 'feminine', 'masculine'] as const;
+export type SenderGender = (typeof SENDER_GENDERS)[number];
 
 export const VOICE_SAMPLE_LIMIT = 3;
 export const VOICE_SAMPLE_MAX_CHARS = 2000;
