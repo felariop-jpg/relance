@@ -7,7 +7,7 @@ import { Checkbox } from '../../components/Checkbox';
 import { Field, inputBase, inputClass } from '../../components/Field';
 import { Modal } from '../../components/Modal';
 import { db } from '../../db/db';
-import { CONTACT_TYPES, LANGUAGES, type ContactType, type Lang, type Template } from '../../db/schema';
+import { CONTACT_TYPES, GATE_FIELDS, LANGUAGES, type ContactType, type GateField, type Lang, type Template } from '../../db/schema';
 import type { TemplateFamily } from '../../db/templates';
 import { monthName } from '../../lib/dates';
 import { PLACEHOLDERS, unknownPlaceholders } from '../../lib/placeholders';
@@ -31,7 +31,7 @@ export interface EditorState {
   month: number;
   minGapDays: number;
   appliesTo: ContactType[];
-  requiresWhereMet: boolean;
+  requiresAnyOf: GateField[];
   versions: Record<Lang, VersionState>;
 }
 
@@ -58,7 +58,7 @@ export function editorStateFrom(family: TemplateFamily | null): EditorState {
     month: any?.scheduleRule?.month ?? new Date().getMonth() + 1,
     minGapDays: any?.scheduleRule?.minGapDays ?? 60,
     appliesTo: any?.appliesTo ?? [],
-    requiresWhereMet: any?.requiresWhereMet ?? false,
+    requiresAnyOf: any?.requiresAnyOf ?? [],
     versions: { en: version('en'), fr: version('fr') },
   };
 }
@@ -123,7 +123,7 @@ export function TemplateEditor({
         instructions: ver.instructions.trim(),
         scheduleRule: rule,
         appliesTo: state.appliesTo,
-        requiresWhereMet: state.requiresWhereMet,
+        requiresAnyOf: state.requiresAnyOf,
         isBuiltIn: ver.isBuiltIn,
       };
     });
@@ -134,7 +134,7 @@ export function TemplateEditor({
       base.month !== state.month ||
       base.minGapDays !== state.minGapDays ||
       JSON.stringify(base.appliesTo) !== JSON.stringify(state.appliesTo) ||
-      base.requiresWhereMet !== state.requiresWhereMet;
+      JSON.stringify(base.requiresAnyOf) !== JSON.stringify(state.requiresAnyOf);
     await db.transaction('rw', db.templates, async () => {
       for (const row of rows) {
         const existing = await db.templates.get(row.id);
@@ -152,7 +152,7 @@ export function TemplateEditor({
         if (ruleChanged) {
           patch.scheduleRule = row.scheduleRule;
           patch.appliesTo = row.appliesTo;
-          patch.requiresWhereMet = row.requiresWhereMet;
+          patch.requiresAnyOf = row.requiresAnyOf;
         }
         if (Object.keys(patch).length > 0) await db.templates.update(row.id, patch);
       }
@@ -243,17 +243,28 @@ export function TemplateEditor({
           </div>
         </fieldset>
 
-        <label className="flex items-start gap-2 text-sm">
-          <Checkbox
-            className="mt-0.5"
-            checked={state.requiresWhereMet}
-            onChange={(e) => setState((s) => ({ ...s, requiresWhereMet: e.target.checked }))}
-          />
-          <span>
-            <span className="block font-medium">{t('templates.requiresWhereMet')}</span>
-            <span className="block text-xs text-stone-500">{t('templates.requiresWhereMetHint')}</span>
-          </span>
-        </label>
+        <fieldset>
+          <legend className="text-sm font-medium">{t('templates.requires')}</legend>
+          <p className="mb-2 text-xs text-stone-500">{t('templates.requiresHint')}</p>
+          <div className="flex flex-wrap gap-4">
+            {GATE_FIELDS.map((field) => (
+              <label key={field} className="flex items-center gap-2 text-sm">
+                <Checkbox
+                  checked={state.requiresAnyOf.includes(field)}
+                  onChange={(e) =>
+                    setState((s) => ({
+                      ...s,
+                      requiresAnyOf: e.target.checked
+                        ? GATE_FIELDS.filter((f) => f === field || s.requiresAnyOf.includes(f))
+                        : s.requiresAnyOf.filter((f) => f !== field),
+                    }))
+                  }
+                />
+                {t(`fields.${field}`)}
+              </label>
+            ))}
+          </div>
+        </fieldset>
 
         <div>
           <div role="tablist" className="flex gap-1 border-b border-stone-200">

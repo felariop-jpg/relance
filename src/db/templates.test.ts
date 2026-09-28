@@ -75,8 +75,8 @@ describe('schema upgrade (v3 schedule migration)', () => {
 describe('templates that need "where you met"', () => {
   it('only the post-event built-ins require it, and only contacts with a value can use them', async () => {
     const { canUseTemplate } = await import('./templates');
-    const postEvent = BUILT_IN_TEMPLATES.filter((t) => t.requiresWhereMet).map((t) => t.family);
-    expect([...new Set(postEvent)]).toEqual(['post-event']);
+    const needWhereMetOnly = BUILT_IN_TEMPLATES.filter((t) => t.requiresAnyOf.join() === 'whereMet').map((t) => t.family);
+    expect([...new Set(needWhereMetOnly)]).toEqual(['post-event']);
     const tpl = BUILT_IN_TEMPLATES.find((t) => t.family === 'post-event')!;
     expect(canUseTemplate(tpl, { whereMet: '' })).toBe(false);
     expect(canUseTemplate(tpl, { whereMet: '  ' })).toBe(false);
@@ -104,7 +104,8 @@ describe('templates that need "where you met"', () => {
     const db4 = new RelanceDB(name);
     expect((await db4.contacts.get('c1'))?.whereMet).toBe('');
     const t = await db4.templates.get('builtin-post-event-en');
-    expect(t?.requiresWhereMet).toBe(true);
+    expect(t?.requiresAnyOf).toEqual(['whereMet']);
+    expect(t).not.toHaveProperty('requiresWhereMet');
     expect(t?.purpose).toContain('whereMet');
     db4.close();
   });
@@ -145,5 +146,43 @@ describe('schema v5', () => {
     expect((await db5.templates.get('builtin-holiday-en'))?.instructions).toMatch(/^Must achieve:/);
     expect((await db5.templates.get('builtin-holiday-fr'))?.instructions).toBe('Mes propres consignes.');
     db5.close();
+  });
+});
+
+describe('re-engagement needs something to re-engage about', () => {
+  it('is unavailable for a contact with only a bare note, and available with work history, a meeting place or something left open', async () => {
+    const { canUseTemplate } = await import('./templates');
+    const reengage = BUILT_IN_TEMPLATES.find((t) => t.family === 'reengage' && t.language === 'fr')!;
+    expect(canUseTemplate(reengage, { serviceHistory: '', whereMet: '', openThread: '' })).toBe(false); // fx-08: "Aime le vélo"
+    expect(canUseTemplate(reengage, { serviceHistory: 'Workshop in 2024.' })).toBe(true);
+    expect(canUseTemplate(reengage, { whereMet: 'Lyon fair' })).toBe(true);
+    expect(canUseTemplate(reengage, { openThread: 'Asked about remote-only teams.' })).toBe(true);
+  });
+
+  it('ignores a field the user withholds from the AI', async () => {
+    const { canUseTemplate } = await import('./templates');
+    const reengage = BUILT_IN_TEMPLATES.find((t) => t.family === 'reengage')!;
+    expect(canUseTemplate(reengage, { serviceHistory: 'Workshop.' }, ['serviceHistory'])).toBe(false);
+  });
+
+  it('the v6 upgrade turns the old flag into the new list and gates re-engagement', async () => {
+    const { default: Dexie } = await import('dexie');
+    const name = 'relance-upgrade-v6';
+    const old = new Dexie(name);
+    old.version(1).stores({ contacts: 'id', drafts: 'id', templates: 'id, family, language, isBuiltIn', settings: 'id' });
+    old.version(2).stores({ trash: 'id, deletedAt' });
+    for (const v of [3, 4, 5]) old.version(v).stores({});
+    await old.table('templates').bulkAdd([
+      { id: 'builtin-reengage-en', family: 'reengage', isBuiltIn: true, requiresWhereMet: false },
+      { id: 'custom-1-en', family: 'custom-1', isBuiltIn: false, requiresWhereMet: true },
+    ]);
+    await old.table('contacts').add({ id: 'c', firstName: 'X', whereMet: '' });
+    old.close();
+    const { RelanceDB } = await import('./db');
+    const db6 = new RelanceDB(name);
+    expect((await db6.templates.get('builtin-reengage-en'))?.requiresAnyOf).toEqual(['openThread', 'serviceHistory', 'whereMet']);
+    expect((await db6.templates.get('custom-1-en'))?.requiresAnyOf).toEqual(['whereMet']);
+    expect((await db6.contacts.get('c'))?.openThread).toBe('');
+    db6.close();
   });
 });

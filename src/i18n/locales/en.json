@@ -51,7 +51,8 @@
     "serviceHistory": "Work done together",
     "notes": "Notes",
     "lastContacted": "Last contacted",
-    "whereMet": "Where you met"
+    "whereMet": "Where you met",
+    "openThread": "Left open"
   },
   "contacts": {
     "title": "Contacts",
@@ -113,7 +114,8 @@
     "dateInvalid": "Enter a full date, or leave it empty.",
     "discarded": "Unsaved changes discarded.",
     "deletedElsewhere": "This contact was deleted, possibly in another tab, so your changes couldn't be saved. You can restore it from “Recently deleted” on the Contacts page.",
-    "whereMetHint": "For example: “Brussels HR forum, March 2026”. The post-event template needs this."
+    "whereMetHint": "For example: “Brussels HR forum, March 2026”. The post-event template needs this.",
+    "openThreadHint": "The question, request or proposal you never got back to. The re-engagement email is about this."
   },
   "import": {
     "title": "Import contacts from a spreadsheet",
@@ -184,10 +186,12 @@
     "methodDemoHint": "Shows how it works with drafts written in advance. Add an API key in Settings to write real ones.",
     "estimate": "About {{cost}} in AI costs for {{count}} emails. This is an estimate; the real cost is shown afterwards.",
     "free": "Free: no AI is used.",
-    "needsWhereMet": "Needs “Where you met”",
-    "unavailable": "None of these contacts has “Where you met” filled in, so this template can't be used. Add it on the contact first.",
-    "leftOut_one": "{{count}} contact has no “Where you met”, so this template won't be used for them. Add it on the contact to include them.",
-    "leftOut_other": "{{count}} contacts have no “Where you met”, so this template won't be used for them. Add it on each contact to include them."
+    "unavailable": "None of these contacts has {{fields}} filled in, so this template can't be used. Add it on the contact first.",
+    "leftOut_one": "{{count}} contact has nothing in {{fields}}, so this template won't be used for them. Fill it in on the contact to include them.",
+    "leftOut_other": "{{count}} contacts have nothing in {{fields}}, so this template won't be used for them. Fill it in on each contact to include them.",
+    "or": " or ",
+    "needsFields": "Needs {{fields}}",
+    "quoted": "“{{name}}”"
   },
   "review": {
     "title": "Review",
@@ -400,7 +404,8 @@
         "contactType": "Type (client, prospect, lead)",
         "serviceHistory": "Work done together",
         "notes": "Notes",
-        "whereMet": "Where you met"
+        "whereMet": "Where you met",
+        "openThread": "Left open"
       }
     },
     "voice": {
@@ -551,8 +556,8 @@
     "empty": "There are no templates. Restore the built-in ones or create a new one.",
     "purpose": "What this email is for",
     "purposeHint": "One sentence about the job this email does that your other templates don't. The AI uses it to keep each kind of email distinct.",
-    "requiresWhereMet": "Only for contacts with “Where you met” filled in",
-    "requiresWhereMetHint": "For emails about meeting someone. Contacts without it can't be given this template."
+    "requires": "Only for contacts that have at least one of",
+    "requiresHint": "Leave all unticked to allow everyone. For example, the post-event email needs “Where you met”, and re-engagement needs something to pick up again."
   },
   "firstRun": {
     "skip": "Skip the introduction",

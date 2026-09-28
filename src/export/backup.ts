@@ -7,6 +7,7 @@ import {
   CONTACT_TYPES,
   DRAFT_ERROR_CODES,
   DRAFT_STATUSES,
+  GATE_FIELDS,
   LANGUAGES,
   SENDER_GENDERS,
   SETTINGS_ID,
@@ -38,6 +39,7 @@ const contactSchema = z
     serviceHistory: str,
     notes: str,
     whereMet: str,
+    openThread: str,
     lastContacted: isoOrNull,
     createdAt: str,
     updatedAt: str,
@@ -73,7 +75,8 @@ const draftSchema = z
   })
   .transform((d): Draft => newDraft(d));
 
-const templateSchema = z.object({
+const templateSchema = z
+  .object({
   id: z.string().min(1),
   family: z.string().min(1),
   name: str,
@@ -87,9 +90,15 @@ const templateSchema = z.object({
     .nullable()
     .catch(null),
   appliesTo: z.array(z.enum(CONTACT_TYPES)).catch([]),
-  requiresWhereMet: z.boolean().catch(false),
+  requiresAnyOf: z.array(z.enum(GATE_FIELDS)).optional(),
+  // Backups made before requiresAnyOf existed.
+  requiresWhereMet: z.boolean().optional(),
   isBuiltIn: z.boolean().catch(false),
-}) satisfies z.ZodType<Template>;
+})
+  .transform(({ requiresWhereMet, requiresAnyOf, ...t }): Template => ({
+    ...t,
+    requiresAnyOf: requiresAnyOf ?? (requiresWhereMet ? ['whereMet'] : []),
+  }));
 
 const settingsSchema = z
   .object({

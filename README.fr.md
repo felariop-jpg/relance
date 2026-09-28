@@ -18,7 +18,7 @@ Relance est un petit outil pour les consultants et les dirigeants de petites ent
 
 1. **Relance n'envoie jamais d'e-mail.** Il n'en a pas la possibilité : il ne contient aucun code d'envoi, même désactivé. Il prépare des brouillons ; c'est vous qui cliquez sur Envoyer. C'est un choix délibéré.
 2. **Vos contacts restent sur votre ordinateur.** Pas de serveur, pas de base de données, pas de compte. Tout est enregistré dans votre navigateur. Relance ne se connecte qu'au service d'IA, et seulement quand vous demandez des brouillons.
-3. **L'IA en voit le moins possible, et vous pouvez le vérifier.** Pour chaque brouillon, elle reçoit uniquement le prénom, l'entreprise, le pays, la langue, le type de contact, le travail réalisé ensemble, le lieu de rencontre et vos notes. Jamais le nom de famille, l'adresse e-mail ou le numéro de téléphone. Chaque brouillon a un panneau « Ce qui a été envoyé à l'IA ». Voir [PRIVACY.fr.md](PRIVACY.fr.md).
+3. **L'IA en voit le moins possible, et vous pouvez le vérifier.** Pour chaque brouillon, elle reçoit uniquement le prénom, l'entreprise, le pays, la langue, le type de contact, le travail réalisé ensemble, le lieu de rencontre, ce qui est resté en suspens et vos notes. Jamais le nom de famille, l'adresse e-mail ou le numéro de téléphone. Chaque brouillon a un panneau « Ce qui a été envoyé à l'IA ». Voir [PRIVACY.fr.md](PRIVACY.fr.md).
 
 ## Pour commencer
 

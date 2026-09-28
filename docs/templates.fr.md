@@ -11,7 +11,7 @@ Les modèles se trouvent dans **Réglages → Modèles**. Cliquez sur **Modifier
 - **Quand il est à envoyer.** Soit « jamais automatiquement » (vous choisissez les contacts vous-même), soit un mois et un nombre minimum de jours depuis votre dernier contact avec la personne. Par exemple : août, au moins 60 jours.
 - **Destiné aux.** Clients, prospects, pistes, ou tout le monde (ne cochez rien).
 - **Une version en anglais et une version en français.** Chacune a un nom, un objet, le texte de l'e-mail, **à quoi sert cet e-mail** (son rôle, que vos autres modèles n'ont pas) et des **consignes pour l'IA**. Vous pouvez omettre une langue ; les contacts de cette langue reçoivent alors l'autre version.
-- **Seulement pour les contacts avec un « Lieu de rencontre »** (facultatif). Le modèle « Suite à une rencontre » a cette case cochée : il ne peut servir que pour les contacts dont le lieu de rencontre est renseigné.
+- **Seulement pour les contacts qui ont au moins l'un de ces éléments** : « Lieu de rencontre », « Travail réalisé ensemble » ou « Resté en suspens » (facultatif). Un modèle qui a besoin d'un détail pour écrire ne peut pas servir pour les contacts qui ne l'ont pas, au lieu d'inventer quelque chose. « Suite à une rencontre » a besoin du lieu de rencontre ; « Reprendre contact » a besoin d'au moins l'un des trois.
 
 ## Les calendriers intégrés ne sont qu'un point de départ
 

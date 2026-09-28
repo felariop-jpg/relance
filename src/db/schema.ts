@@ -25,6 +25,8 @@ export interface Contact {
   notes: string;
   /** Where you met, e.g. "Brussels HR forum, March 2026". Required by the post-event template. */
   whereMet: string;
+  /** The question, request or proposal never got back to. What a re-engagement email is about. */
+  openThread: string;
   /** YYYY-MM-DD, or null if never. */
   lastContacted: string | null;
   createdAt: string;
@@ -113,8 +115,12 @@ export interface Template {
   scheduleRule: ScheduleRule | null;
   /** Contact types this template is meant for. Empty = everyone. */
   appliesTo: ContactType[];
-  /** Only for contacts with a "where you met" value (the post-event template). */
-  requiresWhereMet: boolean;
+  /**
+   * The template can only be used for contacts with at least one of these
+   * fields filled in (and sent to the AI). Empty = anyone. Post-event needs
+   * whereMet; re-engagement needs something to re-engage about.
+   */
+  requiresAnyOf: GateField[];
   isBuiltIn: boolean;
 }
 
@@ -133,8 +139,14 @@ export const API_FIELDS = [
   'notes',
   // Added deliberately: the post-event email is about the meeting itself.
   'whereMet',
+  // Added deliberately: the re-engagement email is about what was left open.
+  'openThread',
 ] as const satisfies readonly (keyof Contact)[];
 export type ApiField = (typeof API_FIELDS)[number];
+
+/** Contact fields a template can require (see Template.requiresAnyOf). */
+export const GATE_FIELDS = ['whereMet', 'serviceHistory', 'openThread'] as const;
+export type GateField = (typeof GATE_FIELDS)[number];
 
 export const SETTINGS_ID = 'singleton';
 

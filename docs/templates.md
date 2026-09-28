@@ -11,7 +11,7 @@ Templates are in **Settings → Templates**. Click **Edit** next to one.
 - **When it is due.** Either "never on its own" (you choose the contacts yourself), or a month plus a minimum number of days since you last contacted the person. For example: August, at least 60 days.
 - **Meant for.** Clients, prospects, leads, or everyone (leave all three unticked).
 - **An English version and a French version.** Each has a name, a subject, the email text, **what this email is for** (its one job, which your other templates don't do), and a **brief for the AI**. You can leave one language out; contacts in that language then get the other version.
-- **Only for contacts with "Where you met"** (optional). The post-event template has this ticked: it can only be used for contacts whose "Where you met" is filled in.
+- **Only for contacts that have at least one of** "Where you met", "Work done together" or "Left open" (optional). A template that needs a detail to write about can't be used for contacts who don't have it, instead of making something up. Post-event needs "Where you met"; re-engagement needs at least one of the three.
 
 ## The built-in schedules are only a starting point
 

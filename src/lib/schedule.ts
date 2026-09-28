@@ -73,7 +73,7 @@ export function dueGroups(
       .filter((c) => isDue(c, rule, appliesTo, today))
       .flatMap((contact) => {
         const template = pickVersion(family, resolveLanguage(contact, settings));
-        if (!template || !canUseTemplate(template, contact)) return [];
+        if (!template || !canUseTemplate(template, contact, settings.withheldFields)) return [];
         return [
           {
             contact,

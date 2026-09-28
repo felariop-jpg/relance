@@ -115,7 +115,7 @@ const estimate = { inputTokens: EST_TOKENS_PER_DRAFT.input * todo.length, output
 console.log(
   retryFailed
     ? `\nThis will write the ${todo.length} missing drafts (of ${jobs.length}) with ${MODEL}, keeping the others as they are.`
-    : `\nThis will write ${todo.length} drafts (${contacts.length} fixture contacts × ${families.length} templates; post-event only where "where we met" is set) with ${MODEL}.`,
+    : `\nThis will write ${todo.length} drafts (${contacts.length} fixture contacts × ${families.length} templates; templates that need a detail only where the contact has it) with ${MODEL}.`,
 );
 console.log(
   `Estimated cost: about $${costUsd(estimate).toFixed(2)} (≈ €${costEur(estimate).toFixed(2)}), billed to the key in ANTHROPIC_API_KEY.`,
@@ -134,7 +134,7 @@ const checks = () => {
   const items = plan.map((p) => ({
     label: `${p.job.contactId} ${p.job.heading}`,
     entry: entries.get(key(p.job.contactId, p.job.heading)) ?? { kind: 'pending' as const, body: [] },
-    sources: `${p.contact.notes}\n${p.contact.serviceHistory}\n${p.contact.whereMet ?? ''}`,
+    sources: `${p.contact.notes}\n${p.contact.serviceHistory}\n${p.contact.whereMet ?? ''}\n${p.contact.openThread ?? ''}`,
   }));
   const openings = plan.map((p, i) => ({
     ...items[i],

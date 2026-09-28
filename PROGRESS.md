@@ -392,3 +392,27 @@ notice and no way back. Code review found more multi-tab hazards of the
 - App: "Needs your input" badge and banner; approval blocked until filled in (button,
   approve-all, `a` key); editing one into an approved draft un-approves it; never
   exported; batch summary counts them. Snapshot "Needs your input" check.
+
+### 4. Re-engagement invented an unresolved point
+- Gating generalised rather than duplicated: `requiresWhereMet` became
+  `requiresAnyOf` (any of whereMet / serviceHistory / openThread), used for
+  post-event (whereMet) and re-engagement (any of the three). Fields withheld from
+  the AI don't count. The template editor has checkboxes for it.
+- "A note describing an open thread" can't be detected reliably in code, so it is an
+  explicit optional contact field, "Left open" (form, import column, allowlisted,
+  privacy docs). Otherwise fx-10, a prospect who asked a question and went quiet,
+  would have lost re-engagement. fx-10 and fx-04 fixtures now fill it; fx-08 unchanged
+  and correctly skipped.
+- Re-engagement brief: work from "left open" first; if nothing says what was left
+  open, write [WHAT WAS LEFT OPEN] rather than invent one.
+- Review of the other three templates on sparse contacts (fx-02 no notes, fx-08 one
+  bare note, fx-10 no history), from the second snapshot:
+  - Spring check-in and late-summer planning need no specific detail (no-notes
+    contacts get an opening approach), so no gate. But fx-10's planning and
+    re-engagement answered the contact's question for the sender ("yes, we do work
+    with remote-only teams"): now covered by the unknown-value rule in #1.
+  - Holiday greeting needs nothing, but fx-08's assumed Christmas ("joyeux Noël");
+    the brief now forbids naming a holiday unless the notes do.
+  - None of the three manufactured a missing prerequisite, so none is gated.
+- Schema v6: migrates the old flag, adds `openThread`, gates built-in re-engagement,
+  and refreshes the re-engagement and holiday briefs where unedited.

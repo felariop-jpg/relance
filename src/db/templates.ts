@@ -1,5 +1,5 @@
 import { db } from './db';
-import type { Lang, Template } from './schema';
+import type { GateField, Lang, Template } from './schema';
 import { BUILT_IN_TEMPLATES } from './seed';
 import { getSettings, updateSettings } from './settings';
 
@@ -50,9 +50,18 @@ export function pickVersion(family: TemplateFamily, lang: Lang): Template | unde
   return family.versions[lang] ?? Object.values(family.versions)[0];
 }
 
-/** A template that needs "where you met" can only be used for contacts that have it. */
-export function canUseTemplate(template: Pick<Template, 'requiresWhereMet'>, contact: { whereMet?: string }): boolean {
-  return !template.requiresWhereMet || Boolean(contact.whereMet?.trim());
+/**
+ * Whether a template can be used for a contact: when it requires fields, at
+ * least one must be filled in and not withheld from the AI (a withheld field
+ * can't give the AI anything to write about).
+ */
+export function canUseTemplate(
+  template: Pick<Template, 'requiresAnyOf'>,
+  contact: Partial<Record<GateField, string>>,
+  withheld: readonly string[] = [],
+): boolean {
+  const required = template.requiresAnyOf ?? [];
+  return required.length === 0 || required.some((f) => !withheld.includes(f) && Boolean(contact[f]?.trim()));
 }
 
 /** The other families' names and purposes, in `lang` where available, for the prompt. */

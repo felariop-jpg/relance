@@ -16,6 +16,7 @@ export function emptyContact(): ContactInput {
     serviceHistory: '',
     notes: '',
     whereMet: '',
+    openThread: '',
     lastContacted: null,
   };
 }
@@ -38,6 +39,7 @@ export function normalizeContact(input: ContactInput): ContactInput {
     notes: input.notes.trim(),
     // Contacts saved before this field existed have no value.
     whereMet: (input.whereMet ?? '').trim(),
+    openThread: (input.openThread ?? '').trim(),
     lastContacted: input.lastContacted || null,
   };
 }

@@ -15,7 +15,8 @@
     "lastContacted": "2025-02-10",
     "createdAt": "",
     "updatedAt": "",
-    "whereMet": ""
+    "whereMet": "",
+    "openThread": ""
   },
   {
     "case": "Empty notes",
@@ -33,7 +34,8 @@
     "lastContacted": "2024-11-02",
     "createdAt": "",
     "updatedAt": "",
-    "whereMet": ""
+    "whereMet": "",
+    "openThread": ""
   },
   {
     "case": "French contact with French notes",
@@ -51,7 +53,8 @@
     "lastContacted": "2025-01-15",
     "createdAt": "",
     "updatedAt": "",
-    "whereMet": ""
+    "whereMet": "",
+    "openThread": ""
   },
   {
     "case": "English contact, short practical notes",
@@ -69,7 +72,8 @@
     "lastContacted": "2025-03-01",
     "createdAt": "",
     "updatedAt": "",
-    "whereMet": ""
+    "whereMet": "",
+    "openThread": "The proposal from last year, on hold until the new fiscal year."
   },
   {
     "case": "Long service history",
@@ -87,7 +91,8 @@
     "lastContacted": "2025-05-20",
     "createdAt": "",
     "updatedAt": "",
-    "whereMet": ""
+    "whereMet": "",
+    "openThread": ""
   },
   {
     "case": "Name with accents",
@@ -105,7 +110,8 @@
     "lastContacted": "2024-12-12",
     "createdAt": "",
     "updatedAt": "",
-    "whereMet": ""
+    "whereMet": "",
+    "openThread": ""
   },
   {
     "case": "Company name with punctuation",
@@ -123,7 +129,8 @@
     "lastContacted": "2025-04-04",
     "createdAt": "",
     "updatedAt": "",
-    "whereMet": ""
+    "whereMet": "",
+    "openThread": ""
   },
   {
     "case": "Very short note",
@@ -141,7 +148,8 @@
     "lastContacted": null,
     "createdAt": "",
     "updatedAt": "",
-    "whereMet": ""
+    "whereMet": "",
+    "openThread": ""
   },
   {
     "case": "Notes in the other language from the contact's own",
@@ -159,7 +167,8 @@
     "lastContacted": "2025-06-30",
     "createdAt": "",
     "updatedAt": "",
-    "whereMet": ""
+    "whereMet": "",
+    "openThread": ""
   },
   {
     "case": "Prospect with no history",
@@ -177,7 +186,8 @@
     "lastContacted": null,
     "createdAt": "",
     "updatedAt": "",
-    "whereMet": ""
+    "whereMet": "",
+    "openThread": "Asked whether we work with remote-only teams; never answered."
   },
   {
     "case": "Bare facts that invite embellishment (motive, feelings, outcome)",
@@ -195,7 +205,8 @@
     "lastContacted": "2025-02-20",
     "createdAt": "",
     "updatedAt": "",
-    "whereMet": ""
+    "whereMet": "",
+    "openThread": ""
   },
   {
     "case": "Met at an event (exercises the post-event template)",
@@ -213,6 +224,7 @@
     "whereMet": "Salon des entrepreneurs de Lyon, 11 septembre 2026",
     "lastContacted": null,
     "createdAt": "",
-    "updatedAt": ""
+    "updatedAt": "",
+    "openThread": ""
   }
 ]

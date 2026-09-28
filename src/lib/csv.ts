@@ -56,6 +56,7 @@ export const IMPORT_TARGETS = [
   'serviceHistory',
   'notes',
   'whereMet',
+  'openThread',
   'lastContacted',
 ] as const;
 export type ImportTarget = (typeof IMPORT_TARGETS)[number];
@@ -76,6 +77,7 @@ const HEADER_HINTS: Record<ImportTarget, string[]> = {
   serviceHistory: ['service history', 'history', 'services', 'work done', 'projects', 'historique', 'prestations', 'projets'],
   notes: ['notes', 'note', 'comments', 'comment', 'remarks', 'commentaires', 'commentaire', 'remarques'],
   whereMet: ['where we met', 'where met', 'met at', 'first met', 'event', 'lieu de rencontre', 'rencontre', 'rencontre a', 'evenement'],
+  openThread: ['left open', 'open thread', 'open question', 'pending', 'unresolved', 'en suspens', 'point en suspens', 'reste en suspens', 'question en attente'],
   lastContacted: ['last contacted', 'last contact', 'last contact date', 'last email', 'dernier contact', 'date dernier contact', 'date du dernier contact'],
 };
 
@@ -212,6 +214,7 @@ export function applyMapping(
       serviceHistory: get('serviceHistory'),
       notes: get('notes'),
       whereMet: get('whereMet'),
+      openThread: get('openThread'),
       lastContacted,
     });
   }

@@ -361,10 +361,15 @@ README notes that swapping models is a one-line change.
 - Every template has a `purpose` (its one job) sent to the model, plus
   `otherTemplates` (the other families' names and purposes) so it can keep them
   apart. Shared rule 8 spells out check-in vs re-engagement vs post-event vs greeting.
-- Contacts have `whereMet` (form field, import column, allowlisted API field).
-  Templates with `requiresWhereMet` (built-in post-event) are unavailable for
-  contacts without it: disabled with an explanation in the write dialog, skipped
-  in Due now and in the snapshot (not a gap). Schema v4 fills the new fields.
+- Contacts have `whereMet` and `openThread` ("Left open"): form fields, import
+  columns, allowlisted API fields.
+- **Template gating** is one mechanism: `requiresAnyOf` (fields; empty = anyone),
+  checked by `canUseTemplate`, which ignores fields withheld from the AI.
+  Post-event needs `whereMet`; re-engagement needs `openThread`, `serviceHistory`
+  or `whereMet`. Unavailable templates are disabled with an explanation in the
+  write dialog and skipped in Due now and the snapshot (not gaps). A note-only
+  open thread can't be detected reliably in code, so it goes in "Left open".
+  Schema v4/v6 migrate older data.
 
 ### Openings and templates (snapshot review)
 - **The model never sees a template's email text.** It paraphrased it into every

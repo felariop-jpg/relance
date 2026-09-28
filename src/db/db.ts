@@ -1,7 +1,7 @@
 import Dexie, { type EntityTable } from 'dexie';
 import type { Contact, Draft, Settings, Template, TrashEntry } from './schema';
 import { BUILT_IN_PURPOSES, BUILT_IN_TEMPLATES } from './seed';
-import { PREVIOUS_BUILT_IN_INSTRUCTIONS } from './migrations/previous-briefs';
+import { PREVIOUS_BUILT_IN_INSTRUCTIONS, V5_BUILT_IN_INSTRUCTIONS, V5_BUILT_IN_PURPOSES } from './migrations/previous-briefs';
 
 export class RelanceDB extends Dexie {
   contacts!: EntityTable<Contact, 'id'>;
@@ -52,7 +52,9 @@ export class RelanceDB extends Dexie {
           .toCollection()
           .modify((t) => {
             if (typeof t.purpose !== 'string') t.purpose = BUILT_IN_PURPOSES[t.id] ?? '';
-            if (typeof t.requiresWhereMet !== 'boolean') t.requiresWhereMet = t.isBuiltIn && t.family === 'post-event';
+            if (typeof t.requiresWhereMet !== 'boolean' && !Array.isArray(t.requiresAnyOf)) {
+              t.requiresWhereMet = t.isBuiltIn && t.family === 'post-event';
+            }
           });
       });
     // v5: built-in briefs rewritten (intent and content, no wording to copy).
@@ -68,6 +70,32 @@ export class RelanceDB extends Dexie {
             if (t.isBuiltIn && fresh && t.instructions === PREVIOUS_BUILT_IN_INSTRUCTIONS[t.id]) t.instructions = fresh.instructions;
           }),
       );
+    // v6: gating generalised to "requires at least one of these fields"; contacts
+    // gain "left open"; re-engagement now needs something to re-engage about;
+    // refreshed briefs for re-engagement and the holiday greeting where unedited.
+    this.version(6)
+      .stores({})
+      .upgrade(async (tx) => {
+        await tx
+          .table('contacts')
+          .toCollection()
+          .modify((c) => {
+            if (typeof c.openThread !== 'string') c.openThread = '';
+          });
+        await tx
+          .table('templates')
+          .toCollection()
+          .modify((t) => {
+            if (!Array.isArray(t.requiresAnyOf)) {
+              const fresh = BUILT_IN_TEMPLATES.find((b) => b.id === t.id);
+              t.requiresAnyOf = t.isBuiltIn && fresh ? fresh.requiresAnyOf : t.requiresWhereMet ? ['whereMet'] : [];
+            }
+            delete t.requiresWhereMet;
+            const fresh = BUILT_IN_TEMPLATES.find((b) => b.id === t.id);
+            if (t.isBuiltIn && fresh && t.instructions === V5_BUILT_IN_INSTRUCTIONS[t.id]) t.instructions = fresh.instructions;
+            if (t.isBuiltIn && fresh && t.purpose === V5_BUILT_IN_PURPOSES[t.id]) t.purpose = fresh.purpose;
+          });
+      });
   }
 }
 

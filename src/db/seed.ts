@@ -34,7 +34,7 @@ Subject: short and about them, not about spring.
 Length: 60 to 110 words.`,
     scheduleRule: { month: 4, minGapDays: 90 },
     appliesTo: ['client'],
-    requiresWhereMet: false,
+    requiresAnyOf: [],
     isBuiltIn: true,
   },
   {
@@ -58,7 +58,7 @@ Objet : court et centré sur la personne, pas sur le printemps.
 Longueur : 60 à 110 mots. Vouvoiement.`,
     scheduleRule: { month: 4, minGapDays: 90 },
     appliesTo: ['client'],
-    requiresWhereMet: false,
+    requiresAnyOf: [],
     isBuiltIn: true,
   },
   {
@@ -84,7 +84,7 @@ Subject: about their plans for the year ahead.
 Length: 80 to 130 words.`,
     scheduleRule: { month: 8, minGapDays: 60 },
     appliesTo: ['client', 'prospect'],
-    requiresWhereMet: false,
+    requiresAnyOf: [],
     isBuiltIn: true,
   },
   {
@@ -110,7 +110,7 @@ Objet : sur ses projets pour l'année à venir.
 Longueur : 80 à 130 mots. Vouvoiement.`,
     scheduleRule: { month: 8, minGapDays: 60 },
     appliesTo: ['client', 'prospect'],
-    requiresWhereMet: false,
+    requiresAnyOf: [],
     isBuiltIn: true,
   },
   {
@@ -127,12 +127,12 @@ As the year comes to a close, warm wishes to you and those close to you for the 
     purpose: 'A seasonal greeting and nothing else: no work, services, plans or meetings.',
     instructions: `Must achieve: a warm seasonal greeting that feels written for this one person.
 Must contain: one personal touch from their notes if it suits a greeting (a personal or family event, not work); good wishes for the holidays and the year ahead.
-Must not contain: work, services, projects, plans, meetings, offers, or a question that needs an answer; the phrase "as the year winds down".
+Must not contain: work, services, projects, plans, meetings, offers, or a question that needs an answer; a named holiday such as Christmas, unless the notes name it ("the holidays" or "the end of the year" instead); the phrase "as the year winds down".
 Subject: a short greeting.
 Length: 40 to 80 words.`,
     scheduleRule: { month: 11, minGapDays: 0 },
     appliesTo: [],
-    requiresWhereMet: false,
+    requiresAnyOf: [],
     isBuiltIn: true,
   },
   {
@@ -149,12 +149,12 @@ Alors que l'année se termine, je vous souhaite, à vous et à vos proches, de t
     purpose: 'Des vœux de saison, et rien d\'autre : ni travail, ni services, ni projets, ni rendez-vous.',
     instructions: `Objectif : des vœux chaleureux qui semblent écrits pour cette seule personne.
 Doit contenir : une touche personnelle tirée de ses notes si elle convient à des vœux (un événement personnel ou familial, pas le travail) ; des vœux pour les fêtes et l'année à venir.
-Ne doit pas contenir : travail, services, projets, rendez-vous, offres, ni question qui appelle une réponse ; la formule « alors que l'année se termine ».
+Ne doit pas contenir : travail, services, projets, rendez-vous, offres, ni question qui appelle une réponse ; une fête nommée comme Noël, sauf si les notes la nomment (plutôt « les fêtes » ou « la fin d'année ») ; la formule « alors que l'année se termine ».
 Objet : des vœux courts.
 Longueur : 40 à 80 mots. Vouvoiement.`,
     scheduleRule: { month: 11, minGapDays: 0 },
     appliesTo: [],
-    requiresWhereMet: false,
+    requiresAnyOf: [],
     isBuiltIn: true,
   },
   {
@@ -170,15 +170,15 @@ It has been a while since we last spoke, and you came to mind.
 Priorities shift, I know. If the topic we discussed is still relevant, I would be happy to pick up the conversation whenever it suits you. And if not, I hope things are going well.
 
 {{signature}}`,
-    purpose: 'Reconnect with someone who went quiet: acknowledge the time since you last spoke and pick up the specific thing that was left unresolved.',
+    purpose: 'Reconnect with someone who went quiet: acknowledge the time since you last spoke and pick up the specific thing that was left unresolved (openThread, or the work history or where you met).',
     instructions: `Must achieve: reopen a conversation that stopped, on the specific topic that was left unresolved.
-Must contain: an opening built from their specifics; a plain acknowledgement that some time has passed since you last spoke, without saying how long; the specific thing that was left open, taken from the notes or work history; an easy way to reply and an equally easy way not to.
+Must contain: an opening built from their specifics; a plain acknowledgement that some time has passed since you last spoke, without saying how long; the specific thing that was left open, taken from openThread first, otherwise from the work history or where you met; an easy way to reply and an equally easy way not to. If none of these says what was left open, write [WHAT WAS LEFT OPEN] instead of inventing a topic or project.
 Must not contain: guilt, "just checking in" language, or a generic "it has been a while and I thought of you" opening.
 Subject: about the topic that was left open.
 Length: 70 to 120 words.`,
     scheduleRule: { month: 2, minGapDays: 180 },
     appliesTo: ['prospect'],
-    requiresWhereMet: false,
+    requiresAnyOf: ['openThread', 'serviceHistory', 'whereMet'],
     isBuiltIn: true,
   },
   {
@@ -194,15 +194,15 @@ Cela fait un moment que nous n'avons pas échangé, et j'ai pensé à vous.
 Les priorités évoluent, je le sais bien. Si le sujet dont nous avions parlé est toujours d'actualité, je reprendrais volontiers la conversation quand vous le souhaitez. Sinon, j'espère que tout va bien de votre côté.
 
 {{signature}}`,
-    purpose: 'Renouer avec une personne qui ne s\'est plus manifestée : reconnaître le temps écoulé depuis le dernier échange et reprendre le point précis resté en suspens.',
+    purpose: 'Renouer avec une personne qui ne s\'est plus manifestée : reconnaître le temps écoulé depuis le dernier échange et reprendre le point précis resté en suspens (openThread, ou le travail réalisé ou le lieu de rencontre).',
     instructions: `Objectif : relancer une conversation interrompue, sur le point précis resté en suspens.
-Doit contenir : une ouverture construite à partir de ses informations ; la reconnaissance simple qu'un peu de temps a passé depuis le dernier échange, sans dire combien ; le point précis resté en suspens, tiré des notes ou du travail réalisé ; une façon facile de répondre, et une façon tout aussi facile de ne pas répondre.
+Doit contenir : une ouverture construite à partir de ses informations ; la reconnaissance simple qu'un peu de temps a passé depuis le dernier échange, sans dire combien ; le point précis resté en suspens, tiré d'abord de openThread, sinon du travail réalisé ou du lieu de rencontre ; une façon facile de répondre, et une façon tout aussi facile de ne pas répondre. Si rien de tout cela ne dit ce qui est resté en suspens, écrivez [CE QUI EST RESTÉ EN SUSPENS] au lieu d'inventer un sujet ou un projet.
 Ne doit pas contenir : culpabilisation, formules du type « je me permets de revenir vers vous », ni une ouverture générique du type « cela fait un moment et j'ai pensé à vous ».
 Objet : sur le sujet resté en suspens.
 Longueur : 70 à 120 mots. Vouvoiement.`,
     scheduleRule: { month: 2, minGapDays: 180 },
     appliesTo: ['prospect'],
-    requiresWhereMet: false,
+    requiresAnyOf: ['openThread', 'serviceHistory', 'whereMet'],
     isBuiltIn: true,
   },
   {
@@ -226,7 +226,7 @@ Subject: about where you met.
 Length: 60 to 110 words.`,
     scheduleRule: null,
     appliesTo: ['lead', 'prospect'],
-    requiresWhereMet: true,
+    requiresAnyOf: ['whereMet'],
     isBuiltIn: true,
   },
   {
@@ -250,7 +250,7 @@ Objet : sur le lieu de la rencontre.
 Longueur : 60 à 110 mots. Vouvoiement.`,
     scheduleRule: null,
     appliesTo: ['lead', 'prospect'],
-    requiresWhereMet: true,
+    requiresAnyOf: ['whereMet'],
     isBuiltIn: true,
   },
 ];

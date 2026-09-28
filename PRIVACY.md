@@ -28,6 +28,7 @@ Relance connects to **one** service: the AI, Claude, run by the company Anthropi
 - **what you did together** (the "Work done together" field)
 - your **notes** about them
 - **where you met** them, if you filled it in (the post-event email is about that meeting)
+- what was **left open** with them, if you filled it in (the re-engagement email is about that)
 
 Also sent: for French drafts only, the grammatical gender you chose for French agreement (Settings → Your details; "neutral" by default); the template's purpose and wording, the example emails you pasted under "Your writing style" (if any), and any instruction you type when rewriting a draft.
 

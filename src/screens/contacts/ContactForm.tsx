@@ -246,6 +246,17 @@ export function ContactForm({
           />
         </Field>
 
+        <Field id={fid('openThread')} label={t('fields.openThread')} hint={t('form.openThreadHint')}>
+          <input
+            id={fid('openThread')}
+            className={inputClass}
+            value={draft.openThread}
+            onChange={(e) => set('openThread', e.target.value)}
+            aria-describedby={described('openThread', true)}
+            autoComplete="off"
+          />
+        </Field>
+
         <Field id={fid('notes')} label={t('fields.notes')} hint={t('form.notesHint')}>
           <textarea
             id={fid('notes')}

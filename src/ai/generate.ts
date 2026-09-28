@@ -119,7 +119,7 @@ export async function createPendingDrafts(
   const drafts = contacts.flatMap((contact) => {
     const language = resolveLanguage(contact, settings);
     const template = pickVersion(family, language);
-    if (!template || !canUseTemplate(template, contact)) return [];
+    if (!template || !canUseTemplate(template, contact, settings.withheldFields)) return [];
     return [
       newDraft({
         contactId: contact.id,

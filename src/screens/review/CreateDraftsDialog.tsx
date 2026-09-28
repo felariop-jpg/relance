@@ -47,7 +47,7 @@ export function CreateDraftsDialog({
   const eligibleFor = (f: (typeof families)[number]) =>
     (contacts ?? []).filter((c) => {
       const version = pickVersion(f, resolveLanguage(c, settings));
-      return version ? canUseTemplate(version, c) : false;
+      return version ? canUseTemplate(version, c, settings.withheldFields) : false;
     }).length;
   const usable = families.filter((f) => eligibleFor(f) > 0);
   const family = usable.find((f) => f.family === chosen) ?? usable[0];
@@ -107,7 +107,8 @@ export function CreateDraftsDialog({
             <div className="grid gap-2 sm:grid-cols-2">
               {families.map((f) => {
                 const unavailable = eligibleFor(f) === 0;
-                const needsWhereMet = Object.values(f.versions).some((v) => v?.requiresWhereMet);
+                const required = [...new Set(Object.values(f.versions).flatMap((v) => v?.requiresAnyOf ?? []))];
+                const fields = required.map((r) => t('create.quoted', { name: t(`fields.${r}`) })).join(t('create.or'));
                 return (
                   <label
                     key={f.family}
@@ -124,13 +125,13 @@ export function CreateDraftsDialog({
                     <span className="min-w-0">
                       <span className="block font-medium">{f.name}</span>
                       <span className="block text-sm text-stone-500">
-                        {unavailable && needsWhereMet
-                          ? t('create.unavailable')
+                        {unavailable && required.length > 0
+                          ? t('create.unavailable', { fields })
                           : (f.versions[i18n.language as Lang] ?? Object.values(f.versions)[0])?.purpose}
                       </span>
-                      {needsWhereMet && !unavailable && (
+                      {required.length > 0 && !unavailable && (
                         <span className="mt-1 inline-block rounded bg-stone-100 px-1.5 py-0.5 text-xs text-stone-600">
-                          {t('create.needsWhereMet')}
+                          {t('create.needsFields', { fields })}
                         </span>
                       )}
                     </span>
@@ -141,7 +142,16 @@ export function CreateDraftsDialog({
           </fieldset>
         )}
 
-        {family && count < total && <Banner tone="info">{t('create.leftOut', { count: total - count })}</Banner>}
+        {family && count < total && (
+          <Banner tone="info">
+            {t('create.leftOut', {
+              count: total - count,
+              fields: [...new Set(Object.values(family.versions).flatMap((v) => v?.requiresAnyOf ?? []))]
+                .map((r) => t('create.quoted', { name: t(`fields.${r}`) }))
+                .join(t('create.or')),
+            })}
+          </Banner>
+        )}
 
         {family &&
           LANGUAGES.filter((l) => byLanguage[l] > 0 && !family.versions[l]).map((l) => (
