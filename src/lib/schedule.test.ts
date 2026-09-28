@@ -4,7 +4,9 @@ import { newDraft } from '../db/drafts';
 import { BUILT_IN_TEMPLATES } from '../db/seed';
 import { defaultSettings } from '../db/settings-defaults';
 import type { Contact } from '../db/schema';
-import { daysSince, dueGroups, isDue, upcoming } from './schedule';
+import { anyScheduledThisMonth, daysSince, dueGroups, isDue, nextBatch, upcoming } from './schedule';
+import { applyMapping, parseCsvText, suggestMapping } from './csv';
+import { sampleContactsCsv } from './sample';
 
 const rule = { month: 8, minGapDays: 60 };
 const aug = new Date(2026, 7, 28);
@@ -75,4 +77,44 @@ describe('dueGroups', () => {
       ['spring-checkin', 4],
     ]);
   });
+
+  it('counts only contacts the template can be used for', () => {
+    // Re-engagement needs "Left open", work done together or where you met.
+    const prospects = [
+      contact('bare', { contactType: 'prospect' }),
+      contact('met', { contactType: 'prospect', whereMet: 'Lyon fair' }),
+    ];
+    const reengage = upcoming(prospects, BUILT_IN_TEMPLATES, settings, aug).find((u) => u.family.family === 'reengage');
+    expect(reengage?.count).toBe(1);
+  });
+});
+
+describe('Due now across the year (sample contacts, built-in templates)', () => {
+  const settings = defaultSettings('en');
+  for (let month = 0; month < 12; month++) {
+    const today = new Date(2026, month, 15);
+    it(`has something useful to lead with in ${today.toLocaleString('en', { month: 'long' })}`, () => {
+      const parsed = parseCsvText(sampleContactsCsv(today), true);
+      const contacts = applyMapping(parsed, suggestMapping(parsed.headers), { defaultType: 'client' }).contacts.map(
+        (c, i) => ({ ...c, id: String(i), createdAt: '', updatedAt: '' }),
+      );
+      const groups = dueGroups(contacts, BUILT_IN_TEMPLATES, [], settings, today);
+      const next = upcoming(contacts, BUILT_IN_TEMPLATES, settings, today);
+      if (groups.length > 0) {
+        expect(anyScheduledThisMonth(BUILT_IN_TEMPLATES, settings, today)).toBe(true);
+      } else {
+        const headline = nextBatch(next);
+        expect(headline).toBeDefined();
+        expect(headline!.count).toBeGreaterThan(0);
+        // The headline batch is never more than three months away with the built-in schedule.
+        expect((headline!.month - (month + 1) + 12) % 12).toBeLessThanOrEqual(3);
+      }
+      // Coming up counts match what Due now shows on the 1st of that month.
+      for (const u of next) {
+        const first = new Date(today.getFullYear() + (u.month < month + 1 ? 1 : 0), u.month - 1, 1);
+        const due = dueGroups(contacts, BUILT_IN_TEMPLATES, [], settings, first).find((g) => g.family.family === u.family.family);
+        expect(due?.entries.length ?? 0).toBe(u.count);
+      }
+    });
+  }
 });

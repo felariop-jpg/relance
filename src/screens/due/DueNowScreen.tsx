@@ -11,7 +11,7 @@ import { useTemplates } from '../../db/hooks';
 import { useSettings } from '../../db/settings';
 import { formatSince, monthName } from '../../lib/dates';
 import { formatEur } from '../../lib/money';
-import { dueGroups, upcoming, type DueGroup } from '../../lib/schedule';
+import { anyScheduledThisMonth, dueGroups, nextBatch, upcoming, type DueGroup } from '../../lib/schedule';
 import { href } from '../../nav';
 import { CreateDraftsDialog } from '../review/CreateDraftsDialog';
 import { matchesQuery } from '../contacts/sorting';
@@ -57,6 +57,10 @@ export function DueNowScreen() {
   const [manualWriting, setManualWriting] = useState(false);
 
   if (!groups || !contacts) return <p className="py-10 text-center text-stone-500">{t('common.loading')}</p>;
+
+  // Nobody due: lead with the next batch, then Coming up, then choosing contacts by hand.
+  const idle = groups.length === 0;
+  const headline = idle ? nextBatch(next) : undefined;
 
   const selectable = (g: DueGroup) => g.entries.filter((e) => !e.hasOpenDraft);
   const count = groups.reduce(
@@ -115,15 +119,26 @@ export function DueNowScreen() {
         </div>
       ) : (
         <>
-          <p className="text-sm text-stone-600">{t('due.intro')}</p>
+          {idle ? (
+            <p className="text-sm text-stone-600">
+              {t(anyScheduledThisMonth(templates ?? [], settings, today) ? 'due.nothingAllRecent' : 'due.nothingNoneScheduled', {
+                month: monthName(today.getMonth() + 1, locale),
+              })}
+            </p>
+          ) : (
+            <p className="text-sm text-stone-600">{t('due.intro')}</p>
+          )}
 
-          {groups.length === 0 && (
-            <div className="rounded-xl border border-dashed border-stone-300 px-6 py-8 text-center">
-              <p className="font-medium">{t('due.nothingTitle')}</p>
-              <p className="mt-1 text-sm text-stone-600">
-                {t('due.nothingBody', { month: monthName(today.getMonth() + 1, locale) })}
+          {idle && headline && (
+            <section className="rounded-xl border border-accent-100 bg-accent-50 px-5 py-4">
+              <h2 className="text-lg font-semibold">
+                {t('due.nextTitle', { name: headline.family.name, month: monthName(headline.month, locale) })}
+              </h2>
+              <p className="mt-1 text-stone-700">
+                {t('due.nextCount', { count: headline.count })}{' '}
+                <span className="text-stone-500">{ruleText(headline.rule, headline.appliesTo, locale, t)}</span>
               </p>
-            </div>
+            </section>
           )}
 
           {groups.map((g) => {
@@ -213,9 +228,13 @@ export function DueNowScreen() {
             <header className="flex flex-wrap items-center justify-between gap-3 px-4 py-3">
               <div>
                 <h2 className="font-semibold">{t('due.manual')}</h2>
-                <p className="text-sm text-stone-500">{t('due.manualHint')}</p>
+                <p className="text-sm text-stone-500">{t(idle ? 'due.manualHintIdle' : 'due.manualHint')}</p>
               </div>
-              <Button onClick={() => setManualOpen((v) => !v)} aria-expanded={manualOpen}>
+              <Button
+                variant={idle && !manualOpen ? 'primary' : undefined}
+                onClick={() => setManualOpen((v) => !v)}
+                aria-expanded={manualOpen}
+              >
                 {manualOpen ? t('due.hideManual') : t('due.manual')}
               </Button>
             </header>

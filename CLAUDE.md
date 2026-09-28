@@ -301,6 +301,14 @@ README notes that swapping models is a one-line change.
   (open = not exported and not skipped). Exporting or skipping frees it.
 - **Days are whole calendar days** in the user's time zone.
 - **Manual mode** reuses the Write emails dialog (any template, any contacts).
+- **When nobody is due**, Due now leads with the next batch ("Next: … in November,
+  12 contacts, as things stand" + its rule), then the full Coming up list, then
+  "Choose contacts yourself" with a primary button. The reason (no template this
+  month / everyone recent or missing a detail) is a plain line, not a heading. The
+  headline is the soonest batch that will include someone, else the soonest.
+- **Coming up counts use the same checks as Due now** (type, gap, and the template's
+  required details), evaluated on the 1st of that month; a test checks all twelve
+  months against the sample contacts.
 
 ### Phase 6 decisions
 - **Settings is one long page with a jump list**, not tabs: easier to scan and

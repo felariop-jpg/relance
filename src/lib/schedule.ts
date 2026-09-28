@@ -90,11 +90,23 @@ export function dueGroups(
 
 export interface Upcoming {
   family: TemplateFamily;
+  rule: ScheduleRule;
+  appliesTo: Template['appliesTo'];
   month: number;
   count: number;
 }
 
-/** Scheduled templates in the next 12 months (excluding this one), soonest first. */
+/** Would this contact get this family's email in the rule's month (type, gap, required details)? */
+function qualifies(contact: Contact, family: TemplateFamily, rule: ScheduleRule, appliesTo: Template['appliesTo'], settings: Settings, when: Date): boolean {
+  if (!isDue(contact, rule, appliesTo, when)) return false;
+  const template = pickVersion(family, resolveLanguage(contact, settings));
+  return !!template && canUseTemplate(template, contact, settings.withheldFields);
+}
+
+/**
+ * Scheduled templates in the next 12 months (excluding this one), soonest first.
+ * Counts use the same checks as Due now, as things stand on the 1st of that month.
+ */
 export function upcoming(contacts: Contact[], templates: Template[], settings: Settings, today: Date): Upcoming[] {
   const current = today.getMonth() + 1;
   return groupFamilies(templates, settings.uiLanguage)
@@ -103,8 +115,19 @@ export function upcoming(contacts: Contact[], templates: Template[], settings: S
       if (!rule || rule.month === current) return [];
       const year = today.getFullYear() + (rule.month < current ? 1 : 0);
       const firstOfMonth = new Date(year, rule.month - 1, 1);
-      const count = contacts.filter((c) => isDue(c, rule, appliesTo, firstOfMonth)).length;
-      return [{ family, month: rule.month, count }];
+      const count = contacts.filter((c) => qualifies(c, family, rule, appliesTo, settings, firstOfMonth)).length;
+      return [{ family, rule, appliesTo, month: rule.month, count }];
     })
     .sort((a, b) => ((a.month - current + 12) % 12) - ((b.month - current + 12) % 12));
+}
+
+/** The batch to headline when nobody is due: the soonest one that will include someone, else the soonest. */
+export function nextBatch(list: Upcoming[]): Upcoming | undefined {
+  return list.find((u) => u.count > 0) ?? list[0];
+}
+
+/** Whether any template is scheduled for today's month (to explain an empty Due now). */
+export function anyScheduledThisMonth(templates: Template[], settings: Settings, today: Date): boolean {
+  const current = today.getMonth() + 1;
+  return groupFamilies(templates, settings.uiLanguage).some((f) => familyRule(f).rule?.month === current);
 }
