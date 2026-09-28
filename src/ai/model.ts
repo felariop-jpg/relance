@@ -22,11 +22,11 @@ export const EUR_PER_USD = 0.86;
 
 /**
  * Rough tokens for one draft (system prompt + template brief + contact in, the
- * email out). First real drafts (2026-09-28) used about 2,200 in and 300 out;
- * the prompt then grew (dates, purposes, opening rules, quoted sources) to about
- * 2,400 in, measured from the fixture requests, with slightly longer replies.
+ * email out). First real drafts (2026-09-28): about 2,200 in and 300 out. The
+ * no-invention, placeholder, consequence and feelings rules grew the prompt to
+ * about 3,000 in (measured from the fixture requests); replies about 330 out.
  */
-export const EST_TOKENS_PER_DRAFT = { input: 2400, output: 330 } as const;
+export const EST_TOKENS_PER_DRAFT = { input: 3000, output: 330 } as const;
 
 export function costUsd(usage: { inputTokens: number; outputTokens: number }): number {
   return (
