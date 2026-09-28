@@ -25,7 +25,7 @@ import {
   type Settings,
 } from '../../db/schema';
 import { countryOptions } from '../../lib/country';
-import { todayIso } from '../../lib/dates';
+import { recentMonthYear, todayIso } from '../../lib/dates';
 import { languageForCountry } from '../../lib/language';
 
 /** Add (contact = null) or edit a contact. Mount it only while it should be open. */
@@ -235,7 +235,7 @@ export function ContactForm({
           </Field>
         </div>
 
-        <Field id={fid('whereMet')} label={t('fields.whereMet')} hint={t('form.whereMetHint')}>
+        <Field id={fid('whereMet')} label={t('fields.whereMet')} hint={t('form.whereMetHint', { when: recentMonthYear(i18n.language) })}>
           <input
             id={fid('whereMet')}
             className={inputClass}

@@ -118,7 +118,7 @@
     "dateInvalid": "Saisissez une date complète, ou laissez le champ vide.",
     "discarded": "Modifications non enregistrées abandonnées.",
     "deletedElsewhere": "Ce contact a été supprimé, peut-être dans un autre onglet : vos modifications n'ont pas pu être enregistrées. Vous pouvez le restaurer depuis « Supprimés récemment » dans la page Contacts.",
-    "whereMetHint": "Par exemple : « Forum RH de Bruxelles, mars 2026 ». Le modèle « Suite à une rencontre » en a besoin.",
+    "whereMetHint": "Par exemple : « Forum RH de Bruxelles, {{when}} ». Le modèle « Suite à une rencontre » en a besoin.",
     "openThreadHint": "Ce que vous attendez, ou ce à quoi vous n'avez jamais donné suite. L'e-mail « Reprendre contact » est construit autour de cela. S'il est vide, ces brouillons reviennent avec un passage à compléter vous-même.",
     "openThreadPlaceholder": "ex. : en attente de leur décision budgétaire ; doivent revenir vers nous au printemps"
   },

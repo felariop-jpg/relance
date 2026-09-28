@@ -15,7 +15,8 @@ import { MailIcon } from '../../components/icons';
 import { useTrash } from '../../db/trash';
 import { TrashDialog } from './TrashDialog';
 import { useSettings } from '../../db/settings';
-import { loadSampleContacts, SAMPLE_CSV_URL } from '../../lib/sample';
+import { loadSampleContacts, sampleContactsCsv } from '../../lib/sample';
+import { downloadFile } from '../../lib/download';
 import { ContactForm } from './ContactForm';
 import { ContactTable } from './ContactTable';
 import { ContactList } from './ContactList';
@@ -181,13 +182,15 @@ export function ContactsScreen() {
         >
           <p>{t('contacts.empty.body')}</p>
           <p>
-            <a
-              href={SAMPLE_CSV_URL}
-              download="sample-contacts.csv"
+            <button
+              type="button"
+              onClick={() =>
+                downloadFile('\uFEFF' + sampleContactsCsv(), 'sample-contacts.csv', 'text/csv;charset=utf-8')
+              }
               className="font-medium underline underline-offset-4"
             >
               {t('contacts.empty.downloadSample')}
-            </a>
+            </button>
             {'. '}
             {t('contacts.empty.sampleHint')}
           </p>

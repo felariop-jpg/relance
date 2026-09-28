@@ -114,7 +114,7 @@
     "dateInvalid": "Enter a full date, or leave it empty.",
     "discarded": "Unsaved changes discarded.",
     "deletedElsewhere": "This contact was deleted, possibly in another tab, so your changes couldn't be saved. You can restore it from “Recently deleted” on the Contacts page.",
-    "whereMetHint": "For example: “Brussels HR forum, March 2026”. The post-event template needs this.",
+    "whereMetHint": "For example: “Brussels HR forum, {{when}}”. The post-event template needs this.",
     "openThreadHint": "What you're waiting on, or never got back to. The re-engagement email is built around this. If it's empty, those drafts come back with a gap for you to fill in by hand.",
     "openThreadPlaceholder": "e.g. waiting on their budget decision; said they'd come back to us in the spring"
   },

@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { sampleContactsCsv } from './sample';
 import { describe, expect, it } from 'vitest';
 import {
   applyMapping,
@@ -81,7 +81,7 @@ describe('suggestMapping', () => {
   });
 
   it('maps every column of the bundled sample file', () => {
-    const text = readFileSync('public/sample-contacts.csv', 'utf8');
+    const text = sampleContactsCsv();
     const mapping = suggestMapping(parseCsvText(text, true).headers);
     expect(mapping).not.toContain(null);
   });

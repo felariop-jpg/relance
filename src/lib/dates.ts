@@ -71,3 +71,9 @@ export function formatSince(days: number, locale: string): string {
 export function monthName(month: number, locale: string): string {
   return new Intl.DateTimeFormat(locale, { month: 'long' }).format(new Date(2000, month - 1, 1));
 }
+
+/** A month a little in the past, e.g. "March 2026", for examples that must never look stale. */
+export function recentMonthYear(locale: string, today = new Date()): string {
+  const date = new Date(today.getFullYear(), today.getMonth() - 2, 1);
+  return new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric' }).format(date);
+}

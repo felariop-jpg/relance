@@ -167,6 +167,15 @@ README notes that swapping models is a one-line change.
 - **Sample data** is fictional: made-up people and companies, `example.com`/
   `example.org` addresses, no industry-specific content. "Load sample contacts"
   imports it directly (duplicate check makes it safe to click twice).
+- **Sample dates are relative** (`src/lib/sample.ts`): last-contacted dates are days
+  before today and years in the text are "last year"/"two years ago" numbers, worked
+  out at load time; four contacts are never contacted. The example CSV download is
+  generated from the same rows (UTF-8 with BOM, for Excel). No year is hardcoded in
+  anything a user sees; examples like the "where you met" hint use a recent month.
+- **Fixture dates are relative to the snapshot date** (`{year-2}`, `{date-30}`,
+  `{date-17:fr}` in fixtures/contacts.json, resolved by `scripts/fixture-dates.ts`).
+  With the pinned date they resolve to exactly the old values, so snapshots stay
+  comparable.
 - **Deleting a contact also deletes its drafts**, and both go to "Recently deleted"
   (see Multi-tab rules).
 - **Bulk actions act on the selected rows that are currently visible**; changing

@@ -31,6 +31,7 @@ import { defaultSettings } from '../src/db/settings-defaults';
 import { resolveLanguage } from '../src/lib/language';
 import { canUseTemplate } from '../src/db/templates';
 import { inputPlaceholders } from '../src/lib/needsInput';
+import { resolveFixtureDates } from './fixture-dates';
 
 function fail(message: string): never {
   console.error(`\n${message}\n`);
@@ -46,16 +47,6 @@ if (!apiKey) {
   );
 }
 
-type FixtureContact = Contact & { case: string };
-const contacts: FixtureContact[] = JSON.parse(readFileSync('fixtures/contacts.json', 'utf8'));
-const notFictional = contacts.filter((c) => c.email && !/@example\.(com|net|org)$/i.test(c.email));
-if (notFictional.length > 0) {
-  fail(
-    'fixtures/contacts.json must contain fictional contacts only (emails at example.com/.net/.org),\n' +
-      'because the snapshot is committed. Offending ids: ' +
-      notFictional.map((c) => c.id).join(', '),
-  );
-}
 const OUTPUT = 'fixtures/drafts-snapshot.md';
 /**
  * The date given to the model. Pinned (not "today") so reruns are comparable:
@@ -65,6 +56,19 @@ const DEFAULT_SNAPSHOT_DATE = '2026-09-28';
 const dateArg = process.argv.find((a) => a.startsWith('--date='))?.slice(7);
 if (dateArg && !/^\d{4}-\d{2}-\d{2}$/.test(dateArg)) fail('--date must look like --date=2026-09-28');
 const snapshotDate = dateArg ?? DEFAULT_SNAPSHOT_DATE;
+type FixtureContact = Contact & { case: string };
+const contacts: FixtureContact[] = resolveFixtureDates(
+  JSON.parse(readFileSync('fixtures/contacts.json', 'utf8')),
+  snapshotDate,
+);
+const notFictional = contacts.filter((c) => c.email && !/@example\.(com|net|org)$/i.test(c.email));
+if (notFictional.length > 0) {
+  fail(
+    'fixtures/contacts.json must contain fictional contacts only (emails at example.com/.net/.org),\n' +
+      'because the snapshot is committed. Offending ids: ' +
+      notFictional.map((c) => c.id).join(', '),
+  );
+}
 const retryFailed = process.argv.includes('--retry-failed');
 const settings = defaultSettings('en');
 const send = anthropicSend(apiKey);

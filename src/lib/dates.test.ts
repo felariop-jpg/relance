@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { detectDayFirst, isPlausibleDate, parseDate, todayIso } from './dates';
+import { detectDayFirst, isPlausibleDate, parseDate, recentMonthYear, todayIso } from './dates';
 
 describe('parseDate', () => {
   it('reads ISO dates, with or without a time', () => {
@@ -53,5 +53,12 @@ describe('isPlausibleDate', () => {
   it('rejects half-typed years and impossible dates', () => {
     expect(isPlausibleDate('0002-09-15')).toBe(false);
     expect(isPlausibleDate('2025-02-30')).toBe(false);
+  });
+});
+
+describe('recentMonthYear', () => {
+  it('names a month two months back, crossing the year when needed', () => {
+    expect(recentMonthYear('en', new Date(2027, 0, 15))).toBe('November 2026');
+    expect(recentMonthYear('fr', new Date(2026, 8, 28))).toBe('juillet 2026');
   });
 });

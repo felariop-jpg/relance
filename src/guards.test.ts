@@ -33,9 +33,9 @@ describe('hard constraint 3: the only outbound call is the Anthropic API', () =>
     expect(config).toContain(`"default-src 'self'"`);
   });
 
-  it('only fetches the bundled sample file; everything else goes through the SDK', () => {
+  it('never calls fetch; the only network use is the Anthropic SDK', () => {
     const fetchers = sources.filter((s) => /\bfetch\(/.test(s.text)).map((s) => s.path);
-    expect(fetchers).toEqual(['src/lib/sample.ts']);
+    expect(fetchers).toEqual([]);
     const sdkUsers = sources.filter((s) => s.text.includes("@anthropic-ai/sdk")).map((s) => s.path);
     expect(sdkUsers).toEqual(['src/ai/anthropic.ts']);
   });

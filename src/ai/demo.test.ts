@@ -1,15 +1,15 @@
-import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { emptyContact } from '../db/contacts';
 import { defaultSettings } from '../db/settings';
 import { BUILT_IN_TEMPLATES } from '../db/seed';
 import { applyMapping, parseCsvText, suggestMapping } from '../lib/csv';
+import { sampleContactsCsv } from '../lib/sample';
 import { unknownPlaceholders } from '../lib/placeholders';
 import { draftOutputSchema } from './schema';
 import { demoOutput } from './demo';
 
 const sample = (() => {
-  const parsed = parseCsvText(readFileSync('public/sample-contacts.csv', 'utf8'), true);
+  const parsed = parseCsvText(sampleContactsCsv(), true);
   return applyMapping(parsed, suggestMapping(parsed.headers), { defaultType: 'client' }).contacts.map(
     (c, i) => ({ ...c, id: String(i), createdAt: '', updatedAt: '' }),
   );
