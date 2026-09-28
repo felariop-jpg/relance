@@ -237,3 +237,16 @@ export function openingCheck(items: { group: string; label: string; entry: Entry
   lines.push('', `Total: ${total} drafts with a repeated opening.`);
   return lines;
 }
+
+/** Check: drafts that left a [PLACEHOLDER] for the user instead of guessing. */
+export function placeholderCheck(items: { label: string; entry: Entry }[], find: (text: string) => string[]): string[] {
+  const hits = items.flatMap(({ label, entry }) => {
+    const d = readDraft(entry);
+    const found = d ? find(`${d.subject}\n${d.body}`) : [];
+    return found.length ? [`- ${label}: ${found.join(', ')}`] : [];
+  });
+  return [
+    `**Needs your input** (drafts with a [PLACEHOLDER] instead of an invented value): ${hits.length === 0 ? 'none.' : `${hits.length}:`}`,
+    ...hits,
+  ];
+}

@@ -5,6 +5,7 @@ import { getSettings } from '../db/settings';
 import { canUseTemplate, otherTemplatesFor, pickVersion, type TemplateFamily } from '../db/templates';
 import { resolveLanguage } from '../lib/language';
 import { todayIso } from '../lib/dates';
+import { needsInput } from '../lib/needsInput';
 import { fillPlaceholders, placeholderValues } from '../lib/placeholders';
 import { anthropicSend } from './anthropic';
 import { demoOutput } from './demo';
@@ -24,7 +25,9 @@ export interface GenerateDeps {
   onOffline?: (offline: boolean) => void;
 }
 
-export type GenerateOutcome = { ok: true; costEur: number } | { ok: false; code: string; costEur: number };
+export type GenerateOutcome =
+  | { ok: true; costEur: number; needsInput: boolean }
+  | { ok: false; code: string; costEur: number };
 
 async function addToRunningTotal(cost: number): Promise<void> {
   if (cost <= 0) return;
@@ -95,7 +98,7 @@ export async function generateDraft(draftId: string, deps: GenerateDeps = {}): P
       error: null,
     });
     await addToRunningTotal(cost);
-    return { ok: true, costEur: cost };
+    return { ok: true, costEur: cost, needsInput: needsInput(output) };
   } catch (error) {
     const failure = classifyError(error);
     // A malformed reply still used tokens; they count towards the real cost.

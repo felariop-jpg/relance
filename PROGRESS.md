@@ -378,3 +378,17 @@ notice and no way back. Code review found more multi-tab hazards of the
 - Snapshot "Repeated openings" per template. Baseline on the first run: 22 drafts
   (spring 8/10, holiday 5/10, post-event 4/10, re-engagement 3/10, planning 2/10).
 - Template editor and templates guide (EN/FR) explain purpose + brief.
+
+## Second snapshot review
+
+### 1. Invented book title
+- fx-12 named "The Culture Code" and admitted in personalizationUsed that it was a
+  stand-in. Also found: fx-10's planning and re-engagement drafts answered the
+  contact's question on the sender's behalf ("yes, we do work with remote-only
+  teams"); the data says only that they asked.
+- New rule 1 (outranks fluency): never supply an unknown value, including answers
+  to the contact's questions and facts about the sender's own services; write a
+  visible [PLACEHOLDER] in the email's language instead.
+- App: "Needs your input" badge and banner; approval blocked until filled in (button,
+  approve-all, `a` key); editing one into an approved draft un-approves it; never
+  exported; batch summary counts them. Snapshot "Needs your input" check.

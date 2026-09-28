@@ -3,6 +3,7 @@ import type { Contact, Draft, DraftStatus, Settings } from './schema';
 import { canUseTemplate, pickVersion, type TemplateFamily } from './templates';
 import { resolveLanguage } from '../lib/language';
 import { fillPlaceholders, placeholderValues } from '../lib/placeholders';
+import { needsInput } from '../lib/needsInput';
 
 export function newDraft(
   fields: Pick<Draft, 'contactId' | 'templateId' | 'language'> & Partial<Draft>,
@@ -67,7 +68,10 @@ export async function editDraftText(
   await db.transaction('rw', db.drafts, async () => {
     const draft = await db.drafts.get(id);
     if (!draft) return;
-    const status: DraftStatus = draft.status === 'generated' ? 'edited' : draft.status;
+    const next = { subject: patch.subject ?? draft.subject, body: patch.body ?? draft.body };
+    // An approved draft that gains a [PLACEHOLDER] is no longer ready to send.
+    const status: DraftStatus =
+      draft.status === 'generated' || (draft.status === 'approved' && needsInput(next)) ? 'edited' : draft.status;
     await db.drafts.update(id, { ...patch, status, updatedAt: new Date().toISOString() });
   });
 }

@@ -127,3 +127,22 @@ describe('opening check', () => {
     expect(lines.at(-1)).toBe('Total: 2 drafts with a repeated opening.');
   });
 });
+
+describe('placeholder check', () => {
+  it('lists drafts that left a placeholder', async () => {
+    const { placeholderCheck } = await import('./snapshot-format');
+    const { inputPlaceholders } = await import('../src/lib/needsInput');
+    const e = (body: string): Entry => ({ kind: 'ok', body: okBody({ subject: 's', personalizationUsed: 'p', body }) });
+    const lines = placeholderCheck(
+      [
+        { label: 'fx-12 post-event', entry: e('Le livre : [TITRE DU LIVRE].') },
+        { label: 'fx-01 spring', entry: e('Hello.') },
+      ],
+      inputPlaceholders,
+    );
+    expect(lines).toEqual([
+      '**Needs your input** (drafts with a [PLACEHOLDER] instead of an invented value): 1:',
+      '- fx-12 post-event: [TITRE DU LIVRE]',
+    ]);
+  });
+});

@@ -293,7 +293,11 @@
       "approved_many": "{{count}} brouillons validés.",
       "approved_other": "{{count}} brouillons validés."
     },
-    "shortcutsHint": "Raccourcis clavier"
+    "shortcutsHint": "Raccourcis clavier",
+    "needsInput": "À compléter",
+    "needsInputTitle": "Complétez les informations manquantes avant de valider",
+    "needsInputBody": "Relance ne connaissait pas {{list}} : il a laissé un emplacement au lieu de deviner. Remplacez-le par la vraie information. D'ici là, cet e-mail ne peut être ni validé ni exporté.",
+    "needsInputShort": "Complétez d'abord les parties entre [CROCHETS]."
   },
   "export": {
     "title": "Exporter les brouillons validés",
@@ -468,7 +472,10 @@
     "demoCost": "Mode démo : aucun coût.",
     "authFailed": "Votre clé API n'a pas été acceptée, Relance s'est donc arrêté. Vérifiez la clé dans les Réglages, puis utilisez Réessayer sur chaque carte.",
     "dismiss": "Masquer",
-    "offline": "Vous êtes hors ligne : Relance a fait une pause. Il reprendra tout seul dès le retour de la connexion. Rien n'est perdu."
+    "offline": "Vous êtes hors ligne : Relance a fait une pause. Il reprendra tout seul dès le retour de la connexion. Rien n'est perdu.",
+    "needsInput_one": "{{count}} brouillon est à compléter : remplissez les parties entre [crochets] avant de le valider.",
+    "needsInput_many": "{{count}} brouillons sont à compléter : remplissez les parties entre [crochets] avant de les valider.",
+    "needsInput_other": "{{count}} brouillons sont à compléter : remplissez les parties entre [crochets] avant de les valider."
   },
   "shortcuts": {
     "title": "Raccourcis clavier",

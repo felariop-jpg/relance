@@ -104,3 +104,18 @@ describe('settings', () => {
     expect(await db.settings.count()).toBe(1);
   });
 });
+
+describe('drafts that need input', () => {
+  it('an approved draft that gains a [PLACEHOLDER] goes back to review', async () => {
+    const { editDraftText, setDraftStatus } = await import('./drafts');
+    const id = await addContact(person('Ann'));
+    const draft = newDraft({ contactId: id, templateId: 't', language: 'en', body: 'Hi' });
+    await db.drafts.add(draft);
+    await setDraftStatus([draft.id], 'approved');
+    await editDraftText(draft.id, { body: 'Hi, the book is [TITLE OF THE BOOK].' });
+    expect((await db.drafts.get(draft.id))?.status).toBe('edited');
+    await setDraftStatus([draft.id], 'approved');
+    await editDraftText(draft.id, { body: 'Hi, the book is Deep Work.' });
+    expect((await db.drafts.get(draft.id))?.status).toBe('approved');
+  });
+});

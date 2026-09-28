@@ -47,6 +47,7 @@ export function BatchBanner() {
           ? t('batch.demoCost')
           : t('batch.cost', { cost: formatEur(batch.costEur, i18n.language, t) })}
       </p>
+      {batch.needsInput > 0 && <p className="font-medium">{t('batch.needsInput', { count: batch.needsInput })}</p>}
       {batch.authFailed && (
         <p>
           {t('batch.authFailed')}{' '}

@@ -13,6 +13,7 @@ import { useContactMap, useTemplates } from '../../db/hooks';
 import type { Draft } from '../../db/schema';
 import type { ExportItem } from '../../export/bundle';
 import { showToast } from '../../lib/toast';
+import { needsInput } from '../../lib/needsInput';
 import { href } from '../../nav';
 import { DraftCard } from './DraftCard';
 import { ExportDialog } from './ExportDialog';
@@ -44,7 +45,8 @@ export function ReviewScreen() {
     () =>
       (drafts ?? []).flatMap((draft) => {
         const contact = contacts?.get(draft.contactId);
-        return draft.status === 'approved' && contact ? [{ draft, contact }] : [];
+        // A draft still containing a [PLACEHOLDER] is never exported.
+        return draft.status === 'approved' && contact && !needsInput(draft) ? [{ draft, contact }] : [];
       }),
     [drafts, contacts],
   );
@@ -83,8 +85,12 @@ export function ReviewScreen() {
 
   const toggle = useCallback((d: Draft | undefined, status: 'approved' | 'skipped') => {
     if (!d || d.status === 'pending' || d.status === 'failed') return;
+    if (status === 'approved' && d.status !== 'approved' && needsInput(d)) {
+      showToast({ tone: 'error', message: t('review.needsInputShort') });
+      return;
+    }
     void setDraftStatus([d.id], d.status === status ? 'generated' : status);
-  }, []);
+  }, [t]);
 
   const keyActions = useMemo(
     () => ({
@@ -113,7 +119,7 @@ export function ReviewScreen() {
   );
   useReviewKeys(keyActions);
 
-  const approvable = visible.filter((d) => d.status === 'generated' || d.status === 'edited');
+  const approvable = visible.filter((d) => (d.status === 'generated' || d.status === 'edited') && !needsInput(d));
   const failed = visible.filter((d) => d.status === 'failed');
 
   async function approveAll() {

@@ -18,9 +18,11 @@ export interface BatchState {
   waiting: boolean;
   /** Paused because the device is offline; resumes by itself on reconnect. */
   offline: boolean;
+  /** Written drafts that contain a [PLACEHOLDER] the user must fill in. */
+  needsInput: number;
 }
 
-const idle: BatchState = { running: false, total: 0, done: 0, failed: 0, costEur: 0, authFailed: false, waiting: false, offline: false };
+const idle: BatchState = { running: false, total: 0, done: 0, failed: 0, costEur: 0, authFailed: false, waiting: false, offline: false, needsInput: 0 };
 let state: BatchState = idle;
 let queue: string[] = [];
 let active = 0;
@@ -100,7 +102,13 @@ async function work(id: string) {
       set({ waiting: waitingCount > 0 });
     },
   });
-  if (outcome.ok) set({ done: state.done + 1, costEur: state.costEur + outcome.costEur });
+  if (outcome.ok) {
+    set({
+      done: state.done + 1,
+      costEur: state.costEur + outcome.costEur,
+      needsInput: state.needsInput + (outcome.needsInput ? 1 : 0),
+    });
+  }
   else {
     set({
       failed: state.failed + 1,

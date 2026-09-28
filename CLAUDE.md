@@ -360,7 +360,7 @@ README notes that swapping models is a one-line change.
 ### Template purposes and "where you met" (snapshot review)
 - Every template has a `purpose` (its one job) sent to the model, plus
   `otherTemplates` (the other families' names and purposes) so it can keep them
-  apart. Shared rule 7 spells out check-in vs re-engagement vs post-event vs greeting.
+  apart. Shared rule 8 spells out check-in vs re-engagement vs post-event vs greeting.
 - Contacts have `whereMet` (form field, import column, allowlisted API field).
   Templates with `requiresWhereMet` (built-in post-event) are unavailable for
   contacts without it: disabled with an explanation in the write dialog, skipped
@@ -378,3 +378,12 @@ README notes that swapping models is a one-line change.
   an `openingApproach` per contact + template (stable hash) from five approaches,
   skipping those that need empty or withheld fields.
 - The snapshot's "Repeated openings" check is the owner's metric for this.
+
+### Unknown values → visible placeholders (second snapshot review)
+- Shared rule 1, which outranks every other: when the data shows something exists
+  but not what it is (a book, name, date, figure, title, place, the answer to the
+  contact's question, anything about the sender's own services), never supply a
+  value. Write a [PLACEHOLDER IN CAPITALS] in the email's language instead.
+- `src/lib/needsInput.ts` finds them. A draft containing one shows "Needs your
+  input", can't be approved (button, bulk, `a` key), is un-approved if edited to
+  contain one, and is never exported. The batch summary and the snapshot count them.

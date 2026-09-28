@@ -9,6 +9,7 @@ import { editDraftText, setDraftStatus } from '../../db/drafts';
 import type { Contact, Draft, Template } from '../../db/schema';
 import { formatDate } from '../../lib/dates';
 import { unknownPlaceholders } from '../../lib/placeholders';
+import { inputPlaceholders } from '../../lib/needsInput';
 import { formatEur } from '../../lib/money';
 import { enqueueDrafts } from '../../ai/batch';
 import { PayloadPanel } from './PayloadPanel';
@@ -74,8 +75,10 @@ export const DraftCard = forwardRef<
 
   const name = contact ? [contact.firstName, contact.lastName].filter(Boolean).join(' ') : t('review.deletedContact');
   const unknown = unknownPlaceholders(subject + body);
+  const missing = inputPlaceholders(`${subject}\n${body}`);
   const approved = draft.status === 'approved';
   const busy = draft.status === 'pending' || draft.status === 'failed';
+  const blocked = missing.length > 0;
   const skipped = draft.status === 'skipped';
 
   const rewrite = (text: string) => {
@@ -110,6 +113,9 @@ export const DraftCard = forwardRef<
             {t(`languages.${draft.language}`)}
           </span>
           <span className="rounded bg-stone-100 px-2 py-1 text-stone-600">{t(`review.source.${draft.source}`)}</span>
+          {blocked && !busy && (
+            <span className="rounded bg-amber-200 px-2 py-1 font-semibold text-amber-950">{t('review.needsInput')}</span>
+          )}
           <span
             className={`rounded px-2 py-1 font-medium ${approved ? 'bg-emerald-100 text-emerald-900' : skipped ? 'bg-stone-200 text-stone-700' : 'bg-sky-100 text-sky-900'}`}
           >
@@ -175,6 +181,11 @@ export const DraftCard = forwardRef<
           />
         </div>
 
+        {blocked && (
+          <Banner tone="warning" title={t('review.needsInputTitle')}>
+            <p>{t('review.needsInputBody', { list: missing.join(', ') })}</p>
+          </Banner>
+        )}
         {unknown.length > 0 && (
           <Banner tone="warning">
             {t('review.unknownPlaceholders', { list: unknown.map((u) => `{{${u}}}`).join(', ') })}
@@ -193,7 +204,8 @@ export const DraftCard = forwardRef<
         <Button
           variant={approved ? 'primary' : 'secondary'}
           aria-pressed={approved}
-          disabled={busy}
+          disabled={busy || (blocked && !approved)}
+          title={blocked ? t('review.needsInputShort') : undefined}
           className="min-h-11 sm:min-h-0"
           onClick={() => void setDraftStatus([draft.id], approved ? 'generated' : 'approved')}
         >

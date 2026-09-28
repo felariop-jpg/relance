@@ -273,7 +273,11 @@
       "approved_one": "Approved {{count}} draft.",
       "approved_other": "Approved {{count}} drafts."
     },
-    "shortcutsHint": "Keyboard shortcuts"
+    "shortcutsHint": "Keyboard shortcuts",
+    "needsInput": "Needs your input",
+    "needsInputTitle": "Fill in the missing details before approving",
+    "needsInputBody": "Relance didn't know {{list}}, so it left a placeholder instead of guessing. Replace it with the real detail. Until then, this email can't be approved or exported.",
+    "needsInputShort": "Fill in the parts in [SQUARE BRACKETS] first."
   },
   "export": {
     "title": "Export approved drafts",
@@ -444,7 +448,9 @@
     "demoCost": "Demo mode: no cost.",
     "authFailed": "Your API key was not accepted, so Relance stopped. Check the key in Settings, then use Try again on each card.",
     "dismiss": "Hide",
-    "offline": "You are offline, so Relance has paused. It will carry on by itself when the connection is back. Nothing is lost."
+    "offline": "You are offline, so Relance has paused. It will carry on by itself when the connection is back. Nothing is lost.",
+    "needsInput_one": "{{count}} draft needs your input: fill in the parts in [square brackets] before approving it.",
+    "needsInput_other": "{{count}} drafts need your input: fill in the parts in [square brackets] before approving them."
   },
   "shortcuts": {
     "title": "Keyboard shortcuts",

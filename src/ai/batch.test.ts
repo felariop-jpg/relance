@@ -53,7 +53,7 @@ describe('generateDraft', () => {
     const [draft] = await setup(1);
     await updateSettings({ apiKey: '' });
     const outcome = await generateDraft(draft.id, { sleep: async () => {}, demoDelayMs: 0 });
-    expect(outcome).toEqual({ ok: true, costEur: 0 });
+    expect(outcome).toEqual({ ok: true, costEur: 0, needsInput: false });
     const saved = (await db.drafts.get(draft.id))!;
     expect(saved.source).toBe('demo');
     expect(saved.body).toContain('Hello P0');
@@ -167,5 +167,21 @@ describe('batch', () => {
     enqueueDrafts(drafts.map((d) => d.id));
     await settled();
     expect(getBatchState()).toMatchObject({ done: 4, failed: 0 });
+  });
+
+  it('counts drafts that came back with a [PLACEHOLDER] needing the user\'s input', async () => {
+    const drafts = await setup(3);
+    setBatchDeps({
+      sleep: async () => {},
+      connectivity: { isOnline: () => true, waitForOnline: async () => {} },
+      send: async (req) => {
+        const first = JSON.parse(req.messages[0].content).contact.firstName;
+        const body = first === 'P1' ? 'Hello, the book is [TITLE OF THE BOOK].\n\n{{signature}}' : 'Hello.\n\n{{signature}}';
+        return { toolInput: { ...good('en'), body }, usage };
+      },
+    });
+    enqueueDrafts(drafts.map((d) => d.id));
+    await settled();
+    expect(getBatchState()).toMatchObject({ done: 3, needsInput: 1 });
   });
 });
