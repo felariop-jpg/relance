@@ -88,6 +88,23 @@ describe('two tabs writing at the same time', () => {
     expect(after).toMatchObject({ company: 'New Co', lastContacted: '2026-09-01', notes: 'Updated in B' });
   });
 
+  it('a re-import updating by Contact ID keeps fields another tab changed meanwhile', async () => {
+    await importContacts([person('Ann', { externalId: 'C-1', notes: 'Original' })]);
+    const ann = (await db.contacts.where('externalId').equals('C-1').first())!;
+    await Promise.all([
+      (async () => {
+        await jitter();
+        await tabB.contacts.update(ann.id, { notes: 'Updated in B', updatedAt: stamp() });
+      })(),
+      (async () => {
+        await jitter();
+        await importContacts([person('Ann', { externalId: 'c-1', company: 'From the file' })]);
+      })(),
+    ]);
+    expect(await db.contacts.get(ann.id)).toMatchObject({ notes: 'Updated in B', company: 'From the file' });
+    expect(await db.contacts.count()).toBe(1);
+  });
+
   it('saving a contact that another tab deleted reports it instead of failing silently', async () => {
     const id = await addContact(person('Gone'));
     await tabB.contacts.delete(id);

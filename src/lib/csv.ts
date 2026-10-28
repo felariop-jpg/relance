@@ -58,6 +58,7 @@ export const IMPORT_TARGETS = [
   'whereMet',
   'openThread',
   'lastContacted',
+  'externalId',
 ] as const;
 export type ImportTarget = (typeof IMPORT_TARGETS)[number];
 
@@ -78,6 +79,7 @@ const HEADER_HINTS: Record<ImportTarget, string[]> = {
   notes: ['notes', 'note', 'comments', 'comment', 'remarks', 'commentaires', 'commentaire', 'remarques'],
   whereMet: ['where we met', 'where met', 'met at', 'first met', 'event', 'lieu de rencontre', 'rencontre', 'rencontre a', 'evenement'],
   openThread: ['left open', 'open thread', 'open question', 'pending', 'unresolved', 'en suspens', 'point en suspens', 'reste en suspens', 'question en attente'],
+  externalId: ['contact id', 'id', 'contact identifier', 'external id', 'reference', 'ref', 'contact reference', 'contact ref', 'identifiant', 'identifiant contact', 'identifiant du contact', 'id contact', 'reference contact', 'ref contact'],
   lastContacted: ['last contacted', 'last contact', 'last contact date', 'last email', 'dernier contact', 'date dernier contact', 'date du dernier contact'],
 };
 
@@ -141,10 +143,18 @@ export interface MappingOptions {
 
 export interface MappingResult {
   contacts: ContactInput[];
-  /** Per contact (same order): which values could not be read and were left blank. */
-  issues: { unknownCountry: boolean; unknownDate: boolean }[];
+  /**
+   * Per contact (same order): which values could not be read and were left blank,
+   * and whether the type is the default one (no type column, blank or unrecognised).
+   */
+  issues: { unknownCountry: boolean; unknownDate: boolean; defaultType: boolean }[];
   /** Rows skipped because no first name could be found. */
   missingName: number;
+}
+
+/** Rows whose type is the default rather than read from the file: updates keep the stored type. */
+export function defaultTypeIndexes(result: MappingResult): number[] {
+  return result.issues.flatMap((issue, i) => (issue.defaultType ? [i] : []));
 }
 
 /** Counts unreadable values among the contacts that were actually added. */
@@ -196,9 +206,11 @@ export function applyMapping(
     const country = parseCountry(countryRaw);
     const dateRaw = get('lastContacted');
     const lastContacted = parseDate(dateRaw, dayFirst);
+    const contactType = parseContactType(get('contactType'));
     result.issues.push({
       unknownCountry: country === null,
       unknownDate: Boolean(dateRaw) && lastContacted === null,
+      defaultType: contactType === null,
     });
 
     result.contacts.push({
@@ -210,12 +222,13 @@ export function applyMapping(
       company: get('company'),
       country: country ?? '',
       language: parseLanguage(get('language')),
-      contactType: parseContactType(get('contactType')) ?? options.defaultType,
+      contactType: contactType ?? options.defaultType,
       serviceHistory: get('serviceHistory'),
       notes: get('notes'),
       whereMet: get('whereMet'),
       openThread: get('openThread'),
       lastContacted,
+      externalId: get('externalId'),
     });
   }
   return result;

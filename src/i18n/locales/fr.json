@@ -52,7 +52,8 @@
     "notes": "Notes",
     "lastContacted": "Dernier contact",
     "whereMet": "Lieu de rencontre",
-    "openThread": "Resté en suspens"
+    "openThread": "Resté en suspens",
+    "externalId": "Identifiant du contact"
   },
   "contacts": {
     "title": "Contacts",
@@ -66,6 +67,7 @@
     "allTypes": "Tous les types",
     "add": "Ajouter un contact",
     "import": "Importer un tableur",
+    "exportCsv": "Exporter les contacts (CSV)",
     "empty": {
       "title": "Vous n'avez encore aucun contact",
       "body": "Importez un tableur de vos contacts, ou ajoutez-les un par un. Pour essayer Relance d'abord, chargez quelques contacts d'exemple fictifs.",
@@ -122,7 +124,8 @@
     "openThreadHint": "Ce que vous attendez, ou ce à quoi vous n'avez jamais donné suite. L'e-mail « Reprendre contact » est construit autour de cela. S'il est vide, ces brouillons reviennent avec un passage à compléter vous-même.",
     "openThreadPlaceholder": "ex. : en attente de leur décision budgétaire ; doivent revenir vers nous au printemps",
     "saveAndAddAnother": "Enregistrer et en ajouter un autre",
-    "addedNext": "Contact enregistré : {{name}}. Ajoutez le suivant, ou fermez quand vous avez terminé."
+    "addedNext": "Contact enregistré : {{name}}. Ajoutez le suivant, ou fermez quand vous avez terminé.",
+    "externalIdHint": "Le numéro ou code de cette personne dans votre propre liste de contacts, si vous en tenez une. Quand vous importez à nouveau un fichier, le contact avec le même identifiant est mis à jour."
   },
   "import": {
     "title": "Importer des contacts depuis un tableur",
@@ -160,9 +163,15 @@
     "added_one": "{{count}} contact ajouté.",
     "added_many": "{{count}} contacts ajoutés.",
     "added_other": "{{count}} contacts ajoutés.",
-    "duplicates_one": "{{count}} contact était déjà dans votre liste (même adresse e-mail) et a été ignoré.",
-    "duplicates_many": "{{count}} contacts étaient déjà dans votre liste (même adresse e-mail) et ont été ignorés.",
-    "duplicates_other": "{{count}} contacts étaient déjà dans votre liste (même adresse e-mail) et ont été ignorés.",
+    "updated_one": "{{count}} contact existant mis à jour.",
+    "updated_many": "{{count}} contacts existants mis à jour.",
+    "updated_other": "{{count}} contacts existants mis à jour.",
+    "unchanged_one": "{{count}} contact était déjà à jour.",
+    "unchanged_many": "{{count}} contacts étaient déjà à jour.",
+    "unchanged_other": "{{count}} contacts étaient déjà à jour.",
+    "duplicates_one": "{{count}} contact était déjà dans votre liste (même adresse e-mail ou identifiant du contact) et a été ignoré.",
+    "duplicates_many": "{{count}} contacts étaient déjà dans votre liste (même adresse e-mail ou identifiant du contact) et ont été ignorés.",
+    "duplicates_other": "{{count}} contacts étaient déjà dans votre liste (même adresse e-mail ou identifiant du contact) et ont été ignorés.",
     "skippedName_one": "{{count}} ligne n'avait pas de prénom et a été ignorée.",
     "skippedName_many": "{{count}} lignes n'avaient pas de prénom et ont été ignorées.",
     "skippedName_other": "{{count}} lignes n'avaient pas de prénom et ont été ignorées.",

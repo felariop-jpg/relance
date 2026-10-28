@@ -62,6 +62,12 @@ You have three choices on this screen.
 
 6. Click **Import**. Relance tells you how many contacts were added, and whether any were skipped (for example, the same email address twice).
 
+### Importing the same list again
+
+If your own contact list gives each person a number or code, put that column into **Contact ID**. When you import a newer copy of the list later, Relance updates the contacts it already has instead of skipping them. Empty cells never erase what Relance already holds (your notes are safe), and the more recent "last contacted" date is kept. Contacts you imported before you used a Contact ID are matched by email address the first time.
+
+To take your contacts back out, click **Export contacts (CSV)** on the Contacts page. The file opens in any spreadsheet program, and Relance recognises every column if you import it again.
+
 ## Part 4: Check your contacts
 
 1. Click **Contacts** at the top of the page.

@@ -52,7 +52,8 @@
     "notes": "Notes",
     "lastContacted": "Last contacted",
     "whereMet": "Where you met",
-    "openThread": "Left open"
+    "openThread": "Left open",
+    "externalId": "Contact ID"
   },
   "contacts": {
     "title": "Contacts",
@@ -65,6 +66,7 @@
     "allTypes": "All types",
     "add": "Add contact",
     "import": "Import spreadsheet",
+    "exportCsv": "Export contacts (CSV)",
     "empty": {
       "title": "You don't have any contacts yet",
       "body": "Import a spreadsheet of your contacts, or add them one at a time. To try Relance first, load a few made-up sample contacts.",
@@ -118,7 +120,8 @@
     "openThreadHint": "What you're waiting on, or never got back to. The re-engagement email is built around this. If it's empty, those drafts come back with a gap for you to fill in by hand.",
     "openThreadPlaceholder": "e.g. waiting on their budget decision; said they'd come back to us in the spring",
     "saveAndAddAnother": "Save and add another",
-    "addedNext": "{{name}} is saved. Add the next contact, or close when you are done."
+    "addedNext": "{{name}} is saved. Add the next contact, or close when you are done.",
+    "externalIdHint": "The number or code this person has in your own contact list, if you keep one. When you import a file again, the contact with the same ID is updated."
   },
   "import": {
     "title": "Import contacts from a spreadsheet",
@@ -152,8 +155,12 @@
     "doneTitle": "Import finished",
     "added_one": "Added {{count}} contact.",
     "added_other": "Added {{count}} contacts.",
-    "duplicates_one": "{{count}} was already in your list (same email address) and was skipped.",
-    "duplicates_other": "{{count}} were already in your list (same email address) and were skipped.",
+    "updated_one": "Updated {{count}} existing contact.",
+    "updated_other": "Updated {{count}} existing contacts.",
+    "unchanged_one": "{{count}} was already up to date.",
+    "unchanged_other": "{{count}} were already up to date.",
+    "duplicates_one": "{{count}} was already in your list (same email address or Contact ID) and was skipped.",
+    "duplicates_other": "{{count}} were already in your list (same email address or Contact ID) and were skipped.",
     "skippedName_one": "{{count}} row had no first name and was skipped.",
     "skippedName_other": "{{count}} rows had no first name and were skipped.",
     "unknownCountry_one": "The country of {{count}} contact wasn't recognised, so it was left empty. You can set it by editing the contact.",

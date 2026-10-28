@@ -25,6 +25,7 @@ function sensitiveContact(overrides: Partial<Contact> = {}): Contact {
     createdAt: 'SENTINEL-CREATED',
     updatedAt: 'SENTINEL-UPDATED',
     lastContacted: '1999-12-31',
+    externalId: 'SENTINEL-EXTERNAL-ID',
     ...SECRET,
     ...overrides,
   };

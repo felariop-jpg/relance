@@ -154,9 +154,18 @@ README notes that swapping models is a one-line change.
   - Encoding: UTF-8, falling back to Windows-1252, so accented names from older
     Excel exports are not garbled.
   - Rows without a first name are skipped and counted in the result.
-  - Duplicates: a row whose email matches an existing contact (case-insensitive)
-    is skipped and counted, never merged or overwritten. Rows without an email
-    are always added.
+  - Duplicates: a row **without a Contact ID** whose email matches an existing
+    contact (case-insensitive) is skipped and counted, never merged or
+    overwritten. Rows without an email are always added.
+  - **Contact ID** (`externalId`, never sent to the AI) makes re-import an update:
+    same ID (case-insensitive) → update; new ID whose email belongs to a contact
+    with no ID → link and update; email belongs to a contact with another ID, or
+    the ID repeats within the file → skipped as duplicate. Updates write only
+    non-empty cells, keep the later last-contacted date, and keep the stored type
+    when the row's type is only the default (no type column, blank or
+    unrecognised cell). Matched rows with nothing new count as
+    "already up to date". "Export contacts (CSV)" writes headings that map
+    automatically on re-import (fixed English, like the sample CSV).
   - Country accepts ISO-2 codes or English/French country names; unrecognised
     values are left blank and counted.
   - Dates: ISO or day/month/year. Month-first is used only when a value in

@@ -266,6 +266,17 @@ export function ContactForm({
               aria-describedby={described('lastContacted', true)}
             />
           </Field>
+
+          <Field id={fid('externalId')} label={t('fields.externalId')} hint={t('form.externalIdHint')}>
+            <input
+              id={fid('externalId')}
+              className={inputClass}
+              value={draft.externalId}
+              onChange={(e) => set('externalId', e.target.value)}
+              aria-describedby={described('externalId', true)}
+              autoComplete="off"
+            />
+          </Field>
         </div>
 
         <Field id={fid('whereMet')} label={t('fields.whereMet')} hint={t('form.whereMetHint', { when: recentMonthYear(i18n.language) })}>

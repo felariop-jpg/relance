@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Banner } from '../../components/Banner';
 import { Button } from '../../components/Button';
 import { inputBase, inputClass } from '../../components/Field';
-import { PlusIcon, SearchIcon, TrashIcon, UploadIcon } from '../../components/icons';
+import { DownloadIcon, PlusIcon, SearchIcon, TrashIcon, UploadIcon } from '../../components/icons';
 import { db } from '../../db/db';
 import { CONTACT_TYPES, type Contact, type ContactInput, type ContactType } from '../../db/schema';
 import { deleteContacts, restoreContacts } from '../../db/contacts';
@@ -17,6 +17,8 @@ import { TrashDialog } from './TrashDialog';
 import { useSettings } from '../../db/settings';
 import { loadSampleContacts, sampleContactsCsv } from '../../lib/sample';
 import { downloadFile } from '../../lib/download';
+import { todayIso } from '../../lib/dates';
+import { buildContactsCsv } from '../../export/contactsCsv';
 import { ContactForm } from './ContactForm';
 import { ContactTable } from './ContactTable';
 import { ContactList } from './ContactList';
@@ -145,6 +147,20 @@ export function ContactsScreen() {
             <UploadIcon />
             {t('contacts.import')}
           </Button>
+          {contacts && total > 0 && (
+            <Button
+              onClick={() =>
+                downloadFile(
+                  '\uFEFF' + buildContactsCsv(contacts),
+                  `relance-contacts-${todayIso()}.csv`,
+                  'text/csv;charset=utf-8',
+                )
+              }
+            >
+              <DownloadIcon />
+              {t('contacts.exportCsv')}
+            </Button>
+          )}
           <Button variant="primary" onClick={() => setEditing({ contact: null })}>
             <PlusIcon />
             {t('contacts.add')}

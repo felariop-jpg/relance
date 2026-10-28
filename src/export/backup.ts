@@ -42,6 +42,7 @@ const contactSchema = z
     whereMet: str,
     openThread: str,
     lastContacted: isoOrNull,
+    externalId: str,
     createdAt: str,
     updatedAt: str,
   })

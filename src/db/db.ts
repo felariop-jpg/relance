@@ -96,6 +96,20 @@ export class RelanceDB extends Dexie {
             if (t.isBuiltIn && fresh && t.purpose === V5_BUILT_IN_PURPOSES[t.id]) t.purpose = fresh.purpose;
           });
       });
+    // v7: Contact ID from the user's own list, so re-importing updates contacts.
+    this.version(7)
+      .stores({
+        contacts:
+          'id, firstName, lastName, email, company, country, language, contactType, lastContacted, updatedAt, externalId',
+      })
+      .upgrade((tx) =>
+        tx
+          .table('contacts')
+          .toCollection()
+          .modify((c) => {
+            if (typeof c.externalId !== 'string') c.externalId = '';
+          }),
+      );
   }
 }
 

@@ -59,6 +59,12 @@ Cet écran propose trois choix.
    - Chaque contact doit avoir au moins un prénom.
 6. Cliquez sur **Importer**. Relance indique combien de contacts ont été ajoutés, et si certains ont été ignorés (par exemple, la même adresse e-mail deux fois).
 
+### Importer à nouveau la même liste
+
+Si votre propre liste de contacts donne un numéro ou un code à chaque personne, mettez cette colonne dans **Identifiant du contact**. Quand vous importerez plus tard une version plus récente de la liste, Relance mettra à jour les contacts qu'il connaît déjà au lieu de les ignorer. Une cellule vide n'efface jamais ce que Relance contient déjà (vos notes sont conservées), et la date de dernier contact la plus récente est gardée. Les contacts importés avant que vous utilisiez un identifiant sont reconnus par leur adresse e-mail la première fois.
+
+Pour récupérer vos contacts, cliquez sur **Exporter les contacts (CSV)** dans la page Contacts. Le fichier s'ouvre dans n'importe quel tableur, et Relance reconnaît toutes ses colonnes si vous l'importez à nouveau.
+
 ## Partie 4 : Vérifier vos contacts
 
 1. Cliquez sur **Contacts** en haut de la page.

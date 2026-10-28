@@ -18,6 +18,7 @@ export function emptyContact(): ContactInput {
     whereMet: '',
     openThread: '',
     lastContacted: null,
+    externalId: '',
   };
 }
 
@@ -41,6 +42,7 @@ export function normalizeContact(input: ContactInput): ContactInput {
     whereMet: (input.whereMet ?? '').trim(),
     openThread: (input.openThread ?? '').trim(),
     lastContacted: input.lastContacted || null,
+    externalId: (input.externalId ?? '').trim(),
   };
 }
 
@@ -165,35 +167,138 @@ export async function purgeTrash(now = new Date()): Promise<number> {
 
 export interface ImportResult {
   added: number;
-  /** Skipped because a contact with the same email already exists. */
+  /** Existing contacts (matched by Contact ID, or linked by email) that got new values. */
+  updated: number;
+  /** Positions (in the input array) of the rows that updated a contact. */
+  updatedIndexes: number[];
+  /** Rows that matched an existing contact but had nothing new in them. */
+  unchanged: number;
+  unchangedIndexes: number[];
+  /** Skipped because of the same email address or Contact ID. */
   duplicates: number;
   /** Positions (in the input array) of the rows skipped as duplicates. */
   duplicateIndexes: number[];
 }
 
+export interface ImportOptions {
+  /**
+   * Rows whose type is only the default (no type column, or a blank or
+   * unrecognised cell): updates keep the stored type. true = every row.
+   */
+  keepType?: boolean | number[];
+}
+
 /**
- * Adds contacts, skipping any whose email (case-insensitive) matches an
- * existing contact or an earlier row. Never merges or overwrites.
+ * The fields of `row` worth writing onto `current`: non-empty cells only, so a
+ * blank never erases what is stored, and the later last-contacted date.
  */
-export async function importContacts(inputs: ContactInput[]): Promise<ImportResult> {
+function importPatch(current: Contact, row: ContactInput, keepType: boolean): Partial<ContactInput> {
+  const patch: Partial<ContactInput> = {};
+  for (const key of Object.keys(row) as (keyof ContactInput)[]) {
+    const value = row[key];
+    if (value === '' || value === null || value === current[key]) continue;
+    if (key === 'contactType' && keepType) continue;
+    if (key === 'lastContacted' && current.lastContacted && (value as string) <= current.lastContacted) continue;
+    (patch as Record<string, unknown>)[key] = value;
+  }
+  return patch;
+}
+
+/**
+ * Adds and updates contacts from an imported file, in one transaction.
+ *
+ * - A row whose Contact ID matches a contact (case-insensitive) updates it.
+ * - A row with a new Contact ID whose email belongs to a contact with no ID
+ *   links to that contact (sets the ID) and updates it.
+ * - A row whose email belongs to a contact with another ID, or that repeats a
+ *   Contact ID seen earlier in the file, is skipped as a duplicate.
+ * - A row with no Contact ID is added unless its email (case-insensitive)
+ *   already exists; it never overwrites anything.
+ *
+ * Updates write only the changed fields (see importPatch), never whole records.
+ */
+export async function importContacts(inputs: ContactInput[], options: ImportOptions = {}): Promise<ImportResult> {
   const result = await db.transaction('rw', db.contacts, async () => {
-    const existing = await db.contacts.toArray();
-    const seen = new Set(existing.map((c) => c.email.toLowerCase()).filter(Boolean));
+    const byId = new Map<string, Contact>();
+    const byEmail = new Map<string, Contact>();
+    const index = (c: Contact) => {
+      if (c.externalId) byId.set(c.externalId.toLowerCase(), c);
+      if (c.email) byEmail.set(c.email.toLowerCase(), c);
+    };
+    (await db.contacts.toArray()).forEach(index);
+
     const stamp = now();
     const toAdd: Contact[] = [];
+    const updates: { id: string; changes: Partial<Contact> }[] = [];
+    const seenIds = new Set<string>();
+    const keepTypeAt = new Set(Array.isArray(options.keepType) ? options.keepType : []);
+    const updatedIndexes: number[] = [];
+    const unchangedIndexes: number[] = [];
     const duplicateIndexes: number[] = [];
-    inputs.forEach((raw, index) => {
+
+    inputs.forEach((raw, i) => {
       const input = normalizeContact(raw);
-      const key = input.email.toLowerCase();
-      if (key && seen.has(key)) {
-        duplicateIndexes.push(index);
+      const idKey = input.externalId.toLowerCase();
+      const emailKey = input.email.toLowerCase();
+      const emailOwner = emailKey ? byEmail.get(emailKey) : undefined;
+
+      if (!idKey) {
+        if (emailOwner) {
+          duplicateIndexes.push(i);
+          return;
+        }
+        const added = { ...input, id: crypto.randomUUID(), createdAt: stamp, updatedAt: stamp };
+        toAdd.push(added);
+        index(added);
         return;
       }
-      if (key) seen.add(key);
-      toAdd.push({ ...input, id: crypto.randomUUID(), createdAt: stamp, updatedAt: stamp });
+
+      if (seenIds.has(idKey)) {
+        duplicateIndexes.push(i);
+        return;
+      }
+      seenIds.add(idKey);
+
+      const target = byId.get(idKey) ?? (emailOwner && !emailOwner.externalId ? emailOwner : undefined);
+      if (!target) {
+        if (emailOwner) {
+          duplicateIndexes.push(i);
+          return;
+        }
+        const added = { ...input, id: crypto.randomUUID(), createdAt: stamp, updatedAt: stamp };
+        toAdd.push(added);
+        index(added);
+        return;
+      }
+      // The ID matches, but the email is someone else's: don't give two contacts one address.
+      if (emailOwner && emailOwner !== target) {
+        duplicateIndexes.push(i);
+        return;
+      }
+
+      const patch = importPatch(target, input, options.keepType === true || keepTypeAt.has(i));
+      if (Object.keys(patch).length === 0) {
+        unchangedIndexes.push(i);
+        return;
+      }
+      const updatedContact = { ...target, ...patch };
+      if (target.email && updatedContact.email !== target.email) byEmail.delete(target.email.toLowerCase());
+      index(updatedContact);
+      updates.push({ id: target.id, changes: { ...patch, updatedAt: stamp } });
+      updatedIndexes.push(i);
     });
+
     await db.contacts.bulkAdd(toAdd);
-    return { added: toAdd.length, duplicates: duplicateIndexes.length, duplicateIndexes };
+    for (const { id, changes } of updates) await db.contacts.update(id, changes);
+    return {
+      added: toAdd.length,
+      updated: updatedIndexes.length,
+      updatedIndexes,
+      unchanged: unchangedIndexes.length,
+      unchangedIndexes,
+      duplicates: duplicateIndexes.length,
+      duplicateIndexes,
+    };
   });
   if (result.added > 0) void requestPersistentStorage();
   return result;

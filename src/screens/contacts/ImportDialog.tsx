@@ -11,6 +11,7 @@ import { CONTACT_TYPES, type ContactType } from '../../db/schema';
 import {
   applyMapping,
   countIssues,
+  defaultTypeIndexes,
   hasNameColumn,
   looksLikeSpreadsheet,
   parseCsvText,
@@ -21,7 +22,7 @@ import {
 import { ColumnMapper } from './ColumnMapper';
 
 type Step = 'choose' | 'map' | 'done';
-type Outcome = Pick<ImportResult, 'added' | 'duplicates'> & {
+type Outcome = Pick<ImportResult, 'added' | 'updated' | 'unchanged' | 'duplicates'> & {
   missingName: number;
   unknownCountry: number;
   unknownDate: number;
@@ -78,13 +79,16 @@ export function ImportDialog({ onClose }: { onClose: () => void }) {
     setBusy(true);
     setError(null);
     try {
-      const result = await importContacts(preview.contacts);
+      // A default type (no type column, blank or unrecognised cell) never replaces a stored type.
+      const result = await importContacts(preview.contacts, { keepType: defaultTypeIndexes(preview) });
       // Only count unreadable values on rows that were actually added.
       setOutcome({
         added: result.added,
+        updated: result.updated,
+        unchanged: result.unchanged,
         duplicates: result.duplicates,
         missingName: preview.missingName,
-        ...countIssues(preview, result.duplicateIndexes),
+        ...countIssues(preview, [...result.duplicateIndexes, ...result.updatedIndexes, ...result.unchangedIndexes]),
       });
       setStep('done');
     } catch {
@@ -222,7 +226,16 @@ export function ImportDialog({ onClose }: { onClose: () => void }) {
         )}
 
         {step === 'done' && outcome && (
-          <Banner tone="success" title={t('import.added', { count: outcome.added })}>
+          <Banner
+            tone="success"
+            title={
+              outcome.added === 0 && outcome.updated > 0
+                ? t('import.updated', { count: outcome.updated })
+                : t('import.added', { count: outcome.added })
+            }
+          >
+            {outcome.added > 0 && outcome.updated > 0 && <p>{t('import.updated', { count: outcome.updated })}</p>}
+            {outcome.unchanged > 0 && <p>{t('import.unchanged', { count: outcome.unchanged })}</p>}
             {outcome.duplicates > 0 && <p>{t('import.duplicates', { count: outcome.duplicates })}</p>}
             {outcome.missingName > 0 && (
               <p>{t('import.skippedName', { count: outcome.missingName })}</p>

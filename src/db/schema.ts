@@ -29,6 +29,11 @@ export interface Contact {
   openThread: string;
   /** YYYY-MM-DD, or null if never. */
   lastContacted: string | null;
+  /**
+   * The contact's ID in the user's own contact list, or ''. Re-importing a file
+   * updates the contact with the same ID. Never sent to the AI.
+   */
+  externalId: string;
   createdAt: string;
   updatedAt: string;
 }

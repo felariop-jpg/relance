@@ -65,7 +65,15 @@ describe('contacts', () => {
       person('No email one'),
       person('No email two'),
     ]);
-    expect(result).toEqual({ added: 3, duplicates: 2, duplicateIndexes: [0, 2] });
+    expect(result).toEqual({
+      added: 3,
+      updated: 0,
+      updatedIndexes: [],
+      unchanged: 0,
+      unchangedIndexes: [],
+      duplicates: 2,
+      duplicateIndexes: [0, 2],
+    });
     expect(await db.contacts.count()).toBe(4);
   });
 
