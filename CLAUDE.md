@@ -138,7 +138,8 @@ README notes that swapping models is a one-line change.
 
 ## Working rules
 
-- Four screens only (Contacts, Due now, Review, Settings) plus first-run flow.
+- Five screens only (Overview, Contacts, Due now, Review, Settings) plus first-run flow.
+  (Was four; Overview added at the owner's request, see "Look and navigation" below.)
 - Schedule rules are `{ month, minGapDays }`. No cron parser.
 - User-facing docs: plain language, no jargon, no "simply", no assumed context.
 - Run `npm test` and `npm run build` before calling a phase done.
@@ -237,7 +238,7 @@ README notes that swapping models is a one-line change.
   `overflow-x-auto` and widens the whole page, which pushed the header's EN/FR switch
   and "Add contact" off-screen between about 820 and 1100 px.
 - **The nav wraps** onto a second line on narrow screens instead of scrolling
-  sideways, so every item (including "Show me around") stays visible.
+  sideways, so every item stays visible.
 - **Wide selects get `max-w-full`**: country names like « Géorgie du Sud-et-les Îles
   Sandwich du Sud » otherwise size the picker wider than a phone.
 
@@ -379,11 +380,11 @@ README notes that swapping models is a one-line change.
   non-modal card (`role="dialog"`, `aria-modal="false"`); the page underneath stays
   fully usable. Steps follow the workflow: [sample contacts, only if there are none] →
   contacts (notes) → Due now (schedule + Coming up) → generating → the review card →
-  export: five steps, six with the sample offer. The review step shows its two parts
+  export: six steps (Overview first), seven with the sample offer. The review step shows its two parts
   in turn (the "Used" line, then the payload panel), under one step number.
   - Starts once by itself after the welcome is **completed**; "Skip the introduction"
     doesn't queue it. `settings.tourState` remembers skipped/finished, so it never
-    auto-starts again. "Show me around" in the nav always restarts it.
+    auto-starts again. "Show me around" in the header's ? menu always restarts it.
   - With no drafts, the generating step offers "Write 3 example drafts": the demo
     writer, forced even when an API key is set (`forceDemo`), so the tour never spends
     or sends anything. Sample contacts are used first. They are ordinary drafts
@@ -536,4 +537,46 @@ README notes that swapping models is a one-line change.
   shown before (always "less than €0.01" in practice) and after; added to the
   running total, failures included.
 - **CSP unchanged**: the call goes to the same Anthropic endpoint.
+
+### Look and navigation (owner request)
+- **Overview** is the first tab (`#/overview`). A plain visit (no hash) lands on
+  Overview when there are contacts, else on Contacts (`landingRoute`); first run
+  still shows the welcome. Overview is computed by `overviewData()` from local data:
+  setup checklist (API key, your name, contacts, a backup; hidden when complete),
+  tiles (total, per type with a CSS bar, without notes), due this month + next batch
+  (same logic as Due now), drafts to review / approved not exported, recent activity
+  (`settings.lastImportAt`, set after an import that adds or updates someone;
+  `lastBackupAt`; AI cost), quick actions. No chart library.
+- **Links carry parameters**: `#/contacts?type=client|notes=missing|country=FR|
+  language=fr` pre-filter Contacts; `?action=import|add` opens the dialog once (then
+  removed from the URL); `#/settings?section=<id>` scrolls to a section.
+- **Header**: "Demo mode" / "AI connected" badge (key present, not verified; hidden
+  under 640 px where the demo banner says it), EN/FR, and a "?" Help menu (Show me
+  around, Getting started guide, Privacy). `Menu` is a disclosure (not an ARIA menu):
+  Escape/outside click/tabbing away close it and focus returns to its button.
+  Selected tab = soft teal background; focus ring only on `:focus-visible`.
+- **One content width** (`CONTAINER` in `src/components/layout.ts`) for header,
+  banners, screens, bottom bars and footer. Screens no longer centre a narrower
+  column; Review cards are `max-w-4xl`, left-aligned.
+- **Contacts**: Type is a coloured badge and Language a short "EN/FR" badge ("auto"
+  marked); click turns either into a drop-down (`BadgeSelect`), Escape/blur puts it
+  back. Notes take the spare width, clamped to two lines (title on hover, full text
+  on keyboard focus). Columns menu shows Email, Phone, Contact ID, Where you met
+  (`settings.contactColumns`, changed with `modifySettings`); without the Email
+  column the email sits under the name. "Due" and "No notes" row badges. Country
+  and language filters (language = the one drafts would use). Sticky header: the
+  table scrolls inside its own box.
+- **Due now**: "Coming up" is one card per template and month with a "Write these
+  N emails" button (opens Write emails with those contacts and that template;
+  `Upcoming.contactIds`). The manual section is headed "Write to someone else";
+  its button is still "Choose contacts yourself".
+- **Review empty state**: a three-step guide (due, write, review and export).
+- **Settings**: grouped AI / Your emails / Data, sticky side menu from `lg`,
+  anchor links below it; status pills (key, your name); the saved key shows only
+  its last four characters (`maskApiKey`) until Show.
+- **Tour placement** (`placeCard`): beside targets up to 60 % of the screen wide
+  (so it sits next to a table column, not on it), else below/above, else a corner
+  that doesn't overlap. Tested.
+- **Contrast**: secondary grey text is `stone-600` (not 400/500), placeholders
+  `stone-500`.
 

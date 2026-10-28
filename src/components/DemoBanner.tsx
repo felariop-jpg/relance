@@ -1,3 +1,4 @@
+import { CONTAINER } from './layout';
 import { useTranslation } from 'react-i18next';
 import { useSettings } from '../db/settings';
 import { href } from '../nav';
@@ -9,7 +10,7 @@ export function DemoBanner() {
   if (settings.apiKey.trim()) return null;
   return (
     <div role="status" className="border-b border-amber-300 bg-amber-100 text-amber-950">
-      <p className="mx-auto max-w-screen-2xl px-4 py-2 text-sm">
+      <p className={`${CONTAINER} py-2 text-sm`}>
         {t('demo.banner')}{' '}
         <a href={href('settings')} className="font-semibold underline underline-offset-4">
           {t('demo.goSettings')}

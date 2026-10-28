@@ -18,6 +18,7 @@ import {
   useTour,
   writeExampleDrafts,
 } from './tourState';
+import { placeCard } from './placement';
 
 const visible = (el: Element) => el.getClientRects().length > 0;
 
@@ -122,25 +123,14 @@ export function Tour() {
     };
   }, [step, measure]);
 
-  // Below the target, else above it, else in the corner; a bottom sheet on phones.
+  // Never on top of what it explains: beside, below or above the target; a bottom sheet on phones.
   useLayoutEffect(() => {
     const el = card.current;
     if (!el || !step) return;
     if (window.innerWidth < 640) return setPlace(null);
-    const corner = { right: 16, bottom: 16 };
-    if (!rect) return setPlace(corner);
-    const h = el.offsetHeight;
-    const w = el.offsetWidth;
-    const top = Math.min(Math.max(8, rect.top), window.innerHeight - h - 8);
-    // Narrow targets (a column, a button): beside them, so the card never covers what it explains.
-    if (rect.width < window.innerWidth * 0.4) {
-      if (rect.left - 14 - w >= 8) return setPlace({ top, left: rect.left - 14 - w });
-      if (rect.right + 14 + w <= window.innerWidth - 8) return setPlace({ top, left: rect.right + 14 });
-    }
-    const left = Math.min(Math.max(8, rect.left), window.innerWidth - w - 8);
-    if (rect.bottom + 14 + h <= window.innerHeight - 8) return setPlace({ top: rect.bottom + 14, left });
-    if (rect.top - 14 - h >= 8) return setPlace({ top: rect.top - 14 - h, left });
-    setPlace(corner);
+    const viewport = { width: window.innerWidth, height: window.innerHeight };
+    const size = { width: el.offsetWidth, height: el.offsetHeight };
+    setPlace(placeCard(rect, size, viewport));
   }, [rect, step, busy, failed, needsExamples, t]);
 
   // Ending, by Skip or Finish: first offer to clear the examples, so Relance isn't left full of made-up people.
@@ -293,7 +283,7 @@ export function Tour() {
         className={`fixed z-30 rounded-xl border border-stone-200 bg-white p-4 shadow-xl ${place ? 'w-[22rem] max-w-[calc(100vw-1rem)]' : 'inset-x-2 bottom-2'}`}
         style={place ?? undefined}
       >
-        <p className="text-xs font-medium text-stone-500">
+        <p className="text-xs font-medium text-stone-600">
           {t('tour.stepOf', { n: tour.index + 1, total: tour.steps.length })}
         </p>
         <h2 id="tour-title" ref={heading} tabIndex={-1} className="mt-1 font-semibold focus:outline-none">

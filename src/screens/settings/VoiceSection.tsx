@@ -20,7 +20,7 @@ export function VoiceSection() {
   return (
     <Section id="voice" title={t('settings.voice.title')} description={<p>{t('settings.voice.body')}</p>}>
       <div className="space-y-4">
-        {samples.length === 0 && <p className="text-sm text-stone-500">{t('settings.voice.empty')}</p>}
+        {samples.length === 0 && <p className="text-sm text-stone-600">{t('settings.voice.empty')}</p>}
         {samples.map((sample, i) => (
           <div key={i}>
             <div className="mb-1 flex items-center justify-between">
@@ -31,7 +31,7 @@ export function VoiceSection() {
                 type="button"
                 onClick={() => setSamples(samples.filter((_, j) => j !== i))}
                 aria-label={t('settings.voice.remove', { n: i + 1 })}
-                className="rounded p-1.5 text-stone-500 hover:bg-stone-100 hover:text-red-700"
+                className="rounded p-1.5 text-stone-600 hover:bg-stone-100 hover:text-red-700"
               >
                 <TrashIcon />
               </button>
@@ -48,7 +48,7 @@ export function VoiceSection() {
             />
             <p
               id={`${id}-${i}-count`}
-              className={`mt-1 text-right text-xs ${sample.length >= VOICE_SAMPLE_MAX_CHARS ? 'font-medium text-amber-800' : 'text-stone-500'}`}
+              className={`mt-1 text-right text-xs ${sample.length >= VOICE_SAMPLE_MAX_CHARS ? 'font-medium text-amber-800' : 'text-stone-600'}`}
             >
               {t('settings.voice.count', { count: sample.length, max: VOICE_SAMPLE_MAX_CHARS })}
             </p>

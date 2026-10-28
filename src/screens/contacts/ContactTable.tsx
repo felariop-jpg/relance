@@ -2,7 +2,7 @@ import { useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Checkbox } from '../../components/Checkbox';
 import { HelpTip } from '../../components/HelpTip';
-import { PencilIcon, SortIcon, WarningIcon } from '../../components/icons';
+import { PencilIcon, SortIcon } from '../../components/icons';
 import { updateContact } from '../../db/contacts';
 import {
   CONTACT_TYPES,
@@ -10,15 +10,14 @@ import {
   type Contact,
   type ContactInput,
   type Lang,
+  type OptionalColumn,
   type Settings,
 } from '../../db/schema';
 import { countryName } from '../../lib/country';
 import { formatDate, isPlausibleDate, todayIso } from '../../lib/dates';
-import { languageForCountry } from '../../lib/language';
+import { languageForCountry, resolveLanguage } from '../../lib/language';
+import { BadgeSelect, DueBadge, LanguageBadge, NoNotesBadge, TypeBadge } from './badges';
 import type { Sort, SortKey } from './sorting';
-
-const inlineSelect =
-  'w-full cursor-pointer rounded border border-transparent bg-transparent py-0.5 pr-1 text-sm hover:border-stone-300 focus:border-accent-600 focus:outline-none';
 
 export function contactName(c: Contact): string {
   return [c.firstName, c.lastName].filter(Boolean).join(' ');
@@ -34,6 +33,8 @@ interface Props {
   onToggleAll: () => void;
   onEdit: (contact: Contact) => void;
   onSaveError: () => void;
+  /** Contacts due this month and not drafted yet: they get a "Due" badge. */
+  dueIds: Set<string>;
 }
 
 export function ContactTable({
@@ -46,14 +47,18 @@ export function ContactTable({
   onToggleAll,
   onEdit,
   onSaveError,
+  dueIds,
 }: Props) {
   const { t, i18n } = useTranslation();
   const locale = i18n.language;
   const selectedCount = contacts.filter((c) => selected.has(c.id)).length;
   const allSelected = contacts.length > 0 && selectedCount === contacts.length;
+  const shown = new Set<OptionalColumn>(settings.contactColumns);
 
   const save = (id: string, patch: Partial<ContactInput>) =>
     updateContact(id, patch).catch(onSaveError);
+
+  const typeOptions = CONTACT_TYPES.map((type) => ({ value: type, label: t(`contactTypes.${type}`) }));
 
   const header = (key: SortKey, extra = '', help?: ReactNode) => {
     const active = sort.key === key;
@@ -68,20 +73,26 @@ export function ContactTable({
           type="button"
           onClick={() => onSort(key)}
           title={t('contacts.sortBy', { column: label })}
-          className={`inline-flex items-center gap-1 rounded hover:text-stone-900 ${active ? 'text-stone-900' : ''}`}
+          className={`inline-flex items-center gap-1 rounded px-1 py-0.5 hover:bg-stone-200/70 hover:text-stone-900 focus-visible:outline-2 focus-visible:outline-accent-600 ${active ? 'bg-accent-50 font-semibold text-accent-800' : ''}`}
         >
           {label}
-          <SortIcon dir={active ? sort.dir : null} className={active ? '' : 'opacity-40'} />
+          <SortIcon dir={active ? sort.dir : null} className={active ? 'text-sm' : 'text-sm opacity-60'} />
         </button>
         {help && <span className="ml-1">{help}</span>}
       </th>
     );
   };
+  const plain = (column: OptionalColumn) => (
+    <th scope="col" className="px-2 py-2 text-left font-medium whitespace-nowrap">
+      {t(`fields.${column}`)}
+    </th>
+  );
 
   return (
-    <div className="relative overflow-x-auto rounded-lg border border-stone-200 bg-white">
+    // Scrolls inside itself (both ways) so the header row can stay visible.
+    <div className="relative max-h-[calc(100dvh-15rem)] min-h-64 overflow-auto rounded-lg border border-stone-200 bg-white">
       <table className="w-full border-collapse text-sm">
-        <thead className="bg-stone-50 text-xs text-stone-600">
+        <thead className="sticky top-0 z-10 bg-stone-50 text-xs text-stone-700 shadow-[0_1px_0_var(--color-stone-200)]">
           <tr>
             <th scope="col" className="w-10 px-3 py-2">
               <Checkbox
@@ -94,12 +105,15 @@ export function ContactTable({
             {header('firstName')}
             {header('lastName')}
             {header('company')}
-            {header('email', 'hidden 2xl:table-cell')}
+            {shown.has('email') && header('email')}
+            {shown.has('phone') && plain('phone')}
+            {shown.has('externalId') && plain('externalId')}
             {header('country')}
             {header('language', '', <HelpTip topic={t('fields.language')}>{t('help.languageAuto')}</HelpTip>)}
             {header('contactType')}
             {header('lastContacted')}
-            <th scope="col" data-tour="notes" className="px-2 py-2 text-left font-medium">
+            {shown.has('whereMet') && plain('whereMet')}
+            <th scope="col" data-tour="notes" className="w-full min-w-[16rem] px-2 py-2 text-left font-medium">
               {t('fields.notes')}
             </th>
             <th scope="col" className="w-10 px-2 py-2">
@@ -111,71 +125,72 @@ export function ContactTable({
           {contacts.map((c) => {
             const name = contactName(c);
             const isSelected = selected.has(c.id);
+            const language = resolveLanguage(c, settings);
             return (
               <tr
                 key={c.id}
-                className={`border-t border-stone-100 ${isSelected ? 'bg-accent-50/70' : 'hover:bg-stone-50'}`}
+                className={`border-t border-stone-100 align-top ${isSelected ? 'bg-accent-50/70 hover:bg-accent-50' : 'hover:bg-stone-100/80'}`}
               >
-                <td className="px-3 py-1.5">
+                <td className="px-3 py-2">
                   <Checkbox
                     checked={isSelected}
                     onChange={() => onToggle(c.id)}
                     aria-label={t('contacts.selectRow', { name })}
                   />
                 </td>
-                <td className="px-2 py-1.5">
-                  <button
-                    type="button"
-                    onClick={() => onEdit(c)}
-                    className="text-left font-medium whitespace-nowrap text-stone-900 hover:underline"
-                  >
-                    {c.firstName}
-                  </button>
+                <td className="px-2 py-2">
+                  <span className="flex flex-wrap items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => onEdit(c)}
+                      className="text-left font-medium whitespace-nowrap text-stone-900 hover:underline"
+                    >
+                      {c.firstName}
+                    </button>
+                    {dueIds.has(c.id) && <DueBadge />}
+                  </span>
+                  {!shown.has('email') && c.email && (
+                    <span className="block max-w-[14rem] truncate text-xs text-stone-600" title={c.email}>
+                      {c.email}
+                    </span>
+                  )}
                 </td>
-                <td className="px-2 py-1.5 whitespace-nowrap">{c.lastName}</td>
-                <td className="max-w-[11rem] truncate px-2 py-1.5" title={c.company}>
+                <td className="px-2 py-2 whitespace-nowrap">{c.lastName}</td>
+                <td className="max-w-[11rem] truncate px-2 py-2" title={c.company}>
                   {c.company}
                 </td>
-                <td className="hidden max-w-[13rem] truncate px-2 py-1.5 text-stone-600 2xl:table-cell" title={c.email}>
-                  {c.email}
-                </td>
-                <td className="max-w-[8rem] truncate px-2 py-1.5" title={countryName(c.country, locale)}>
+                {shown.has('email') && (
+                  <td className="max-w-[13rem] truncate px-2 py-2 text-stone-700" title={c.email}>
+                    {c.email}
+                  </td>
+                )}
+                {shown.has('phone') && <td className="px-2 py-2 whitespace-nowrap text-stone-700">{c.phone}</td>}
+                {shown.has('externalId') && <td className="px-2 py-2 whitespace-nowrap text-stone-700">{c.externalId}</td>}
+                <td className="max-w-[8rem] truncate px-2 py-2" title={countryName(c.country, locale)}>
                   {countryName(c.country, locale)}
                 </td>
-                <td className="px-1 py-1.5">
-                  <select
-                    className={`${inlineSelect} min-w-[7.5rem]`}
-                    aria-label={t('contacts.cellLabel', { field: t('fields.language'), name })}
+                <td className="px-2 py-1.5">
+                  <BadgeSelect
+                    label={t('contacts.cellLabel', { field: t('fields.language'), name })}
                     value={c.language ?? ''}
-                    onChange={(e) => save(c.id, { language: (e.target.value || null) as Lang | null })}
+                    options={[
+                      { value: '', label: t('contacts.languageAuto', { language: t(`languages.${languageForCountry(c.country, settings)}`) }) },
+                      ...LANGUAGES.map((lang) => ({ value: lang, label: t(`languages.${lang}`) })),
+                    ]}
+                    onSave={(value) => save(c.id, { language: (value || null) as Lang | null })}
                   >
-                    <option value="">
-                      {t('contacts.languageAuto', {
-                        language: t(`languages.${languageForCountry(c.country, settings)}`),
-                      })}
-                    </option>
-                    {LANGUAGES.map((lang) => (
-                      <option key={lang} value={lang}>
-                        {t(`languages.${lang}`)}
-                      </option>
-                    ))}
-                  </select>
+                    <LanguageBadge language={language} auto={c.language === null} />
+                  </BadgeSelect>
                 </td>
-                <td className="px-1 py-1.5">
-                  <select
-                    className={`${inlineSelect} min-w-[6rem]`}
-                    aria-label={t('contacts.cellLabel', { field: t('fields.contactType'), name })}
+                <td className="px-2 py-1.5">
+                  <BadgeSelect
+                    label={t('contacts.cellLabel', { field: t('fields.contactType'), name })}
                     value={c.contactType}
-                    onChange={(e) =>
-                      save(c.id, { contactType: e.target.value as Contact['contactType'] })
-                    }
+                    options={typeOptions}
+                    onSave={(contactType) => save(c.id, { contactType })}
                   >
-                    {CONTACT_TYPES.map((type) => (
-                      <option key={type} value={type}>
-                        {t(`contactTypes.${type}`)}
-                      </option>
-                    ))}
-                  </select>
+                    <TypeBadge type={c.contactType} />
+                  </BadgeSelect>
                 </td>
                 <td className="px-1 py-1.5">
                   <DateCell
@@ -184,19 +199,24 @@ export function ContactTable({
                     onSave={(lastContacted) => save(c.id, { lastContacted })}
                   />
                 </td>
-                <td className="px-2 py-1.5">
+                {shown.has('whereMet') && (
+                  <td className="max-w-[12rem] truncate px-2 py-2 text-stone-700" title={c.whereMet}>
+                    {c.whereMet}
+                  </td>
+                )}
+                <td className="px-2 py-2">
                   {c.notes ? (
-                    <span data-tour="notes-cell" className="block w-[16rem] truncate text-stone-600" title={c.notes}>
+                    // Two lines; the full text on hover (title) or when focused with the keyboard.
+                    <span
+                      data-tour="notes-cell"
+                      tabIndex={0}
+                      title={c.notes}
+                      className="line-clamp-2 rounded text-stone-700 focus:line-clamp-none focus-visible:outline-2 focus-visible:outline-accent-600"
+                    >
                       {c.notes}
                     </span>
                   ) : (
-                    <span
-                      title={t('contacts.noNotesHint')}
-                      className="inline-flex items-center gap-1 rounded bg-amber-100 px-1.5 py-0.5 text-xs font-medium whitespace-nowrap text-amber-900"
-                    >
-                      <WarningIcon />
-                      {t('contacts.noNotes')}
-                    </span>
+                    <NoNotesBadge />
                   )}
                 </td>
                 <td className="px-2 py-1.5">
@@ -205,7 +225,7 @@ export function ContactTable({
                     onClick={() => onEdit(c)}
                     aria-label={t('contacts.editContact', { name })}
                     title={t('common.edit')}
-                    className="rounded p-1.5 text-stone-500 hover:bg-stone-200/60 hover:text-stone-900"
+                    className="rounded p-1.5 text-stone-600 hover:bg-stone-200/60 hover:text-stone-900"
                   >
                     <PencilIcon />
                   </button>
@@ -272,7 +292,7 @@ function DateCell({
       type="button"
       aria-label={label}
       onClick={() => setDraft(value ?? '')}
-      className={`w-full rounded border border-transparent px-1 py-0.5 text-left whitespace-nowrap hover:border-stone-300 ${value ? '' : 'text-stone-400'}`}
+      className={`w-full rounded border border-transparent px-1 py-0.5 text-left whitespace-nowrap hover:border-stone-300 ${value ? '' : 'text-stone-600 italic'}`}
     >
       {value ? formatDate(value, i18n.language) : t('contacts.never')}
     </button>

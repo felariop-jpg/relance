@@ -9,6 +9,7 @@ import {
   DRAFT_STATUSES,
   GATE_FIELDS,
   LANGUAGES,
+  OPTIONAL_COLUMNS,
   SENDER_GENDERS,
   TOUR_STATES,
   SETTINGS_ID,
@@ -120,6 +121,8 @@ const settingsSchema = z
     templatesSeeded: z.boolean().catch(true),
     firstRunDone: z.boolean().catch(true),
     tourState: z.enum(TOUR_STATES).catch('finished'),
+    lastImportAt: isoOrNull,
+    contactColumns: z.array(z.enum(OPTIONAL_COLUMNS)).catch([]),
   })
   .partial();
 

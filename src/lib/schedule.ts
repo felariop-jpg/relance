@@ -94,6 +94,8 @@ export interface Upcoming {
   appliesTo: Template['appliesTo'];
   month: number;
   count: number;
+  /** The contacts counted, so "Write these emails" can start with them. */
+  contactIds: string[];
 }
 
 /** Would this contact get this family's email in the rule's month (type, gap, required details)? */
@@ -115,8 +117,8 @@ export function upcoming(contacts: Contact[], templates: Template[], settings: S
       if (!rule || rule.month === current) return [];
       const year = today.getFullYear() + (rule.month < current ? 1 : 0);
       const firstOfMonth = new Date(year, rule.month - 1, 1);
-      const count = contacts.filter((c) => qualifies(c, family, rule, appliesTo, settings, firstOfMonth)).length;
-      return [{ family, rule, appliesTo, month: rule.month, count }];
+      const contactIds = contacts.filter((c) => qualifies(c, family, rule, appliesTo, settings, firstOfMonth)).map((c) => c.id);
+      return [{ family, rule, appliesTo, month: rule.month, count: contactIds.length, contactIds }];
     })
     .sort((a, b) => ((a.month - current + 12) % 12) - ((b.month - current + 12) % 12));
 }

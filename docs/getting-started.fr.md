@@ -35,6 +35,12 @@ Ce guide vous accompagne jusqu'à vos premiers e-mails de suivi. Comptez environ
 
    Si vous n'avez pas encore de clé, cliquez quand même sur **Suivant**. Relance fonctionne alors en mode démo : les brouillons sont des exemples écrits à l'avance. Vous pourrez ajouter une clé plus tard, dans les **Réglages**.
 
+### Se repérer
+
+- Les onglets en haut sont **Vue d'ensemble**, **Contacts**, **À relancer**, **Relecture** et **Réglages**. Dès que vous avez des contacts, Relance s'ouvre sur la **Vue d'ensemble** : ce qu'il reste à configurer, combien de personnes sont à relancer ce mois-ci, quels brouillons attendent, et des boutons pour ce que vous faites le plus souvent.
+- À côté du choix de langue, une petite étiquette indique **Mode démo** (pas encore de clé API) ou **IA connectée** (une clé est enregistrée). Cliquez dessus pour ouvrir le réglage de la clé.
+- Le bouton **?** en haut à droite ouvre le menu d'aide : **Visite guidée** relance la visite, et des liens mènent à ce guide et à la page sur la confidentialité.
+
 ## Partie 3 : Ajouter vos contacts
 
 Cet écran propose trois choix.
@@ -88,7 +94,7 @@ Pour récupérer vos contacts, cliquez sur **Exporter les contacts (CSV)** dans 
 2. Lisez la liste. Relance affiche les personnes concernées ce mois-ci par chaque modèle. Tout le monde est coché au départ. Si personne n'est concerné, la page l'indique et montre ce qui arrive dans les prochains mois.
 3. Décochez les personnes à qui vous ne voulez pas écrire cette fois-ci.
 
-   Si personne n'est à relancer ce mois-ci, ouvrez **Choisir les contacts vous-même** en bas de la page, cochez les personnes voulues et choisissez n'importe quel modèle.
+   Pour écrire à quelqu'un d'autre, quel que soit le calendrier, utilisez **Écrire à quelqu'un d'autre** : cliquez sur **Choisir les contacts vous-même**, cochez les personnes voulues et choisissez n'importe quel modèle. À droite (en dessous sur un téléphone), **À venir** montre une carte par modèle pour les mois suivants, avec le nombre de personnes concernées et un bouton **Écrire ces e-mails** si vous voulez les écrire en avance.
 
 4. Cliquez sur **Rédiger les brouillons**.
 5. Choisissez comment écrire les e-mails :

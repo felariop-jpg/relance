@@ -119,7 +119,7 @@ export function ContactForm({
         <>
           {t(`fields.${name}`)}
           {name === 'firstName' && (
-            <span className="ml-1 font-normal text-stone-500">({t('common.required')})</span>
+            <span className="ml-1 font-normal text-stone-600">({t('common.required')})</span>
           )}
         </>
       }

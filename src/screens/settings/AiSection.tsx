@@ -12,6 +12,7 @@ import { formatEur } from '../../lib/money';
 import { EUR_PER_USD } from '../../ai/model';
 import { PRICING_URL } from '../../config';
 import { showToast } from '../../lib/toast';
+import { maskApiKey } from '../../lib/mask';
 import { Section } from './Section';
 
 export function AiSection() {
@@ -61,24 +62,41 @@ export function AiSection() {
           }
         >
           <div className="flex gap-2">
-            <input
-              id={`${id}-key`}
-              type={visible ? 'text' : 'password'}
-              autoComplete="off"
-              spellCheck={false}
-              className={`${inputClass} font-mono`}
-              value={key}
-              onChange={(e) => save(e.target.value)}
-              aria-describedby={`${id}-key-hint`}
-            />
+            {!visible && key.trim() ? (
+              // Saved key, hidden: only its last four characters. Show to see or change it.
+              <input
+                id={`${id}-key`}
+                type="text"
+                readOnly
+                className={`${inputClass} bg-stone-50 font-mono text-stone-700`}
+                value={maskApiKey(key)}
+                aria-describedby={`${id}-key-hint ${id}-key-masked`}
+              />
+            ) : (
+              <input
+                id={`${id}-key`}
+                type={visible ? 'text' : 'password'}
+                autoComplete="off"
+                spellCheck={false}
+                className={`${inputClass} font-mono`}
+                value={key}
+                onChange={(e) => save(e.target.value)}
+                aria-describedby={`${id}-key-hint`}
+              />
+            )}
             <Button onClick={() => setVisible((v) => !v)}>{visible ? t('settings.ai.hide') : t('settings.ai.show')}</Button>
           </div>
         </Field>
+        {!visible && key.trim() && (
+          <p id={`${id}-key-masked`} className="-mt-1 text-sm text-stone-600">
+            {t('settings.ai.maskedHint')}
+          </p>
+        )}
         <div className="flex flex-wrap items-center gap-3">
           <Button onClick={check} disabled={!key.trim() || status === 'checking'}>
             {status === 'checking' ? t('settings.ai.checking') : t('settings.ai.check')}
           </Button>
-          {!key.trim() && <span className="text-sm text-stone-500">{t('settings.ai.empty')}</span>}
+          {!key.trim() && <span className="text-sm text-stone-600">{t('settings.ai.empty')}</span>}
         </div>
         {status === 'ok' && <Banner tone="success">{t('settings.ai.ok')}</Banner>}
         {status === 'invalid' && <Banner tone="error">{t('settings.ai.invalid')}</Banner>}
@@ -111,7 +129,7 @@ export function CostSection() {
           {t('settings.cost.reset')}
         </Button>
       </div>
-      <p className="mt-3 text-sm text-stone-500">
+      <p className="mt-3 text-sm text-stone-600">
         {t('settings.cost.estimateNote', { rate: EUR_PER_USD.toLocaleString(i18n.language) })}{' '}
         <a href={PRICING_URL} target="_blank" rel="noreferrer" className="font-medium text-accent-700 underline underline-offset-4">
           {t('settings.cost.pricing')}

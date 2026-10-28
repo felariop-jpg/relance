@@ -8,7 +8,7 @@ import { resolveLanguage } from '../lib/language';
 import { SAMPLE_EMAILS } from '../lib/sample';
 import type { Route } from '../nav';
 
-export type StepId = 'sample' | 'contacts' | 'due' | 'generate' | 'review' | 'export';
+export type StepId = 'sample' | 'overview' | 'contacts' | 'due' | 'generate' | 'review' | 'export';
 
 export interface TourStep {
   id: StepId;
@@ -26,6 +26,8 @@ export interface TourStep {
 /** The workflow, in the order a user actually works, not the order of the nav. */
 export const STEPS: TourStep[] = [
   { id: 'sample', route: 'contacts', targets: [] },
+  // The starting page; the card also says the tour can be restarted from the ? menu.
+  { id: 'overview', route: 'overview', targets: ['[data-tour="overview"]'] },
   // Desktop: the Notes header and the first note. Phones: the contact list.
   { id: 'contacts', route: 'contacts', targets: ['[data-tour="notes"]', '[data-tour="notes-cell"]', '[data-tour="contacts"]'], union: true },
   { id: 'due', route: 'due', targets: ['[data-tour="due"]', '[data-tour="upcoming"]'], union: true },

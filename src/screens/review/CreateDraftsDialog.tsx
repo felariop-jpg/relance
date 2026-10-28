@@ -129,7 +129,7 @@ export function CreateDraftsDialog({
                     />
                     <span className="min-w-0">
                       <span className="block font-medium">{f.name}</span>
-                      <span className="block text-sm text-stone-500">
+                      <span className="block text-sm text-stone-600">
                         {unavailable && required.length > 0
                           ? t('create.unavailable', { fields })
                           : (f.versions[i18n.language as Lang] ?? Object.values(f.versions)[0])?.purpose}

@@ -34,6 +34,12 @@ This guide takes you from nothing to your first follow-up emails. It takes about
 
    If you don't have a key yet, click **Next** anyway. Relance then runs in demo mode: the drafts are examples written in advance. You can add a key later, in **Settings**.
 
+### Finding your way around
+
+- The tabs at the top are **Overview**, **Contacts**, **Due now**, **Review** and **Settings**. Once you have contacts, Relance opens on **Overview**: what's left to set up, how many people are due this month, which drafts are waiting, and buttons for the things you do most.
+- Next to the language switch, a small label says **Demo mode** (no API key yet) or **AI connected** (a key is saved). Click it to open the key setting.
+- The **?** button at the top right opens the help menu: **Show me around** starts the guided tour again, and there are links to this guide and to the privacy page.
+
 ## Part 3: Add your contacts
 
 You have three choices on this screen.
@@ -91,10 +97,10 @@ To take your contacts back out, click **Export contacts (CSV)** on the Contacts 
 
    ![Due now](screenshots/due-now.jpg)
 
-2. Read the list. Relance shows the people each template is meant for this month. Everyone is ticked to start with. If nobody is due, the page says so and lists what is coming up in the next months (as in the picture above).
+2. Read the list. Relance shows the people each template is meant for this month. Everyone is ticked to start with. If nobody is due, the page says so. On the right (below, on a phone), **Coming up** has one card per template for the next months, with how many people it will include and a **Write these emails** button if you want to write them early.
 3. Untick anyone you don't want to write to this time.
 
-   If nobody is due this month, open **Choose contacts yourself** at the bottom of the page, tick the people you want, and pick any template.
+   To write to anyone else, whatever the schedule, use **Write to someone else**: click **Choose contacts yourself**, tick the people you want, and pick any template.
 
 4. Click **Generate drafts**.
 5. Choose how the emails should be written:

@@ -189,7 +189,15 @@ export interface Settings {
    * "Show me around" in the nav always can.
    */
   tourState: TourState;
+  /** When contacts were last imported from a file (ISO), for the Overview. */
+  lastImportAt: string | null;
+  /** Optional Contacts table columns the user chose to show. */
+  contactColumns: OptionalColumn[];
 }
+
+/** Contacts table columns that can be shown or hidden (Columns menu). */
+export const OPTIONAL_COLUMNS = ['email', 'phone', 'externalId', 'whereMet'] as const;
+export type OptionalColumn = (typeof OPTIONAL_COLUMNS)[number];
 
 export const TOUR_STATES = ['none', 'queued', 'started', 'skipped', 'finished'] as const;
 export type TourState = (typeof TOUR_STATES)[number];

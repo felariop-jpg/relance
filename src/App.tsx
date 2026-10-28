@@ -1,9 +1,15 @@
+import { useLiveQuery } from 'dexie-react-hooks';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { LANGUAGES } from './db/schema';
+import { docUrl } from './config';
+import { db } from './db/db';
+import { LANGUAGES, type Lang } from './db/schema';
 import { updateSettings, useSettings, useSettingsLoaded } from './db/settings';
 import { FirstRun } from './screens/firstrun/FirstRun';
-import { href, ROUTES, useRoute } from './nav';
+import { href, landingRoute, ROUTES, useRoute } from './nav';
+import { Menu, menuItemClass } from './components/Menu';
+import { CONTAINER } from './components/layout';
+import { OverviewScreen } from './screens/overview/OverviewScreen';
 import { ContactsScreen } from './screens/contacts/ContactsScreen';
 import { DueNowScreen } from './screens/due/DueNowScreen';
 import { ReviewScreen } from './screens/review/ReviewScreen';
@@ -23,6 +29,14 @@ export function App() {
   const loaded = useSettingsLoaded();
   const counts = useNavCounts();
   const tour = useTour();
+  const contactCount = useLiveQuery(() => db.contacts.count(), []);
+  const lang: Lang = i18n.language === 'fr' ? 'fr' : 'en';
+  const hasKey = settings.apiKey.trim() !== '';
+
+  // No route yet (a plain visit): Overview once there are contacts, else Contacts.
+  useEffect(() => {
+    if (route === null && contactCount !== undefined) window.location.replace(href(landingRoute(contactCount)));
+  }, [route, contactCount]);
 
   // The tour starts once by itself, right after the welcome is completed.
   useEffect(() => {
@@ -30,7 +44,7 @@ export function App() {
   }, [loaded, settings.firstRunDone, settings.tourState, tour.active]);
 
   useEffect(() => {
-    document.title = `${t(`nav.${route}`)} · ${t('app.name')}`;
+    document.title = route ? `${t(`nav.${route}`)} · ${t('app.name')}` : t('app.name');
   }, [route, t, settings.uiLanguage]);
 
   useEffect(() => {
@@ -41,8 +55,8 @@ export function App() {
   return (
     <div className="flex min-h-dvh flex-col">
       <header className="border-b border-stone-200 bg-white">
-        <div className="mx-auto flex max-w-screen-2xl flex-wrap items-center gap-x-8 gap-y-2 px-4 py-3">
-          <a href={href('contacts')} className="flex items-center gap-2">
+        <div className={`${CONTAINER} flex flex-wrap items-center gap-x-8 gap-y-2 py-3`}>
+          <a href={href('overview')} className="flex items-center gap-2 rounded-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-600">
             <img src="./favicon.svg" alt="" className="h-7 w-7" />
             <span className="text-lg font-semibold tracking-tight">{t('app.name')}</span>
           </a>
@@ -53,7 +67,7 @@ export function App() {
                   <a
                     href={href(r)}
                     aria-current={route === r ? 'page' : undefined}
-                    className="block rounded-md px-3 py-1.5 text-sm font-medium whitespace-nowrap text-stone-600 hover:bg-stone-100 hover:text-stone-900 aria-[current=page]:bg-accent-50 aria-[current=page]:text-accent-800"
+                    className="block rounded-md px-3 py-1.5 text-sm font-medium whitespace-nowrap text-stone-600 outline-none hover:bg-stone-100 hover:text-stone-900 focus-visible:ring-2 focus-visible:ring-accent-600 aria-[current=page]:bg-accent-50 aria-[current=page]:text-accent-800"
                   >
                     {t(`nav.${r}`)}
                     {counts[r] > 0 && (
@@ -65,21 +79,23 @@ export function App() {
                   </a>
                 </li>
               ))}
-              <li>
-                <button
-                  type="button"
-                  onClick={() => void startTour()}
-                  className="block rounded-md px-3 py-1.5 text-sm font-medium whitespace-nowrap text-stone-600 hover:bg-stone-100 hover:text-stone-900"
-                >
-                  {t('tour.nav')}
-                </button>
-              </li>
             </ul>
           </nav>
+          <div className="ml-auto flex items-center gap-2">
+          <a
+            href={href('settings', { section: 'ai' })}
+            title={hasKey ? t('header.connectedHint') : t('header.demoHint')}
+            className={`hidden items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium whitespace-nowrap outline-none focus-visible:ring-2 focus-visible:ring-accent-600 sm:inline-flex ${
+              hasKey ? 'border-accent-100 bg-accent-50 text-accent-800' : 'border-amber-300 bg-amber-50 text-amber-900'
+            }`}
+          >
+            <span aria-hidden="true" className={`h-1.5 w-1.5 rounded-full ${hasKey ? 'bg-accent-600' : 'bg-amber-500'}`} />
+            {hasKey ? t('header.connected') : t('header.demo')}
+          </a>
           <div
             role="group"
             aria-label={t('header.uiLanguage')}
-            className="ml-auto flex rounded-md border border-stone-300 p-0.5 text-xs font-semibold"
+            className="flex rounded-md border border-stone-300 p-0.5 text-xs font-semibold"
           >
             {LANGUAGES.map((lang) => (
               <button
@@ -95,13 +111,47 @@ export function App() {
               </button>
             ))}
           </div>
+          <Menu
+            button={<span aria-hidden="true">?</span>}
+            buttonLabel={t('header.help')}
+            buttonClassName="flex h-8 w-8 items-center justify-center rounded-full border border-stone-300 text-sm font-semibold text-stone-700 hover:bg-stone-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-600"
+          >
+            {(close) => (
+              <ul>
+                <li>
+                  <button
+                    type="button"
+                    className={menuItemClass}
+                    onClick={() => {
+                      close();
+                      void startTour();
+                    }}
+                  >
+                    {t('tour.nav')}
+                  </button>
+                </li>
+                <li>
+                  <a href={docUrl('getting-started', lang)} target="_blank" rel="noreferrer" className={menuItemClass} onClick={close}>
+                    {t('header.guide')}
+                  </a>
+                </li>
+                <li>
+                  <a href={docUrl('privacy', lang)} target="_blank" rel="noreferrer" className={menuItemClass} onClick={close}>
+                    {t('header.privacy')}
+                  </a>
+                </li>
+              </ul>
+            )}
+          </Menu>
+          </div>
         </div>
       </header>
       <DemoBanner />
       <OtherTabsNotice />
 
-      <main className="mx-auto w-full max-w-screen-2xl flex-1 px-4 py-6">
-        <ErrorBoundary resetKey={route}>
+      <main className={`${CONTAINER} w-full flex-1 py-6`}>
+        <ErrorBoundary resetKey={route ?? ''}>
+          {route === 'overview' && <OverviewScreen />}
           {route === 'contacts' && <ContactsScreen />}
           {route === 'due' && <DueNowScreen />}
           {route === 'review' && <ReviewScreen />}
@@ -114,7 +164,7 @@ export function App() {
       <Toaster />
 
       <footer className="border-t border-stone-200 bg-white">
-        <p className="mx-auto max-w-screen-2xl px-4 py-3 text-xs text-stone-500">{t('footer.local')}</p>
+        <p className={`${CONTAINER} py-3 text-xs text-stone-600`}>{t('footer.local')}</p>
       </footer>
     </div>
   );

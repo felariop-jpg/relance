@@ -85,7 +85,7 @@ export function ExportDialog({ items, onClose }: { items: ExportItem[]; onClose:
     >
       {done ? (
         <div className="space-y-3 text-stone-700">
-          <p className="text-sm text-stone-500">{t('export.fileName', { name: done.fileName })}</p>
+          <p className="text-sm text-stone-600">{t('export.fileName', { name: done.fileName })}</p>
           <p>{done.format === 'eml' ? t('export.doneEml') : done.format === 'txt' ? t('export.doneTxt') : t('export.doneBrevo')}</p>
         </div>
       ) : (
@@ -107,7 +107,7 @@ export function ExportDialog({ items, onClose }: { items: ExportItem[]; onClose:
               />
               <span>
                 <span className="block text-sm font-medium">{t('export.markContacted', { count })}</span>
-                <span className="block text-sm text-stone-500">{t('export.markContactedHint')}</span>
+                <span className="block text-sm text-stone-600">{t('export.markContactedHint')}</span>
               </span>
             </label>
             <HelpTip topic={t('export.markContacted', { count })}>{t('help.markContacted')}</HelpTip>

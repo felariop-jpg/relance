@@ -41,9 +41,9 @@ describe('Tour', () => {
     const unmount = await mount();
     const card = document.querySelector('[role=dialog]')!;
     expect(card.getAttribute('aria-modal')).toBe('false');
-    expect(document.getElementById(card.getAttribute('aria-labelledby')!)?.textContent).toBe('Your contacts');
+    expect(document.getElementById(card.getAttribute('aria-labelledby')!)?.textContent).toBe('Your starting page');
     expect(card.textContent).toContain('Skip tour');
-    expect(card.textContent).toContain('Step 1 of 5');
+    expect(card.textContent).toContain('Step 1 of 6');
     unmount();
   });
 

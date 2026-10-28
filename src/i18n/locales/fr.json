@@ -9,10 +9,18 @@
     "due": "À relancer",
     "review": "Relecture",
     "settings": "Réglages",
-    "countLabel": "{{label}} ({{count}})"
+    "countLabel": "{{label}} ({{count}})",
+    "overview": "Vue d'ensemble"
   },
   "header": {
-    "uiLanguage": "Langue de l'interface"
+    "uiLanguage": "Langue de l'interface",
+    "help": "Aide",
+    "guide": "Guide de démarrage",
+    "privacy": "Confidentialité",
+    "demo": "Mode démo",
+    "demoHint": "Pas encore de clé API : les brouillons sont des exemples et aucune IA n'est utilisée. Cliquez pour ajouter une clé dans les Réglages.",
+    "connected": "IA connectée",
+    "connectedHint": "Une clé API est enregistrée dans les Réglages. Cliquez pour la vérifier."
   },
   "footer": {
     "local": "Vos contacts sont enregistrés uniquement dans ce navigateur, sur cet ordinateur. Relance n'envoie jamais d'e-mail : il prépare des brouillons que vous envoyez vous-même."
@@ -102,7 +110,18 @@
     "openContact": "Ouvrir {{name}}",
     "deletedRecoverable_one": "{{count}} contact supprimé. Il reste dans « Supprimés récemment » pendant 30 jours.",
     "deletedRecoverable_many": "{{count}} contacts supprimés. Ils restent dans « Supprimés récemment » pendant 30 jours.",
-    "deletedRecoverable_other": "{{count}} contacts supprimés. Ils restent dans « Supprimés récemment » pendant 30 jours."
+    "deletedRecoverable_other": "{{count}} contacts supprimés. Ils restent dans « Supprimés récemment » pendant 30 jours.",
+    "auto": "auto",
+    "due": "À relancer",
+    "dueHint": "Un e-mail est prévu ce mois-ci. Voir À relancer.",
+    "filterCountry": "Pays",
+    "allCountries": "Tous les pays",
+    "filterLanguage": "Langue",
+    "allLanguages": "Toutes les langues",
+    "filterNoNotes": "Sans notes",
+    "clearNoNotes": "Afficher aussi les contacts avec des notes",
+    "columns": "Colonnes",
+    "columnsHint": "Afficher ces colonnes"
   },
   "form": {
     "addTitle": "Ajouter un contact",
@@ -269,7 +288,24 @@
     },
     "empty": {
       "title": "Aucun brouillon pour l'instant",
-      "body": "Pour écrire des e-mails, sélectionnez des contacts dans la page Contacts et choisissez « Écrire des e-mails », ou consultez la page À relancer."
+      "body": "Pour écrire des e-mails, sélectionnez des contacts dans la page Contacts et choisissez « Écrire des e-mails », ou consultez la page À relancer.",
+      "intro": "Les brouillons apparaissent ici une fois écrits. Il y a trois étapes :",
+      "steps": {
+        "due": {
+          "title": "Voir qui relancer",
+          "body": "La page À relancer indique à qui écrire ce mois-ci, selon le calendrier de vos modèles."
+        },
+        "write": {
+          "title": "Écrire les brouillons",
+          "body": "Cochez les personnes et cliquez sur Rédiger les brouillons. Ou choisissez n'importe qui dans la page Contacts, puis Écrire des e-mails."
+        },
+        "review": {
+          "title": "Relire et exporter",
+          "body": "Relisez et modifiez chaque brouillon ici, approuvez-le, puis exportez les e-mails et envoyez-les vous-même."
+        }
+      },
+      "toDue": "Aller à À relancer",
+      "toContacts": "Aller aux Contacts"
     },
     "emptyFilter": "Aucun brouillon dans cette liste.",
     "noEmail": "Aucune adresse e-mail",
@@ -414,7 +450,8 @@
       "ok": "La clé fonctionne.",
       "invalid": "Cette clé n'a pas été acceptée. Vérifiez que vous l'avez copiée en entier.",
       "network": "Impossible de joindre Anthropic. Vérifiez votre connexion internet.",
-      "empty": "Pas encore de clé : Relance est en mode démo."
+      "empty": "Pas encore de clé : Relance est en mode démo.",
+      "maskedHint": "Seuls les quatre derniers caractères sont affichés. Cliquez sur Afficher pour voir ou modifier la clé."
     },
     "cost": {
       "title": "Coûts de l'IA",
@@ -518,6 +555,17 @@
       "word": "SUPPRIMER",
       "confirm": "Tout supprimer",
       "failed": "Tout n'a pas pu être supprimé. Fermez les autres onglets Relance, puis réessayez."
+    },
+    "groups": {
+      "ai": "IA",
+      "emails": "Vos e-mails",
+      "data": "Données"
+    },
+    "status": {
+      "keySet": "Clé API ajoutée : IA connectée",
+      "keyMissing": "Pas de clé API : mode démo",
+      "nameSet": "Votre nom : {{name}}",
+      "nameMissing": "Votre nom n'est pas renseigné"
     }
   },
   "backupReminder": {
@@ -583,9 +631,6 @@
     "nextCount_other": "{{count}} contacts, à ce jour.",
     "manualHintIdle": "Rien n'est prévu pour l'instant, mais vous pouvez écrire à n'importe qui, avec n'importe quel modèle.",
     "upcoming": "À venir",
-    "upcomingItem_one": "{{name}} en {{month}} : {{count}} contact concerné à ce jour",
-    "upcomingItem_many": "{{name}} en {{month}} : {{count}} contacts concernés à ce jour",
-    "upcomingItem_other": "{{name}} en {{month}} : {{count}} contacts concernés à ce jour",
     "manual": "Choisir les contacts vous-même",
     "manualHint": "Choisissez n'importe quels contacts et n'importe quel modèle, quel que soit le calendrier.",
     "manualSearch": "Rechercher des contacts",
@@ -609,7 +654,12 @@
     "audienceJoin": " ou ",
     "willNeedOpenThread_one": "{{count}} à compléter à la main (« Resté en suspens » vide)",
     "willNeedOpenThread_many": "{{count}} à compléter à la main (« Resté en suspens » vide)",
-    "willNeedOpenThread_other": "{{count}} à compléter à la main (« Resté en suspens » vide)"
+    "willNeedOpenThread_other": "{{count}} à compléter à la main (« Resté en suspens » vide)",
+    "manualTitle": "Écrire à quelqu'un d'autre",
+    "upcomingNobody": "Personne, à ce jour.",
+    "writeThese_one": "Écrire cet e-mail",
+    "writeThese_many": "Écrire ces {{count}} e-mails",
+    "writeThese_other": "Écrire ces {{count}} e-mails"
   },
   "contactTypesPlural": {
     "client": "clients",
@@ -780,6 +830,63 @@
       "removeExamples": "Supprimer les exemples",
       "keep": "Les garder pour le moment",
       "cleared": "Les exemples sont supprimés. Ajoutez vos propres contacts : importez un tableur, ou utilisez Ajouter un contact."
+    },
+    "overview": {
+      "title": "Votre page d'accueil",
+      "body": "La vue d'ensemble montre ce qu'il reste à configurer, combien de personnes sont à relancer ce mois-ci et quels brouillons attendent. Vous pouvez relancer cette visite à tout moment depuis le menu ? en haut à droite."
+    }
+  },
+  "overview": {
+    "title": "Vue d'ensemble",
+    "empty": {
+      "title": "Bienvenue dans Relance",
+      "body": "Commencez par ajouter les personnes avec qui vous voulez garder le contact. Relance vous montre ensuite à qui écrire et prépare un brouillon pour chacune, que vous relisez et envoyez vous-même."
+    },
+    "setup": {
+      "title": "Terminer la configuration",
+      "progress": "{{done}} sur {{total}} terminé",
+      "done": "terminé",
+      "apiKey": "Ajouter votre clé API",
+      "apiKeyHint": "Sans clé, Relance n'écrit que des brouillons d'exemple.",
+      "senderName": "Ajouter votre nom",
+      "senderNameHint": "Il figure dans la signature de chaque e-mail.",
+      "contacts": "Ajouter vos contacts",
+      "contactsHint": "Importez un tableur, ou ajoutez les personnes une par une.",
+      "backup": "Télécharger une sauvegarde",
+      "backupHint": "Vos contacts ne sont que dans ce navigateur. Un fichier de sauvegarde les met à l'abri."
+    },
+    "tiles": {
+      "total": "Contacts",
+      "client": "Clients",
+      "prospect": "Prospects",
+      "lead": "Pistes",
+      "noNotes": "Sans notes",
+      "noNotesHint": "Leurs brouillons ne pourront pas être personnels."
+    },
+    "due": {
+      "title": "À relancer ce mois-ci",
+      "people_one": "personne à qui écrire",
+      "people_many": "personnes à qui écrire",
+      "people_other": "personnes à qui écrire",
+      "none": "Personne n'est à relancer ce mois-ci."
+    },
+    "writeEmails": "Écrire des e-mails",
+    "drafts": {
+      "title": "Brouillons en attente",
+      "toReview": "À relire",
+      "approved": "Approuvés, pas encore exportés",
+      "open": "Ouvrir Relecture"
+    },
+    "activity": {
+      "title": "Activité récente",
+      "lastImport": "Dernière importation",
+      "lastBackup": "Dernière sauvegarde",
+      "cost": "Coût de l'IA depuis le {{date}}",
+      "never": "Jamais"
+    },
+    "actions": {
+      "title": "Actions rapides",
+      "backup": "Sauvegarder"
     }
   }
 }

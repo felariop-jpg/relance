@@ -1,5 +1,5 @@
 import type { TFunction } from 'i18next';
-import type { Contact, Settings } from '../../db/schema';
+import { CONTACT_TYPES, LANGUAGES, type Contact, type ContactType, type Lang, type Settings } from '../../db/schema';
 import { countryName } from '../../lib/country';
 import { resolveLanguage } from '../../lib/language';
 import { fold } from '../../lib/text';
@@ -76,4 +76,54 @@ export function matchesQuery(c: Contact, query: string, locale: string): boolean
     ].join(' '),
   );
   return terms.every((term) => haystack.includes(term));
+}
+
+export interface ContactFilters {
+  query: string;
+  type: ContactType | '';
+  /** ISO-2 code, or '' for any. */
+  country: string;
+  /** The language drafts would be written in (explicit or automatic). */
+  language: Lang | '';
+  /** 'missing' = only contacts without notes. */
+  notes: '' | 'missing';
+}
+
+export const NO_FILTERS: ContactFilters = { query: '', type: '', country: '', language: '', notes: '' };
+
+export function hasFilters(f: ContactFilters): boolean {
+  return f.query.trim() !== '' || f.type !== '' || f.country !== '' || f.language !== '' || f.notes !== '';
+}
+
+export function filterContacts(contacts: Contact[], f: ContactFilters, settings: Settings, locale: string): Contact[] {
+  return contacts.filter(
+    (c) =>
+      (!f.type || c.contactType === f.type) &&
+      (!f.country || c.country === f.country) &&
+      (!f.language || resolveLanguage(c, settings) === f.language) &&
+      (f.notes !== 'missing' || !c.notes.trim()) &&
+      matchesQuery(c, f.query, locale),
+  );
+}
+
+/** Filters from a link such as #/contacts?type=client or ?notes=missing (from the Overview). Unknown values are ignored. */
+export function filtersFromParams(params: URLSearchParams): ContactFilters {
+  const type = params.get('type') ?? '';
+  const language = params.get('language') ?? '';
+  const country = (params.get('country') ?? '').toUpperCase();
+  return {
+    ...NO_FILTERS,
+    type: (CONTACT_TYPES as readonly string[]).includes(type) ? (type as ContactType) : '',
+    language: (LANGUAGES as readonly string[]).includes(language) ? (language as Lang) : '',
+    country: /^[A-Z]{2}$/.test(country) ? country : '',
+    notes: params.get('notes') === 'missing' ? 'missing' : '',
+  };
+}
+
+/** The countries that appear in the list, sorted by name, for the country filter. */
+export function countriesInUse(contacts: Contact[], locale: string): { code: string; name: string }[] {
+  const codes = [...new Set(contacts.map((c) => c.country).filter(Boolean))];
+  return codes
+    .map((code) => ({ code, name: countryName(code, locale) }))
+    .sort((a, b) => a.name.localeCompare(b.name, locale));
 }

@@ -18,13 +18,13 @@ const stepIds = () => tourSnapshot().steps.map((s) => s.id);
 describe('guided tour', () => {
   it('opens with the sample-contacts offer only when there are no contacts', async () => {
     await startTour();
-    expect(stepIds()).toEqual(['sample', 'contacts', 'due', 'generate', 'review', 'export']);
+    expect(stepIds()).toEqual(['sample', 'overview', 'contacts', 'due', 'generate', 'review', 'export']);
     expect(tourSnapshot()).toMatchObject({ active: true, index: 0 });
     expect((await getSettings()).tourState).toBe('started');
 
     await addContact({ ...emptyContact(), firstName: 'Ann' });
     await startTour();
-    expect(stepIds()).toEqual(['contacts', 'due', 'generate', 'review', 'export']);
+    expect(stepIds()).toEqual(['overview', 'contacts', 'due', 'generate', 'review', 'export']);
   });
 
   it('moves between steps within bounds', async () => {

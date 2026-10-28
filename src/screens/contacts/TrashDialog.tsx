@@ -43,7 +43,7 @@ export function TrashDialog({ onClose }: { onClose: () => void }) {
     >
       <p className="mb-4 text-sm text-stone-600">{t('trash.body', { days: TRASH_DAYS })}</p>
       {entries.length === 0 ? (
-        <p className="py-6 text-center text-stone-500">{t('trash.none')}</p>
+        <p className="py-6 text-center text-stone-600">{t('trash.none')}</p>
       ) : (
         <ul className="divide-y divide-stone-100 rounded-md border border-stone-200">
           {entries.map((e) => {
@@ -55,7 +55,7 @@ export function TrashDialog({ onClose }: { onClose: () => void }) {
                     {names.slice(0, 3).join(', ')}
                     {names.length > 3 && ` ${t('trash.andMore', { count: names.length - 3 })}`}
                   </p>
-                  <p className="text-sm text-stone-500">{t('trash.deletedAt', { date: when(e.deletedAt) })}</p>
+                  <p className="text-sm text-stone-600">{t('trash.deletedAt', { date: when(e.deletedAt) })}</p>
                 </div>
                 <Button size="sm" onClick={() => void restore(e.id)}>
                   {t('trash.restore', { count: e.contacts.length })}

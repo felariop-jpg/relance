@@ -17,6 +17,8 @@ import { CreateDraftsDialog } from '../review/CreateDraftsDialog';
 import { matchesQuery } from '../contacts/sorting';
 import { contactName } from '../contacts/ContactTable';
 import { DueGenerateDialog, type DueJob } from './DueGenerateDialog';
+import { CONTAINER } from '../../components/layout';
+import type { Upcoming } from '../../lib/schedule';
 import { ruleText } from './ruleText';
 
 const keyOf = (contactId: string, family: string) => `${contactId}:${family}`;
@@ -55,8 +57,9 @@ export function DueNowScreen() {
   const [manualQuery, setManualQuery] = useState('');
   const [manualSelected, setManualSelected] = useState<Set<string>>(new Set());
   const [manualWriting, setManualWriting] = useState(false);
+  const [writingUpcoming, setWritingUpcoming] = useState<Upcoming | null>(null);
 
-  if (!groups || !contacts) return <p className="py-10 text-center text-stone-500">{t('common.loading')}</p>;
+  if (!groups || !contacts) return <p className="py-10 text-center text-stone-600">{t('common.loading')}</p>;
 
   // Nobody due: lead with the next batch, then Coming up, then choosing contacts by hand.
   const idle = groups.length === 0;
@@ -102,10 +105,10 @@ export function DueNowScreen() {
     .sort((a, b) => contactName(a).localeCompare(contactName(b), locale));
 
   return (
-    <section className="mx-auto max-w-3xl space-y-5 pb-24">
+    <section className={`space-y-4 ${groups.length > 0 ? 'pb-24' : ''}`}>
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">{t('due.title')}</h1>
-        <p className="text-sm text-stone-500">
+        <p className="text-sm text-stone-600">
           {t('due.today', { date: new Intl.DateTimeFormat(locale, { dateStyle: 'long' }).format(today) })}
         </p>
       </div>
@@ -118,7 +121,8 @@ export function DueNowScreen() {
           </a>
         </div>
       ) : (
-        <>
+        <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_22rem]">
+        <div className="min-w-0 space-y-4">
           {idle ? (
             <p className="text-sm text-stone-600">
               {t(anyScheduledThisMonth(templates ?? [], settings, today) ? 'due.nothingAllRecent' : 'due.nothingNoneScheduled', {
@@ -136,7 +140,7 @@ export function DueNowScreen() {
               </h2>
               <p className="mt-1 text-stone-700">
                 {t('due.nextCount', { count: headline.count })}{' '}
-                <span className="text-stone-500">{ruleText(headline.rule, headline.appliesTo, locale, t)}</span>
+                <span className="text-stone-600">{ruleText(headline.rule, headline.appliesTo, locale, t)}</span>
               </p>
             </section>
           )}
@@ -157,7 +161,7 @@ export function DueNowScreen() {
                   />
                   <div>
                     <h2 className="font-semibold">{g.family.name}</h2>
-                    <p className="text-sm text-stone-500">{ruleText(g.rule, g.appliesTo, locale, t)}</p>
+                    <p className="text-sm text-stone-600">{ruleText(g.rule, g.appliesTo, locale, t)}</p>
                   </div>
                 </header>
                 <ul className="divide-y divide-stone-100">
@@ -167,7 +171,7 @@ export function DueNowScreen() {
                     return (
                       <li key={key}>
                         <label
-                          className={`flex min-h-12 items-center gap-3 px-4 py-2 ${e.hasOpenDraft ? 'text-stone-400' : 'cursor-pointer hover:bg-stone-50'}`}
+                          className={`flex min-h-12 items-center gap-3 px-4 py-2 ${e.hasOpenDraft ? 'text-stone-600' : 'cursor-pointer hover:bg-stone-50'}`}
                         >
                           <Checkbox
                             className="h-5 w-5"
@@ -177,7 +181,7 @@ export function DueNowScreen() {
                           />
                           <span className="min-w-0 flex-1">
                             <span className="block font-medium">{name}</span>
-                            <span className="block truncate text-sm text-stone-500">
+                            <span className="block truncate text-sm text-stone-600">
                               {[
                                 e.contact.company,
                                 t(`languages.${e.template.language}`),
@@ -211,24 +215,11 @@ export function DueNowScreen() {
             );
           })}
 
-          {next.length > 0 && (
-            <section data-tour="upcoming">
-              <h2 className="mb-2 text-sm font-semibold tracking-wide text-stone-500 uppercase">{t('due.upcoming')}</h2>
-              <ul className="space-y-1 text-sm text-stone-600">
-                {next.map((u) => (
-                  <li key={u.family.family}>
-                    {t('due.upcomingItem', { name: u.family.name, month: monthName(u.month, locale), count: u.count })}
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
-
           <section className="rounded-xl border border-stone-200 bg-white">
             <header className="flex flex-wrap items-center justify-between gap-3 px-4 py-3">
               <div>
-                <h2 className="font-semibold">{t('due.manual')}</h2>
-                <p className="text-sm text-stone-500">{t(idle ? 'due.manualHintIdle' : 'due.manualHint')}</p>
+                <h2 className="font-semibold">{t('due.manualTitle')}</h2>
+                <p className="text-sm text-stone-600">{t(idle ? 'due.manualHintIdle' : 'due.manualHint')}</p>
               </div>
               <Button
                 data-tour={idle ? 'generate' : undefined}
@@ -276,7 +267,7 @@ export function DueNowScreen() {
                           }
                         />
                         <span className="font-medium">{contactName(c)}</span>
-                        <span className="truncate text-sm text-stone-500">{c.company}</span>
+                        <span className="truncate text-sm text-stone-600">{c.company}</span>
                       </label>
                     </li>
                   ))}
@@ -292,12 +283,42 @@ export function DueNowScreen() {
               </div>
             )}
           </section>
-        </>
+        </div>
+
+          {next.length > 0 && (
+            <aside data-tour="upcoming" aria-labelledby="due-upcoming" className="space-y-2">
+              <h2 id="due-upcoming" className="text-sm font-semibold tracking-wide text-stone-600 uppercase">
+                {t('due.upcoming')}
+              </h2>
+              <ul className="space-y-2">
+                {next.map((u) => (
+                  <li key={u.family.family} className="rounded-xl border border-stone-200 bg-white px-4 py-3">
+                    <div className="flex items-baseline justify-between gap-3">
+                      <h3 className="font-medium">{u.family.name}</h3>
+                      <span className="shrink-0 rounded-full bg-stone-100 px-2 py-0.5 text-xs font-medium text-stone-700">
+                        {monthName(u.month, locale)}
+                      </span>
+                    </div>
+                    <p className="mt-0.5 text-sm text-stone-600">
+                      {u.count > 0 ? t('due.nextCount', { count: u.count }) : t('due.upcomingNobody')}
+                    </p>
+                    {u.count > 0 && (
+                      <Button size="sm" className="mt-2" onClick={() => setWritingUpcoming(u)}>
+                        <MailIcon />
+                        {t('due.writeThese', { count: u.count })}
+                      </Button>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </aside>
+          )}
+        </div>
       )}
 
       {groups.length > 0 && (
-        <div className="fixed inset-x-0 bottom-0 z-10 border-t border-stone-200 bg-white/95 px-4 py-3 backdrop-blur">
-          <div className="mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-3">
+        <div className="fixed inset-x-0 bottom-0 z-10 border-t border-stone-200 bg-white/95 py-3 backdrop-blur">
+          <div className={`${CONTAINER} flex flex-wrap items-center justify-between gap-3`}>
             <p className="text-sm text-stone-600" aria-live="polite">
               {t('due.selected', { count })}
               {count > 0 && !settings.apiKey.trim() ? '' : count > 0 ? ` · ${t('due.estimate', { cost: formatEur(estimateCostEur(count), locale, t) })}` : ''}
@@ -311,6 +332,13 @@ export function DueNowScreen() {
       )}
 
       {confirming && <DueGenerateDialog jobs={confirming} onClose={() => setConfirming(null)} />}
+      {writingUpcoming && (
+        <CreateDraftsDialog
+          contactIds={writingUpcoming.contactIds}
+          initialFamily={writingUpcoming.family.family}
+          onClose={() => setWritingUpcoming(null)}
+        />
+      )}
       {manualWriting && (
         <CreateDraftsDialog contactIds={[...manualSelected]} onClose={() => setManualWriting(false)} />
       )}

@@ -224,7 +224,7 @@ export function TemplateEditor({
 
         <fieldset>
           <legend className="text-sm font-medium">{t('templates.appliesTo')}</legend>
-          <p className="mb-2 text-xs text-stone-500">{t('templates.appliesToHint')}</p>
+          <p className="mb-2 text-xs text-stone-600">{t('templates.appliesToHint')}</p>
           <div className="flex flex-wrap gap-4">
             {CONTACT_TYPES.map((type) => (
               <label key={type} className="flex items-center gap-2 text-sm">
@@ -245,7 +245,7 @@ export function TemplateEditor({
 
         <fieldset>
           <legend className="text-sm font-medium">{t('templates.requires')}</legend>
-          <p className="mb-2 text-xs text-stone-500">{t('templates.requiresHint')}</p>
+          <p className="mb-2 text-xs text-stone-600">{t('templates.requiresHint')}</p>
           <div className="flex flex-wrap gap-4">
             {GATE_FIELDS.map((field) => (
               <label key={field} className="flex items-center gap-2 text-sm">
@@ -275,7 +275,7 @@ export function TemplateEditor({
                 type="button"
                 aria-selected={tab === lang}
                 onClick={() => setTab(lang)}
-                className="-mb-px border-b-2 border-transparent px-3 py-2 text-sm font-medium text-stone-500 aria-selected:border-accent-700 aria-selected:text-stone-900"
+                className="-mb-px border-b-2 border-transparent px-3 py-2 text-sm font-medium text-stone-600 aria-selected:border-accent-700 aria-selected:text-stone-900"
               >
                 {t('templates.version', { language: t(`languagesInline.${lang}`) })}
               </button>
@@ -316,7 +316,7 @@ export function TemplateEditor({
                 </Field>
                 <div>
                   <p className="text-sm font-medium">{t('templates.placeholders')}</p>
-                  <p className="mb-2 text-xs text-stone-500">{t('templates.placeholdersHint')}</p>
+                  <p className="mb-2 text-xs text-stone-600">{t('templates.placeholdersHint')}</p>
                   <div className="flex flex-wrap gap-1.5">
                     {PLACEHOLDERS.map((p) => (
                       <button
@@ -327,7 +327,7 @@ export function TemplateEditor({
                         className="rounded-full border border-stone-300 bg-white px-2.5 py-1 text-xs hover:border-accent-600 hover:bg-accent-50"
                       >
                         <span className="font-mono">{`{{${p}}}`}</span>{' '}
-                        <span className="text-stone-500">{t(`templates.placeholder.${p}`)}</span>
+                        <span className="text-stone-600">{t(`templates.placeholder.${p}`)}</span>
                       </button>
                     ))}
                   </div>

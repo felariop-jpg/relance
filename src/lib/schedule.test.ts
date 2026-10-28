@@ -86,6 +86,8 @@ describe('dueGroups', () => {
     ];
     const reengage = upcoming(prospects, BUILT_IN_TEMPLATES, settings, aug).find((u) => u.family.family === 'reengage');
     expect(reengage?.count).toBe(1);
+    // The ids counted, so "Write these emails" starts with exactly those people.
+    expect(reengage?.contactIds).toEqual(['met']);
   });
 });
 

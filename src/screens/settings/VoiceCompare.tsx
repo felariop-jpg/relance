@@ -166,7 +166,7 @@ function Side({ title, side }: { title: string; side: CompareSide }) {
   const { t } = useTranslation();
   return (
     <section className="rounded-lg border border-stone-200 bg-white p-3">
-      <h4 className="mb-2 text-xs font-semibold tracking-wide text-stone-500 uppercase">{title}</h4>
+      <h4 className="mb-2 text-xs font-semibold tracking-wide text-stone-600 uppercase">{title}</h4>
       {side.ok ? (
         <>
           <p className="mb-2 font-medium">{side.subject}</p>

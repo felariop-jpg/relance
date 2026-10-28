@@ -64,7 +64,7 @@ export function Modal({
               type="button"
               onClick={onClose}
               aria-label={t('common.close')}
-              className="h-8 w-8 rounded-md p-2 text-stone-500 hover:bg-stone-100 hover:text-stone-900"
+              className="h-8 w-8 rounded-md p-2 text-stone-600 hover:bg-stone-100 hover:text-stone-900"
             >
               <CloseIcon />
             </button>

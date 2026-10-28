@@ -55,7 +55,7 @@ export function ColumnMapper({
             const name = header || t('import.columnN', { n: i + 1 });
             const target = mapping[i] ?? null;
             return (
-              <tr key={i} className={`border-t border-stone-100 ${target ? '' : 'text-stone-500'}`}>
+              <tr key={i} className={`border-t border-stone-100 ${target ? '' : 'text-stone-600'}`}>
                 <th scope="row" className="px-3 py-2 text-left font-medium">
                   <label htmlFor={`${id}-${i}`}>{name}</label>
                 </th>

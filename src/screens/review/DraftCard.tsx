@@ -102,7 +102,7 @@ export const DraftCard = forwardRef<
           <h2 id={`${id}-name`} className="font-semibold">
             {name}
           </h2>
-          <p className="truncate text-sm text-stone-500">
+          <p className="truncate text-sm text-stone-600">
             {contact?.email || <span className="text-amber-700">{t('review.noEmail')}</span>}
             {contact?.company ? ` · ${contact.company}` : ''}
           </p>
@@ -156,7 +156,7 @@ export const DraftCard = forwardRef<
         <Personalization draft={draft} />
 
         <div>
-          <label htmlFor={`${id}-subject`} className="mb-1 block text-xs font-medium text-stone-500">
+          <label htmlFor={`${id}-subject`} className="mb-1 block text-xs font-medium text-stone-600">
             {t('review.subject')}
           </label>
           <input
@@ -168,7 +168,7 @@ export const DraftCard = forwardRef<
           />
         </div>
         <div>
-          <label htmlFor={`${id}-body`} className="mb-1 block text-xs font-medium text-stone-500">
+          <label htmlFor={`${id}-body`} className="mb-1 block text-xs font-medium text-stone-600">
             {t('review.body')}
           </label>
           <AutoTextarea
@@ -242,7 +242,7 @@ export const DraftCard = forwardRef<
           <TrashIcon />
           {t('review.remove')}
         </Button>
-        <span className="ml-auto text-xs text-stone-500" aria-live="polite">
+        <span className="ml-auto text-xs text-stone-600" aria-live="polite">
           {draft.costEur > 0 && t('review.cost', { cost: formatEur(draft.costEur, i18n.language, t) })}
           {draft.costEur > 0 && draft.exportedAt && ' · '}
           {draft.exportedAt && t('review.exported', { date: formatDate(draft.exportedAt.slice(0, 10), i18n.language) })}
@@ -261,7 +261,7 @@ export const DraftCard = forwardRef<
           }}
         >
           <div className="flex-1">
-            <label htmlFor={`${id}-instruction`} className="mb-1 block text-xs font-medium text-stone-500">
+            <label htmlFor={`${id}-instruction`} className="mb-1 block text-xs font-medium text-stone-600">
               {t('review.instruction')}
             </label>
             <input
@@ -280,7 +280,7 @@ export const DraftCard = forwardRef<
         </form>
       )}
       {draft.instruction && !asking && draft.status !== 'pending' && (
-        <p className="border-t border-stone-100 px-4 py-2 text-xs text-stone-500">
+        <p className="border-t border-stone-100 px-4 py-2 text-xs text-stone-600">
           {t('review.lastInstruction', { text: draft.instruction })}
         </p>
       )}
@@ -292,7 +292,7 @@ function Personalization({ draft }: { draft: Draft }) {
   const { t } = useTranslation();
   if (draft.source === 'template') {
     return (
-      <p data-tour="draft-used" className="flex items-center gap-2 text-sm text-stone-500">
+      <p data-tour="draft-used" className="flex items-center gap-2 text-sm text-stone-600">
         <InfoIcon className="shrink-0" />
         {t('review.notPersonal')}
       </p>

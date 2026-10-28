@@ -61,7 +61,7 @@ export function FirstRun() {
         </div>
 
         <div className="rounded-2xl border border-stone-200 bg-white p-6 shadow-sm sm:p-8">
-          <p className="text-sm font-medium text-stone-500">{t('firstRun.step', { n: step })}</p>
+          <p className="text-sm font-medium text-stone-600">{t('firstRun.step', { n: step })}</p>
 
           {step === 1 && (
             <>
@@ -110,7 +110,7 @@ export function FirstRun() {
                 value={key}
                 onChange={(e) => setKey(e.target.value)}
               />
-              <p className="mt-3 text-sm text-stone-500">{t('firstRun.key.later')}</p>
+              <p className="mt-3 text-sm text-stone-600">{t('firstRun.key.later')}</p>
             </>
           )}
 
@@ -141,7 +141,7 @@ export function FirstRun() {
         </div>
 
         <div className="mt-6 flex items-center justify-between gap-3">
-          <button type="button" onClick={() => finish(false)} className="text-sm text-stone-500 underline underline-offset-4 hover:text-stone-800">
+          <button type="button" onClick={() => finish(false)} className="text-sm text-stone-600 underline underline-offset-4 hover:text-stone-800">
             {t('firstRun.skip')}
           </button>
           <div className="flex gap-2">

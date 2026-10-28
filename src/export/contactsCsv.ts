@@ -1,5 +1,7 @@
 import Papa from 'papaparse';
 import type { Contact } from '../db/schema';
+import { todayIso } from '../lib/dates';
+import { downloadFile } from '../lib/download';
 
 /**
  * Column headings, in order. Each one is recognised by suggestMapping, so an
@@ -32,4 +34,9 @@ export function buildContactsCsv(contacts: Contact[]): string {
       c.lastContacted ?? '',
     ]),
   });
+}
+
+/** Downloads every contact as relance-contacts-<date>.csv (with a BOM, for Excel). Nothing leaves the device. */
+export function downloadContactsCsv(contacts: Contact[]): void {
+  downloadFile('\uFEFF' + buildContactsCsv(contacts), `relance-contacts-${todayIso()}.csv`, 'text/csv;charset=utf-8');
 }

@@ -9,10 +9,18 @@
     "due": "Due now",
     "review": "Review",
     "settings": "Settings",
-    "countLabel": "{{label}} ({{count}})"
+    "countLabel": "{{label}} ({{count}})",
+    "overview": "Overview"
   },
   "header": {
-    "uiLanguage": "Interface language"
+    "uiLanguage": "Interface language",
+    "help": "Help",
+    "guide": "Getting started guide",
+    "privacy": "Privacy",
+    "demo": "Demo mode",
+    "demoHint": "No API key yet: drafts are examples and no AI is used. Click to add a key in Settings.",
+    "connected": "AI connected",
+    "connectedHint": "An API key is saved in Settings. Click to check it."
   },
   "footer": {
     "local": "Your contacts are stored only in this browser, on this computer. Relance never sends email: it writes drafts that you send yourself."
@@ -98,7 +106,18 @@
     "writeEmails": "Write emails…",
     "openContact": "Open {{name}}",
     "deletedRecoverable_one": "Deleted {{count}} contact. It stays in “Recently deleted” for 30 days.",
-    "deletedRecoverable_other": "Deleted {{count}} contacts. They stay in “Recently deleted” for 30 days."
+    "deletedRecoverable_other": "Deleted {{count}} contacts. They stay in “Recently deleted” for 30 days.",
+    "auto": "auto",
+    "due": "Due",
+    "dueHint": "Due for an email this month. See Due now.",
+    "filterCountry": "Country",
+    "allCountries": "All countries",
+    "filterLanguage": "Language",
+    "allLanguages": "All languages",
+    "filterNoNotes": "Without notes",
+    "clearNoNotes": "Show contacts with notes too",
+    "columns": "Columns",
+    "columnsHint": "Show these columns"
   },
   "form": {
     "addTitle": "Add a contact",
@@ -248,7 +267,24 @@
     },
     "empty": {
       "title": "No drafts yet",
-      "body": "To write emails, select contacts on the Contacts page and choose “Write emails”, or see who is due on the Due now page."
+      "body": "To write emails, select contacts on the Contacts page and choose “Write emails”, or see who is due on the Due now page.",
+      "intro": "Drafts appear here once you've written some. It takes three steps:",
+      "steps": {
+        "due": {
+          "title": "See who is due",
+          "body": "Due now lists who to write to this month, following your templates' schedules."
+        },
+        "write": {
+          "title": "Write the drafts",
+          "body": "Tick the people and click Generate drafts. Or pick anyone on the Contacts page and choose Write emails."
+        },
+        "review": {
+          "title": "Review and export",
+          "body": "Check and edit each draft here, approve it, then export the emails and send them yourself."
+        }
+      },
+      "toDue": "Go to Due now",
+      "toContacts": "Go to Contacts"
     },
     "emptyFilter": "No drafts in this list.",
     "noEmail": "No email address",
@@ -388,7 +424,8 @@
       "ok": "The key works.",
       "invalid": "This key was not accepted. Check that you copied all of it.",
       "network": "Couldn't reach Anthropic. Check your internet connection.",
-      "empty": "No key yet: Relance is in demo mode."
+      "empty": "No key yet: Relance is in demo mode.",
+      "maskedHint": "Only the last four characters are shown. Click Show to see or change the key."
     },
     "cost": {
       "title": "AI costs",
@@ -492,6 +529,17 @@
       "word": "DELETE",
       "confirm": "Delete everything",
       "failed": "Not everything could be deleted. Close other Relance tabs, then try again."
+    },
+    "groups": {
+      "ai": "AI",
+      "emails": "Your emails",
+      "data": "Data"
+    },
+    "status": {
+      "keySet": "API key added: AI connected",
+      "keyMissing": "No API key: demo mode",
+      "nameSet": "Your name: {{name}}",
+      "nameMissing": "Your name is missing"
     }
   },
   "backupReminder": {
@@ -553,8 +601,6 @@
     "nextCount_other": "{{count}} contacts, as things stand.",
     "manualHintIdle": "Nothing is scheduled right now, but you can write to anyone, with any template.",
     "upcoming": "Coming up",
-    "upcomingItem_one": "{{name}} in {{month}}: {{count}} contact due as things stand",
-    "upcomingItem_other": "{{name}} in {{month}}: {{count}} contacts due as things stand",
     "manual": "Choose contacts yourself",
     "manualHint": "Pick any contacts and any template, whatever the schedule.",
     "manualSearch": "Search contacts",
@@ -574,7 +620,11 @@
     "ruleAllNoGap": "Sent in {{month}} to everyone.",
     "audienceJoin": " or ",
     "willNeedOpenThread_one": "{{count}} will need finishing by hand (“Left open” is empty)",
-    "willNeedOpenThread_other": "{{count}} will need finishing by hand (“Left open” is empty)"
+    "willNeedOpenThread_other": "{{count}} will need finishing by hand (“Left open” is empty)",
+    "manualTitle": "Write to someone else",
+    "upcomingNobody": "Nobody, as things stand.",
+    "writeThese_one": "Write this email",
+    "writeThese_other": "Write these {{count}} emails"
   },
   "contactTypesPlural": {
     "client": "clients",
@@ -741,6 +791,62 @@
       "removeExamples": "Remove the examples",
       "keep": "Keep them for now",
       "cleared": "The examples are gone. Add your own contacts: import a spreadsheet, or use Add contact."
+    },
+    "overview": {
+      "title": "Your starting page",
+      "body": "Overview shows what's left to set up, how many people are due this month and which drafts are waiting. You can restart this tour at any time from the ? menu at the top right."
+    }
+  },
+  "overview": {
+    "title": "Overview",
+    "empty": {
+      "title": "Welcome to Relance",
+      "body": "Start by adding the people you want to stay in touch with. Relance then shows who is due for an email and writes a draft for each of them, for you to check and send."
+    },
+    "setup": {
+      "title": "Finish setting up",
+      "progress": "{{done}} of {{total}} done",
+      "done": "done",
+      "apiKey": "Add your API key",
+      "apiKeyHint": "Without one, Relance writes example drafts only.",
+      "senderName": "Add your name",
+      "senderNameHint": "It goes in the signature of every email.",
+      "contacts": "Add your contacts",
+      "contactsHint": "Import a spreadsheet, or add people one at a time.",
+      "backup": "Download a backup",
+      "backupHint": "Your contacts live only in this browser. A backup file keeps them safe."
+    },
+    "tiles": {
+      "total": "Contacts",
+      "client": "Clients",
+      "prospect": "Prospects",
+      "lead": "Leads",
+      "noNotes": "Without notes",
+      "noNotesHint": "Drafts for them can't be personal."
+    },
+    "due": {
+      "title": "Due this month",
+      "people_one": "person to write to",
+      "people_other": "people to write to",
+      "none": "Nobody is due this month."
+    },
+    "writeEmails": "Write emails",
+    "drafts": {
+      "title": "Drafts waiting",
+      "toReview": "To review",
+      "approved": "Approved, not exported",
+      "open": "Open Review"
+    },
+    "activity": {
+      "title": "Recent activity",
+      "lastImport": "Last import",
+      "lastBackup": "Last backup",
+      "cost": "AI cost since {{date}}",
+      "never": "Never"
+    },
+    "actions": {
+      "title": "Quick actions",
+      "backup": "Back up"
     }
   }
 }

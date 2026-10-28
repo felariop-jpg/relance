@@ -15,6 +15,7 @@ import type { ExportItem } from '../../export/bundle';
 import { showToast } from '../../lib/toast';
 import { needsInput } from '../../lib/needsInput';
 import { href } from '../../nav';
+import { CONTAINER } from '../../components/layout';
 import { DraftCard } from './DraftCard';
 import { ExportDialog } from './ExportDialog';
 import { BatchBanner } from './BatchBanner';
@@ -132,18 +133,18 @@ export function ReviewScreen() {
   }
 
   if (!drafts || !contacts) {
-    return <p className="py-10 text-center text-stone-500">{t('common.loading')}</p>;
+    return <p className="py-10 text-center text-stone-600">{t('common.loading')}</p>;
   }
 
   return (
-    <section className="mx-auto max-w-3xl space-y-4 pb-24">
+    <section className={`max-w-4xl space-y-4 ${drafts.length > 0 ? 'pb-24' : ''}`}>
       <div className="flex items-center justify-between gap-3">
         <h1 className="text-2xl font-semibold tracking-tight">{t('review.title')}</h1>
         {drafts.length > 0 && (
           <button
             type="button"
             onClick={() => setShowKeys(true)}
-            className="hidden items-center gap-1.5 rounded-md px-2 py-1 text-sm text-stone-500 hover:bg-stone-200/60 hover:text-stone-800 sm:inline-flex"
+            className="hidden items-center gap-1.5 rounded-md px-2 py-1 text-sm text-stone-600 hover:bg-stone-200/60 hover:text-stone-800 sm:inline-flex"
           >
             <KeyboardIcon />
             {t('review.shortcutsHint')}
@@ -154,15 +155,28 @@ export function ReviewScreen() {
       <BatchBanner />
 
       {drafts.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-stone-300 px-6 py-12 text-center">
-          <p className="font-medium">{t('review.empty.title')}</p>
-          <p className="mx-auto mt-2 max-w-md text-sm text-stone-600">{t('review.empty.body')}</p>
-          <div className="mt-4 flex flex-wrap justify-center gap-2">
-            <a href={href('due')} className="rounded-md bg-accent-700 px-4 py-2 text-sm font-medium text-white hover:bg-accent-800">
-              {t('nav.due')}
+        <div className="rounded-xl border border-stone-200 bg-white px-5 py-6">
+          <h2 className="text-lg font-semibold">{t('review.empty.title')}</h2>
+          <p className="mt-1 text-sm text-stone-600">{t('review.empty.intro')}</p>
+          <ol className="mt-4 grid gap-3 sm:grid-cols-3">
+            {(['due', 'write', 'review'] as const).map((step, i) => (
+              <li key={step} className="flex gap-3 rounded-lg bg-stone-50 p-3">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent-700 text-sm font-semibold text-white" aria-hidden="true">
+                  {i + 1}
+                </span>
+                <span>
+                  <span className="block font-medium">{t(`review.empty.steps.${step}.title`)}</span>
+                  <span className="block text-sm text-stone-600">{t(`review.empty.steps.${step}.body`)}</span>
+                </span>
+              </li>
+            ))}
+          </ol>
+          <div className="mt-5 flex flex-wrap gap-2">
+            <a href={href('due')} className="inline-flex h-10 items-center rounded-md bg-accent-700 px-4 text-sm font-medium text-white hover:bg-accent-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-600">
+              {t('review.empty.toDue')}
             </a>
-            <a href={href('contacts')} className="rounded-md border border-stone-300 bg-white px-4 py-2 text-sm font-medium hover:bg-stone-100">
-              {t('nav.contacts')}
+            <a href={href('contacts')} className="inline-flex h-10 items-center rounded-md border border-stone-300 bg-white px-4 text-sm font-medium hover:bg-stone-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-600">
+              {t('review.empty.toContacts')}
             </a>
           </div>
         </div>
@@ -180,7 +194,7 @@ export function ReviewScreen() {
                   onClick={() => setFilter(f)}
                   className="min-h-9 flex-1 rounded-md px-3 text-sm font-medium whitespace-nowrap text-stone-600 aria-selected:bg-white aria-selected:text-stone-900 aria-selected:shadow-sm"
                 >
-                  {t(`review.filters.${f}`)} <span className="text-stone-400">{n}</span>
+                  {t(`review.filters.${f}`)} <span className="text-stone-600">{n}</span>
                 </button>
               );
             })}
@@ -188,7 +202,7 @@ export function ReviewScreen() {
 
           {visible.length > 0 && (
             <div className="flex flex-wrap items-center gap-2 text-sm">
-              <span className="text-stone-500">{t('review.bulk.label')}</span>
+              <span className="text-stone-600">{t('review.bulk.label')}</span>
               {approvable.length > 0 && (
                 <Button size="sm" className="min-h-11 sm:min-h-8" onClick={approveAll}>
                   {t('review.bulk.approve', { count: approvable.length })}
@@ -211,7 +225,7 @@ export function ReviewScreen() {
           )}
 
           {visible.length === 0 ? (
-            <p className="py-10 text-center text-stone-500">{t('review.emptyFilter')}</p>
+            <p className="py-10 text-center text-stone-600">{t('review.emptyFilter')}</p>
           ) : (
             <div className="space-y-4">
               {visible.map((d) => (
@@ -232,8 +246,8 @@ export function ReviewScreen() {
             </div>
           )}
 
-          <div className="fixed inset-x-0 bottom-0 z-10 border-t border-stone-200 bg-white/95 px-4 py-3 backdrop-blur">
-            <div className="mx-auto flex max-w-3xl items-center justify-between gap-3">
+          <div className="fixed inset-x-0 bottom-0 z-10 border-t border-stone-200 bg-white/95 py-3 backdrop-blur">
+            <div className={`${CONTAINER} flex items-center justify-between gap-3`}>
               <p className="text-sm text-stone-600">
                 {exportItems.length === 0 ? t('review.noneApproved') : null}
               </p>

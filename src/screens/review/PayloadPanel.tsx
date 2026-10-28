@@ -61,7 +61,7 @@ export function PayloadPanel({
       </summary>
       <div className="space-y-2 border-t border-stone-200 px-3 py-3">
         <p className="text-sm text-stone-700">{note ?? (demo ? t('review.payload.demoNote') : t('review.payload.note'))}</p>
-        <p className="text-xs text-stone-500">{t('review.payload.readable')}</p>
+        <p className="text-xs text-stone-600">{t('review.payload.readable')}</p>
         <div className="relative">
           <button
             type="button"

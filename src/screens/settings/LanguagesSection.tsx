@@ -50,9 +50,9 @@ export function LanguagesSection() {
 
         <div>
           <h3 className="text-sm font-medium">{t('settings.languages.overrides')}</h3>
-          <p className="mb-2 text-xs text-stone-500">{t('settings.languages.overridesHint')}</p>
+          <p className="mb-2 text-xs text-stone-600">{t('settings.languages.overridesHint')}</p>
           {rows.length === 0 ? (
-            <p className="text-sm text-stone-500">{t('settings.languages.none')}</p>
+            <p className="text-sm text-stone-600">{t('settings.languages.none')}</p>
           ) : (
             <ul className="divide-y divide-stone-100 rounded-md border border-stone-200">
               {rows.map(([code, lang]) => (
@@ -73,7 +73,7 @@ export function LanguagesSection() {
                   <button
                     type="button"
                     aria-label={t('settings.languages.remove', { country: countryName(code, i18n.language) })}
-                    className="h-9 w-9 rounded p-2.5 text-stone-500 hover:bg-stone-100 hover:text-stone-900"
+                    className="h-9 w-9 rounded p-2.5 text-stone-600 hover:bg-stone-100 hover:text-stone-900"
                     onClick={() => setOverride(code, null)}
                   >
                     <CloseIcon />
@@ -91,7 +91,7 @@ export function LanguagesSection() {
               setCountry('');
             }}
           >
-            <label className="flex max-w-full min-w-0 flex-col text-xs text-stone-500">
+            <label className="flex max-w-full min-w-0 flex-col text-xs text-stone-600">
               {t('settings.languages.country')}
               <select className={`${inputBase} mt-1 max-w-full py-1.5`} value={country} onChange={(e) => setCountry(e.target.value)}>
                 <option value="">{t('settings.languages.choose')}</option>
@@ -104,7 +104,7 @@ export function LanguagesSection() {
                   ))}
               </select>
             </label>
-            <label className="flex max-w-full min-w-0 flex-col text-xs text-stone-500">
+            <label className="flex max-w-full min-w-0 flex-col text-xs text-stone-600">
               {t('settings.languages.language')}
               <select className={`${inputBase} mt-1 py-1.5`} value={language} onChange={(e) => setLanguage(e.target.value as Lang)}>
                 {LANGUAGES.map((l) => (

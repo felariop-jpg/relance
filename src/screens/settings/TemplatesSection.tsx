@@ -48,7 +48,7 @@ export function TemplatesSection() {
         </p>
       }
     >
-      {templates && families.length === 0 && <p className="mb-3 text-sm text-stone-500">{t('templates.empty')}</p>}
+      {templates && families.length === 0 && <p className="mb-3 text-sm text-stone-600">{t('templates.empty')}</p>}
       <ul className={`divide-y divide-stone-100 rounded-md border border-stone-200 ${families.length === 0 ? 'hidden' : ''}`}>
         {families.map((f) => {
           const { rule, appliesTo } = familyRule(f);
@@ -56,7 +56,7 @@ export function TemplatesSection() {
             <li key={f.family} className="flex flex-wrap items-center gap-3 px-3 py-2.5">
               <div className="min-w-0 flex-1">
                 <p className="font-medium">{f.name}</p>
-                <p className="text-sm text-stone-500">
+                <p className="text-sm text-stone-600">
                   {rule ? ruleText(rule, appliesTo, i18n.language, t) : t('templates.noSchedule')}
                 </p>
               </div>

@@ -18,7 +18,7 @@ import {
 } from './contacts';
 import { newDraft } from './drafts';
 import { SETTINGS_ID, type Contact, type ContactInput } from './schema';
-import { ensureSettings, getSettings, modifySettings } from './settings';
+import { ensureSettings, getSettings, modifySettings, updateSettings } from './settings';
 import { createBackup, restoreBackup, undoRestore } from '../export/backup';
 import { loadSampleContacts } from '../lib/sample';
 import { clearTourLeftovers } from '../tour/tourState';
@@ -161,6 +161,28 @@ describe('two tabs writing at the same time', () => {
     // Undo twice (two tabs' toasts): the samples come back once.
     await Promise.all([undo(), undo()]);
     expect(await db.contacts.count()).toBe(13);
+  });
+
+  it('two tabs showing different contact columns keep both, and recording an import keeps other settings', async () => {
+    await Promise.all([
+      modifySettings((s) => {
+        s.contactColumns = [...new Set([...s.contactColumns, 'email' as const])];
+      }),
+      (async () => {
+        await jitter();
+        await tabB.transaction('rw', tabB.settings, async () => {
+          const row = (await tabB.settings.get(SETTINGS_ID))!;
+          await tabB.settings.put({ ...row, contactColumns: [...new Set([...(row.contactColumns ?? []), 'phone' as const])] });
+        });
+      })(),
+    ]);
+    expect([...(await getSettings()).contactColumns].sort()).toEqual(['email', 'phone']);
+
+    await Promise.all([
+      updateSettings({ lastImportAt: '2026-10-28T10:00:00.000Z' }),
+      tabB.settings.update(SETTINGS_ID, { senderName: 'Sam' }),
+    ]);
+    expect(await getSettings()).toMatchObject({ lastImportAt: '2026-10-28T10:00:00.000Z', senderName: 'Sam' });
   });
 
   it('two tabs adding different country overrides keep both', async () => {

@@ -1,11 +1,11 @@
 import { useTranslation } from 'react-i18next';
 import { Checkbox } from '../../components/Checkbox';
-import { WarningIcon } from '../../components/icons';
 import type { Contact, Settings } from '../../db/schema';
 import { countryName } from '../../lib/country';
 import { formatDate } from '../../lib/dates';
 import { resolveLanguage } from '../../lib/language';
 import { contactName } from './ContactTable';
+import { DueBadge, LanguageBadge, NoNotesBadge, TypeBadge } from './badges';
 
 /** Small-screen fallback for the contacts table: one tappable row per contact. */
 export function ContactList({
@@ -14,12 +14,14 @@ export function ContactList({
   selected,
   onToggle,
   onEdit,
+  dueIds,
 }: {
   contacts: Contact[];
   settings: Settings;
   selected: Set<string>;
   onToggle: (id: string) => void;
   onEdit: (contact: Contact) => void;
+  dueIds: Set<string>;
 }) {
   const { t, i18n } = useTranslation();
   return (
@@ -41,23 +43,17 @@ export function ContactList({
               className="min-w-0 flex-1 text-left"
             >
               <span className="block font-medium">{name}</span>
-              <span className="block truncate text-sm text-stone-500">
+              <span className="block truncate text-sm text-stone-600">
                 {[c.company, countryName(c.country, i18n.language)].filter(Boolean).join(' · ')}
               </span>
-              <span className="mt-1 flex flex-wrap gap-1.5 text-xs">
-                <span className="rounded bg-stone-100 px-1.5 py-0.5">{t(`contactTypes.${c.contactType}`)}</span>
-                <span className="rounded bg-stone-100 px-1.5 py-0.5">
-                  {t(`languages.${resolveLanguage(c, settings)}`)}
-                </span>
-                <span className="rounded bg-stone-100 px-1.5 py-0.5">
+              <span className="mt-1.5 flex flex-wrap items-center gap-1.5 text-xs">
+                {dueIds.has(c.id) && <DueBadge />}
+                <TypeBadge type={c.contactType} />
+                <LanguageBadge language={resolveLanguage(c, settings)} auto={c.language === null} />
+                <span className="text-stone-600">
                   {c.lastContacted ? formatDate(c.lastContacted, i18n.language) : t('contacts.never')}
                 </span>
-                {!c.notes && (
-                  <span className="inline-flex items-center gap-1 rounded bg-amber-100 px-1.5 py-0.5 font-medium text-amber-900">
-                    <WarningIcon />
-                    {t('contacts.noNotes')}
-                  </span>
-                )}
+                {!c.notes && <NoNotesBadge />}
               </span>
             </button>
           </li>

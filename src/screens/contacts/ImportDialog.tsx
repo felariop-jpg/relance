@@ -22,7 +22,7 @@ import {
 } from '../../lib/csv';
 import { ColumnMapper } from './ColumnMapper';
 import { PayloadPanel } from '../review/PayloadPanel';
-import { useSettings } from '../../db/settings';
+import { updateSettings, useSettings } from '../../db/settings';
 import { docUrl } from '../../config';
 import { formatEur } from '../../lib/money';
 import type { Lang } from '../../db/schema';
@@ -138,6 +138,8 @@ export function ImportDialog({ onClose }: { onClose: () => void }) {
     try {
       // A default type (no type column, blank or unrecognised cell) never replaces a stored type.
       const result = await importContacts(preview.contacts, { keepType: defaultTypeIndexes(preview) });
+      // For "Last import" on the Overview. Only this field is written.
+      if (result.added + result.updated > 0) void updateSettings({ lastImportAt: new Date().toISOString() });
       // Only count unreadable values on rows that were actually added.
       setOutcome({
         added: result.added,
@@ -222,11 +224,11 @@ export function ImportDialog({ onClose }: { onClose: () => void }) {
                 dragging ? 'border-accent-600 bg-accent-50' : 'border-stone-300 hover:border-stone-400'
               }`}
             >
-              <UploadIcon className="text-2xl text-stone-500" />
+              <UploadIcon className="text-2xl text-stone-600" />
               <span className="font-medium text-accent-700 underline underline-offset-4">
                 {t('import.chooseFile')}
               </span>
-              <span className="text-sm text-stone-500">{t('import.dropHere')}</span>
+              <span className="text-sm text-stone-600">{t('import.dropHere')}</span>
               <input
                 id={`${id}-file`}
                 type="file"
@@ -248,7 +250,7 @@ export function ImportDialog({ onClose }: { onClose: () => void }) {
               {preview.missingName > 0 && <p>{t('import.missingName', { count: preview.missingName })}</p>}
             </Banner>
             <p className="text-sm text-stone-700">
-              <span className="text-stone-500">{t('import.fileName', { name: file?.name })}</span>{' '}
+              <span className="text-stone-600">{t('import.fileName', { name: file?.name })}</span>{' '}
               <button
                 type="button"
                 onClick={() => setStep('map')}
@@ -274,7 +276,7 @@ export function ImportDialog({ onClose }: { onClose: () => void }) {
               />
             )}
             <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
-              <span className="text-stone-500">{t('import.fileName', { name: file?.name })}</span>
+              <span className="text-stone-600">{t('import.fileName', { name: file?.name })}</span>
               <label className="inline-flex items-center gap-2">
                 <Checkbox checked={hasHeader} onChange={(e) => toggleHeader(e.target.checked)} />
                 {t('import.hasHeader')}

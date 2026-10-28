@@ -21,5 +21,7 @@ export function defaultSettings(uiLanguage: Lang = browserLanguage()): Settings 
     templatesSeeded: false,
     firstRunDone: false,
     tourState: 'none',
+    lastImportAt: null,
+    contactColumns: [],
   };
 }

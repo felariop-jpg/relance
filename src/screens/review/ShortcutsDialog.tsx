@@ -28,7 +28,7 @@ export function ShortcutsDialog({ onClose }: { onClose: () => void }) {
           </div>
         ))}
       </dl>
-      <p className="mt-3 text-sm text-stone-500">{t('shortcuts.note')}</p>
+      <p className="mt-3 text-sm text-stone-600">{t('shortcuts.note')}</p>
     </Modal>
   );
 }

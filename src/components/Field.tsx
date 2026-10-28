@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 
 /** Input styling without a width, for inline controls. */
 export const inputBase =
-  'rounded-md border border-stone-300 bg-white px-3 py-2 text-sm text-stone-900 placeholder:text-stone-400 focus:border-accent-600 focus:outline-2 focus:outline-accent-600/30 aria-[invalid=true]:border-red-600';
+  'rounded-md border border-stone-300 bg-white px-3 py-2 text-sm text-stone-900 placeholder:text-stone-500 focus:border-accent-600 focus:outline-2 focus:outline-accent-600/30 aria-[invalid=true]:border-red-600';
 
 export const inputClass = `${inputBase} block w-full`;
 
@@ -40,7 +40,7 @@ export function Field({
       )}
       {children}
       {hint && !error && (
-        <p id={`${id}-hint`} className="mt-1 text-xs text-stone-500">
+        <p id={`${id}-hint`} className="mt-1 text-xs text-stone-600">
           {hint}
         </p>
       )}
