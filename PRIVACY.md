@@ -16,7 +16,7 @@ One consequence: if the browser's stored data is cleared, your contacts are gone
 
 ## What leaves your computer
 
-Relance connects to **one** service: the AI, Claude, run by the company Anthropic. It does this **only** when you ask for drafts, and each request contains only what is needed for one email.
+Relance connects to **one** service: the AI, Claude, run by the company Anthropic. It does this **only** when you ask for drafts, and each request contains only what is needed for one email. The one other time is if you choose to let the AI match the columns of a spreadsheet you import (see below), and then it gets no contact details at all.
 
 **Sent to the AI for each draft** (unless you untick it in Settings → What the AI sees):
 
@@ -42,6 +42,16 @@ Also sent: for French drafts only, the grammatical gender you chose for French a
 - anything you **unticked** in Settings
 
 The AI writes the email with markers such as `{{signature}}` in it. Relance fills in your real signature, and the contact's surname if needed, **on your computer**, after the draft comes back.
+
+### Matching spreadsheet columns (optional)
+
+When you import a spreadsheet whose columns Relance doesn't recognise, it can ask the AI which column holds what. This is **optional**: nothing is sent unless you click **Match with AI**, and without an API key the button does nothing.
+
+**Sent:** each column's **heading** (such as "Courriel" or "Société") and the **kind of values** in it, worked out on your computer: for example "email-like", "phone-like", "date", "country code" or "short text (avg 12 chars)". Also sent: the list of Relance's fields, with one line saying what each one is for.
+
+**Never sent:** anything from the rows of your file. No names, email addresses, phone numbers, notes or Contact IDs. If the first row of your file looks like a contact rather than column headings, the headings are not sent either.
+
+Before you click, **"What will be sent to the AI"** shows the exact request. The AI's answer only fills in the column choices: you check every column and click **Import** yourself.
 
 The browser itself enforces this: Relance tells the browser that it may only connect to itself and to Anthropic, and the browser blocks anything else.
 
@@ -81,5 +91,6 @@ If Relance is open in two tabs or windows of the same browser, both show the sam
 
 - Storage: IndexedDB, via Dexie, in the browser's origin for the site you use.
 - The API payload is built by `redactForApi` in `src/ai/redact.ts` from an **allowlist**. A field added to contacts in the future is withheld unless a developer deliberately adds it to the list. Unit tests check that surname, email, phone, ids, dates and unknown fields never appear in the request.
+- Column matching is built by `buildMappingRequest` in `src/ai/mapColumns.ts`, also from an allowlist: column number, heading and a value shape computed locally. Unit tests put sentinel values in every cell and check that none of them, nor any email address, name or phone number, appears in the request.
 - The production build sets a Content-Security-Policy with `connect-src 'self' https://api.anthropic.com`.
 - Relance contains no code that can send email, and a test fails if any is added.

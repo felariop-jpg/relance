@@ -75,9 +75,9 @@ const HEADER_HINTS: Record<ImportTarget, string[]> = {
   country: ['country', 'country code', 'pays'],
   language: ['language', 'lang', 'locale', 'langue'],
   contactType: ['type', 'contact type', 'category', 'status', 'type de contact', 'categorie', 'statut'],
-  serviceHistory: ['service history', 'history', 'services', 'work done', 'projects', 'historique', 'prestations', 'projets'],
+  serviceHistory: ['service history', 'work done together', 'travail realise ensemble', 'history', 'services', 'work done', 'projects', 'historique', 'prestations', 'projets'],
   notes: ['notes', 'note', 'comments', 'comment', 'remarks', 'commentaires', 'commentaire', 'remarques'],
-  whereMet: ['where we met', 'where met', 'met at', 'first met', 'event', 'lieu de rencontre', 'rencontre', 'rencontre a', 'evenement'],
+  whereMet: ['where we met', 'where you met', 'where met', 'met at', 'first met', 'event', 'lieu de rencontre', 'rencontre', 'rencontre a', 'evenement'],
   openThread: ['left open', 'open thread', 'open question', 'pending', 'unresolved', 'en suspens', 'point en suspens', 'reste en suspens', 'question en attente'],
   externalId: ['contact id', 'id', 'contact identifier', 'external id', 'reference', 'ref', 'contact reference', 'contact ref', 'identifiant', 'identifiant contact', 'identifiant du contact', 'id contact', 'reference contact', 'ref contact'],
   lastContacted: ['last contacted', 'last contact', 'last contact date', 'last email', 'dernier contact', 'date dernier contact', 'date du dernier contact'],
@@ -102,6 +102,16 @@ export function suggestMapping(headers: string[]): ColumnMapping {
     }
     return null;
   });
+}
+
+/**
+ * A file Relance already knows how to read (its own export, the sample file, or
+ * headings matching its field names): every named column is recognised and
+ * there is a name column, so the column screen can be skipped.
+ */
+export function isRecognisedFormat(headers: string[]): boolean {
+  const mapping = suggestMapping(headers);
+  return headers.every((h, i) => !h.trim() || mapping[i] !== null) && hasNameColumn(mapping);
 }
 
 /** Assigns `target` to column `index`, clearing it from any other column. */

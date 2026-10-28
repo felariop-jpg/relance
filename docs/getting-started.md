@@ -51,7 +51,9 @@ You have three choices on this screen.
    - In Google Sheets: **File → Download → Comma-separated values (.csv)**.
 3. Back in Relance, click **Import a spreadsheet**.
 4. Click **Choose a file** and pick the CSV file you just saved.
-5. Relance shows every column of your file, with a few example values. Check the **Put this into** choice for each column.
+5. If Relance recognises every column (for example a file you exported from Relance), it says how many contacts are ready and goes straight to step 6. Click **Adjust columns** if you want to check them anyway.
+
+   Otherwise, Relance shows every column of your file, with a few example values. Check the **Put this into** choice for each column.
 
    ![Matching columns](screenshots/import-mapping.jpg)
 
@@ -59,6 +61,7 @@ You have three choices on this screen.
    - If a column holds full names ("Anne Martin"), choose **Full name (split into first and last)**.
    - For columns you don't need, choose **Don't import**.
    - Every contact needs at least a first name.
+   - If some columns weren't recognised and you have an API key, you can click **Match with AI** to have them filled in. It costs less than one cent. Only the column headings and the kind of values in each column are sent, never your contacts' details: open **What will be sent to the AI** to see exactly what. Columns filled in this way are marked **Suggested by AI**. Check them like the others. If you'd rather not, click **I'll do it myself**.
 
 6. Click **Import**. Relance tells you how many contacts were added, and whether any were skipped (for example, the same email address twice).
 

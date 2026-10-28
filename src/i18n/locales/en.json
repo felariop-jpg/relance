@@ -167,7 +167,39 @@
     "unknownCountry_other": "The country of {{count}} contacts wasn't recognised, so it was left empty. You can set it by editing each contact.",
     "unknownDate_one": "The last-contacted date of {{count}} contact couldn't be read, so it was left empty.",
     "unknownDate_other": "The last-contacted date of {{count}} contacts couldn't be read, so it was left empty.",
-    "done": "Done"
+    "done": "Done",
+    "recognised": "Relance recognised every column in this file.",
+    "adjustColumns": "Adjust columns",
+    "ai": {
+      "offer": "Some columns weren't recognised. Let the AI match them for you?",
+      "explain": "Only the column headings and the kind of values in each column are sent (for example “email-like” or “short text”), never your contacts' details. You still check every column before importing.",
+      "estimate": "Estimated cost: {{cost}}.",
+      "match": "Match with AI",
+      "running": "Matching…",
+      "decline": "I'll do it myself",
+      "needsKey": "Matching with the AI needs an API key. Without one, nothing is sent.",
+      "keyGuide": "How to get an API key",
+      "payloadTitle": "What will be sent to the AI",
+      "payloadNote": "This is everything that would leave your browser: column headings and the kind of values in each column. No names, email addresses, phone numbers or notes.",
+      "sentTitle": "What was sent to the AI",
+      "sentNote": "This is everything that left your browser: column headings and the kind of values in each column. No names, email addresses, phone numbers or notes.",
+      "matched_one": "The AI suggested a field for {{count}} column, marked “Suggested by AI” below. Check it before importing.",
+      "matched_other": "The AI suggested fields for {{count}} columns, marked “Suggested by AI” below. Check them before importing.",
+      "noneMatched": "The AI couldn't match any more columns. Choose them yourself below.",
+      "cost": "Cost: {{cost}}.",
+      "fallback": "Choose the columns yourself below.",
+      "suggestedLabel": "Suggested by AI",
+      "errors": {
+        "no_key": "There is no API key, so nothing was sent.",
+        "network": "Couldn't reach the AI service. Check your internet connection.",
+        "auth": "Your API key was not accepted. Check it in Settings.",
+        "rate_limit": "The AI service is receiving too many requests right now. Try again in a few minutes.",
+        "overloaded": "The AI service is overloaded right now. Try again in a few minutes.",
+        "malformed": "The AI's answer came back incomplete twice.",
+        "billing": "Your Anthropic account has run out of credit. Add credit on the Anthropic website.",
+        "unknown": "Something went wrong while matching the columns."
+      }
+    }
   },
   "storage": {
     "title": "Relance can’t store your contacts in this browser",

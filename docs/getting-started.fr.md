@@ -52,11 +52,14 @@ Cet écran propose trois choix.
    - Dans Google Sheets : **Fichier → Télécharger → Valeurs séparées par des virgules (.csv)**.
 3. De retour dans Relance, cliquez sur **Importer un tableur**.
 4. Cliquez sur **Choisir un fichier** et sélectionnez le fichier CSV que vous venez d'enregistrer.
-5. Relance affiche chaque colonne de votre fichier avec quelques exemples. Vérifiez le choix **Mettre dans** de chaque colonne.
+5. Si Relance reconnaît toutes les colonnes (par exemple un fichier exporté depuis Relance), il indique combien de contacts sont prêts et passe directement à l'étape 6. Cliquez sur **Ajuster les colonnes** si vous voulez quand même les vérifier.
+
+   Sinon, Relance affiche chaque colonne de votre fichier avec quelques exemples. Vérifiez le choix **Mettre dans** de chaque colonne.
    - Relance propose un choix quand il reconnaît le nom d'une colonne. Vérifiez-les quand même.
    - Si une colonne contient les noms complets (« Anne Martin »), choisissez **Nom complet (séparé en prénom et nom)**.
    - Pour les colonnes inutiles, choisissez **Ne pas importer**.
    - Chaque contact doit avoir au moins un prénom.
+   - Si certaines colonnes n'ont pas été reconnues et que vous avez une clé API, vous pouvez cliquer sur **Associer avec l'IA** pour les faire remplir. Cela coûte moins d'un centime. Seuls les noms des colonnes et le genre de valeurs de chaque colonne sont envoyés, jamais les informations de vos contacts : ouvrez **Ce qui sera envoyé à l'IA** pour voir exactement quoi. Les colonnes remplies ainsi sont marquées **Proposé par l'IA**. Vérifiez-les comme les autres. Si vous préférez, cliquez sur **Je m'en occupe**.
 6. Cliquez sur **Importer**. Relance indique combien de contacts ont été ajoutés, et si certains ont été ignorés (par exemple, la même adresse e-mail deux fois).
 
 ### Importer à nouveau la même liste

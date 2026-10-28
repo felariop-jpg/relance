@@ -5,12 +5,17 @@ import {
   countIssues,
   decodeCsvBytes,
   hasNameColumn,
+  IMPORT_TARGETS,
+  isRecognisedFormat,
   looksLikeSpreadsheet,
   parseContactType,
   parseCsvText,
   setMapping,
   suggestMapping,
 } from './csv';
+import { CONTACTS_CSV_HEADERS } from '../export/contactsCsv';
+import en from '../i18n/locales/en.json';
+import fr from '../i18n/locales/fr.json';
 
 describe('parseCsvText', () => {
   it('splits header and rows and pads short rows', () => {
@@ -160,5 +165,36 @@ describe('small helpers', () => {
     expect(parseContactType('customer')).toBe('client');
     expect(parseContactType('Piste')).toBe('lead');
     expect(parseContactType('vip')).toBeNull();
+  });
+});
+
+describe('isRecognisedFormat', () => {
+  const labels = (lang: 'en' | 'fr') =>
+    (IMPORT_TARGETS.filter((t) => t !== 'fullName') as string[]).map(
+      (t) => (lang === 'en' ? en : fr).fields[t as keyof typeof en.fields],
+    );
+
+  it('recognises headings named after every Relance field, in English and in French', () => {
+    expect(isRecognisedFormat(labels('en'))).toBe(true);
+    expect(isRecognisedFormat(labels('fr'))).toBe(true);
+    expect(suggestMapping(labels('fr'))).toEqual(IMPORT_TARGETS.filter((t) => t !== 'fullName'));
+  });
+
+  it('recognises the sample file and the contacts export', () => {
+    expect(isRecognisedFormat(parseCsvText(sampleContactsCsv(), true).headers)).toBe(true);
+    expect(isRecognisedFormat([...CONTACTS_CSV_HEADERS])).toBe(true);
+  });
+
+  it('recognises a short file with ignorable blank headings', () => {
+    expect(isRecognisedFormat(['Prénom', 'E-mail', ''])).toBe(true);
+  });
+
+  it('is false when any heading is unknown', () => {
+    expect(isRecognisedFormat(['First name', 'Email', 'Shoe size'])).toBe(false);
+  });
+
+  it('is false without a name column', () => {
+    expect(isRecognisedFormat(['Email', 'Company', 'Notes'])).toBe(false);
+    expect(isRecognisedFormat(['', '', ''])).toBe(false);
   });
 });

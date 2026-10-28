@@ -181,7 +181,40 @@
     "unknownDate_one": "La date de dernier contact de {{count}} contact n'a pas pu être lue et a été laissée vide.",
     "unknownDate_many": "La date de dernier contact de {{count}} contacts n'a pas pu être lue et a été laissée vide.",
     "unknownDate_other": "La date de dernier contact de {{count}} contacts n'a pas pu être lue et a été laissée vide.",
-    "done": "Terminé"
+    "done": "Terminé",
+    "recognised": "Relance a reconnu toutes les colonnes de ce fichier.",
+    "adjustColumns": "Ajuster les colonnes",
+    "ai": {
+      "offer": "Certaines colonnes n'ont pas été reconnues. Laisser l'IA les associer pour vous ?",
+      "explain": "Seuls les noms des colonnes et le genre de valeurs de chaque colonne sont envoyés (par exemple « email-like », c'est-à-dire « ressemble à un e-mail », ou « short text », « texte court »), jamais les informations de vos contacts. Vous vérifiez quand même chaque colonne avant d'importer.",
+      "estimate": "Coût estimé : {{cost}}.",
+      "match": "Associer avec l'IA",
+      "running": "Association…",
+      "decline": "Je m'en occupe",
+      "needsKey": "L'association par l'IA nécessite une clé API. Sans clé, rien n'est envoyé.",
+      "keyGuide": "Comment obtenir une clé API",
+      "payloadTitle": "Ce qui sera envoyé à l'IA",
+      "payloadNote": "Voici tout ce qui quitterait votre navigateur : les noms des colonnes et le genre de valeurs de chaque colonne. Aucun nom, adresse e-mail, numéro de téléphone ni note.",
+      "sentTitle": "Ce qui a été envoyé à l'IA",
+      "sentNote": "Voici tout ce qui a quitté votre navigateur : les noms des colonnes et le genre de valeurs de chaque colonne. Aucun nom, adresse e-mail, numéro de téléphone ni note.",
+      "matched_one": "L'IA a proposé un champ pour {{count}} colonne, marquée « Proposé par l'IA » ci-dessous. Vérifiez-la avant d'importer.",
+      "matched_many": "L'IA a proposé des champs pour {{count}} colonnes, marquées « Proposé par l'IA » ci-dessous. Vérifiez-les avant d'importer.",
+      "matched_other": "L'IA a proposé des champs pour {{count}} colonnes, marquées « Proposé par l'IA » ci-dessous. Vérifiez-les avant d'importer.",
+      "noneMatched": "L'IA n'a pas pu associer d'autres colonnes. Choisissez-les vous-même ci-dessous.",
+      "cost": "Coût : {{cost}}.",
+      "fallback": "Choisissez les colonnes vous-même ci-dessous.",
+      "suggestedLabel": "Proposé par l'IA",
+      "errors": {
+        "no_key": "Il n'y a pas de clé API, donc rien n'a été envoyé.",
+        "network": "Impossible de joindre le service d'IA. Vérifiez votre connexion internet.",
+        "auth": "Votre clé API n'a pas été acceptée. Vérifiez-la dans les Réglages.",
+        "rate_limit": "Le service d'IA reçoit trop de demandes en ce moment. Réessayez dans quelques minutes.",
+        "overloaded": "Le service d'IA est surchargé en ce moment. Réessayez dans quelques minutes.",
+        "malformed": "La réponse de l'IA est arrivée incomplète deux fois.",
+        "billing": "Votre compte Anthropic n'a plus de crédit. Ajoutez du crédit sur le site d'Anthropic.",
+        "unknown": "Un problème est survenu pendant l'association des colonnes."
+      }
+    }
   },
   "storage": {
     "title": "Relance ne peut pas enregistrer vos contacts dans ce navigateur",

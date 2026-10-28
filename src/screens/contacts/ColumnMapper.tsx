@@ -23,10 +23,13 @@ export function ColumnMapper({
   parsed,
   mapping,
   onChange,
+  aiSuggested,
 }: {
   parsed: ParsedCsv;
   mapping: ColumnMapping;
   onChange: (mapping: ColumnMapping) => void;
+  /** Column index → the field the AI suggested; labelled while the choice is unchanged. */
+  aiSuggested?: Map<number, ImportTarget>;
 }) {
   const { t } = useTranslation();
   const id = useId();
@@ -81,6 +84,11 @@ export function ColumnMapper({
                       </option>
                     ))}
                   </select>
+                  {target && aiSuggested?.get(i) === target && (
+                    <span className="mt-1 inline-block rounded bg-accent-50 px-1.5 py-0.5 text-xs font-medium text-accent-800">
+                      {t('import.ai.suggestedLabel')}
+                    </span>
+                  )}
                 </td>
               </tr>
             );

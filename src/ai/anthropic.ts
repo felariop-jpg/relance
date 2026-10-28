@@ -1,3 +1,5 @@
+import type { MessageCreateParamsNonStreaming } from '@anthropic-ai/sdk/resources/messages';
+import type { DraftRequest } from './prompt';
 import type { Send } from './engine';
 
 /**
@@ -5,7 +7,7 @@ import type { Send } from './engine';
  * never weighs on the first page load. maxRetries is 0 because the engine
  * handles retries itself (and tests them).
  */
-export function anthropicSend(apiKey: string): Send {
+export function anthropicSend<R extends MessageCreateParamsNonStreaming = DraftRequest>(apiKey: string): Send<R> {
   return async (request) => {
     const { default: Anthropic } = await import('@anthropic-ai/sdk');
     const client = new Anthropic({ apiKey, dangerouslyAllowBrowser: true, maxRetries: 0, timeout: 60_000 });

@@ -16,7 +16,7 @@ Conséquence : si les données du navigateur sont effacées, vos contacts dispar
 
 ## Ce qui quitte votre ordinateur
 
-Relance se connecte à **un seul** service : l'IA Claude, de l'entreprise Anthropic. Il le fait **uniquement** quand vous demandez des brouillons, et chaque demande ne contient que ce qui est nécessaire pour un e-mail.
+Relance se connecte à **un seul** service : l'IA Claude, de l'entreprise Anthropic. Il le fait **uniquement** quand vous demandez des brouillons, et chaque demande ne contient que ce qui est nécessaire pour un e-mail. La seule autre occasion : si vous choisissez de laisser l'IA associer les colonnes d'un tableur que vous importez (voir plus bas), et elle ne reçoit alors aucune information sur vos contacts.
 
 **Envoyé à l'IA pour chaque brouillon** (sauf si vous le décochez dans Réglages → Ce que voit l'IA) :
 
@@ -42,6 +42,16 @@ Sont aussi envoyés : pour les brouillons en français uniquement, l'accord gram
 - tout ce que vous avez **décoché** dans les Réglages
 
 L'IA écrit l'e-mail avec des repères comme `{{signature}}`. Relance remplace ces repères par votre vraie signature, et par le nom de famille du contact si besoin, **sur votre ordinateur**, une fois le brouillon revenu.
+
+### Associer les colonnes d'un tableur (facultatif)
+
+Quand vous importez un tableur dont Relance ne reconnaît pas les colonnes, il peut demander à l'IA quelle colonne contient quoi. C'est **facultatif** : rien n'est envoyé tant que vous ne cliquez pas sur **Associer avec l'IA**, et sans clé API le bouton ne fait rien.
+
+**Envoyé :** le **nom** de chaque colonne (par exemple « Courriel » ou « Société ») et le **genre de valeurs** qu'elle contient, déterminé sur votre ordinateur. La demande l'écrit en anglais : par exemple « email-like » (ressemble à un e-mail), « phone-like » (ressemble à un téléphone), « date », « country code » (code pays) ou « short text (avg 12 chars) » (texte court, 12 caractères en moyenne). Également envoyée : la liste des champs de Relance, avec une ligne qui explique à quoi sert chacun.
+
+**Jamais envoyé :** rien qui vienne des lignes de votre fichier. Aucun nom, adresse e-mail, numéro de téléphone, note ni identifiant du contact. Si la première ligne de votre fichier ressemble à un contact plutôt qu'à des noms de colonnes, les noms de colonnes ne sont pas envoyés non plus.
+
+Avant que vous cliquiez, **« Ce qui sera envoyé à l'IA »** montre la demande exacte. La réponse de l'IA remplit seulement les choix de colonnes : vous vérifiez chaque colonne et cliquez vous-même sur **Importer**.
 
 C'est le navigateur lui-même qui garantit cela : Relance lui indique qu'il ne peut se connecter qu'à lui-même et à Anthropic, et le navigateur bloque tout le reste.
 
@@ -81,5 +91,6 @@ Si Relance est ouvert dans deux onglets ou fenêtres du même navigateur, les de
 
 - Stockage : IndexedDB, via Dexie, dans l'origine du navigateur pour le site utilisé.
 - Le contenu envoyé à l'API est construit par `redactForApi` (`src/ai/redact.ts`) à partir d'une **liste autorisée**. Un champ ajouté plus tard aux contacts n'est pas envoyé, sauf si un développeur l'ajoute délibérément à la liste. Des tests vérifient que le nom de famille, l'e-mail, le téléphone, les identifiants, les dates et les champs inconnus n'apparaissent jamais dans la demande.
+- L'association des colonnes est construite par `buildMappingRequest` (`src/ai/mapColumns.ts`), elle aussi à partir d'une liste autorisée : numéro de colonne, nom de colonne et forme des valeurs calculée localement. Des tests mettent des valeurs témoins dans chaque cellule et vérifient qu'aucune d'elles, ni aucune adresse e-mail, nom ou numéro de téléphone, n'apparaît dans la demande.
 - La version publiée impose une Content-Security-Policy avec `connect-src 'self' https://api.anthropic.com`.
 - Relance ne contient aucun code capable d'envoyer un e-mail, et un test échoue si quelqu'un en ajoute.

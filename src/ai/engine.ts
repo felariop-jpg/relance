@@ -3,7 +3,7 @@ import type { DraftRequest } from './prompt';
 import { draftOutputSchema, type DraftOutput } from './schema';
 
 /** One call to the model. Injected so tests and the snapshot script can swap it. */
-export type Send = (request: DraftRequest) => Promise<{ toolInput: unknown; usage: TokenUsage }>;
+export type Send<R = DraftRequest> = (request: R) => Promise<{ toolInput: unknown; usage: TokenUsage }>;
 export type Sleep = (ms: number) => Promise<void>;
 
 export const realSleep: Sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -116,27 +116,30 @@ export interface RetryOptions {
   onOffline?: (offline: boolean) => void;
 }
 
+/** Checks a reply's tool input: the value to keep, or why it is malformed. */
+export type Validate<T> = (toolInput: unknown) => { ok: true; value: T } | { ok: false; detail: string };
+
 /**
  * Calls the model, retrying what is likely to succeed on a second try:
  * - rate limits and overload: back off (Retry-After if given), up to 4 times;
  * - network failures (timeout, reset, dropped connection): back off, up to 3 times;
  *   if the device is offline, wait for the connection without using up a retry;
- * - a malformed or wrong-language reply: once.
- * Anything else (a rejected key, no credit...) throws at once for this draft.
+ * - a reply `validate` rejects: once.
+ * Anything else (a rejected key, no credit...) throws at once.
  */
-export async function generateWithRetries(
-  request: DraftRequest,
-  expectedLanguage: Lang,
-  send: Send,
+export async function callWithRetries<R, T>(
+  request: R,
+  send: Send<R>,
+  validate: Validate<T>,
   options: RetryOptions = {},
-): Promise<GenerateResult> {
+): Promise<{ value: T; usage: TokenUsage }> {
   const { sleep = realSleep, connectivity = browserConnectivity, onWaiting, onOffline } = options;
   const usage: TokenUsage = { inputTokens: 0, outputTokens: 0 };
   let busyRetries = 0;
   let networkRetries = 0;
   let malformed = 0;
   for (;;) {
-    let reply: Awaited<ReturnType<Send>>;
+    let reply: Awaited<ReturnType<Send<R>>>;
     try {
       reply = await send(request);
     } catch (error) {
@@ -166,19 +169,40 @@ export async function generateWithRetries(
     }
     usage.inputTokens += reply.usage.inputTokens;
     usage.outputTokens += reply.usage.outputTokens;
-    const parsed = draftOutputSchema.safeParse(reply.toolInput);
-    const dual = parsed.success ? dualForm(`${parsed.data.subject}\n${parsed.data.body}`) : null;
-    if (parsed.success && parsed.data.language === expectedLanguage && !dual) return { output: parsed.data, usage };
+    const checked = validate(reply.toolInput);
+    if (checked.ok) return { value: checked.value, usage };
     malformed++;
     if (malformed >= 2) {
-      const detail = !parsed.success
-        ? parsed.error.issues.map((i) => `${i.path.join('.') || 'reply'}: ${i.message}`).join('; ')
-        : dual
-          ? `dual gender form "${dual}"`
-          : `language ${parsed.data.language}, expected ${expectedLanguage}`;
-      const failure = new GenerationError('malformed', detail);
+      const failure = new GenerationError('malformed', checked.detail);
       Object.assign(failure, { usage });
       throw failure;
     }
   }
+}
+
+/** A draft: the reply must match the schema, be in the expected language and have no dual gender forms. */
+export async function generateWithRetries(
+  request: DraftRequest,
+  expectedLanguage: Lang,
+  send: Send,
+  options: RetryOptions = {},
+): Promise<GenerateResult> {
+  const { value, usage } = await callWithRetries(
+    request,
+    send,
+    (toolInput) => {
+      const parsed = draftOutputSchema.safeParse(toolInput);
+      if (!parsed.success) {
+        return { ok: false, detail: parsed.error.issues.map((i) => `${i.path.join('.') || 'reply'}: ${i.message}`).join('; ') };
+      }
+      const dual = dualForm(`${parsed.data.subject}\n${parsed.data.body}`);
+      if (dual) return { ok: false, detail: `dual gender form "${dual}"` };
+      if (parsed.data.language !== expectedLanguage) {
+        return { ok: false, detail: `language ${parsed.data.language}, expected ${expectedLanguage}` };
+      }
+      return { ok: true, value: parsed.data };
+    },
+    options,
+  );
+  return { output: value, usage };
 }

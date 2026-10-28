@@ -27,7 +27,18 @@ export function readablePayload(payloadJson: string): string {
  * "What was sent to the AI": the visible proof of the privacy model. Collapsed
  * by default; the exact JSON is stored on the draft so it survives reloads.
  */
-export function PayloadPanel({ payloadJson, demo }: { payloadJson: string; demo: boolean }) {
+export function PayloadPanel({
+  payloadJson,
+  demo,
+  title,
+  note,
+}: {
+  payloadJson: string;
+  demo: boolean;
+  /** Replace the draft wording, for other requests (such as column matching). */
+  title?: string;
+  note?: string;
+}) {
   const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
   const readable = useMemo(() => readablePayload(payloadJson), [payloadJson]);
@@ -46,10 +57,10 @@ export function PayloadPanel({ payloadJson, demo }: { payloadJson: string; demo:
     <details className="group rounded-lg border border-stone-200 bg-stone-50">
       <summary className="flex min-h-11 cursor-pointer list-none items-center gap-2 px-3 text-sm font-medium text-stone-700 sm:min-h-9 [&::-webkit-details-marker]:hidden">
         <ChevronIcon className="transition-transform group-open:rotate-90" />
-        {demo ? t('review.payload.demoTitle') : t('review.payload.title')}
+        {title ?? (demo ? t('review.payload.demoTitle') : t('review.payload.title'))}
       </summary>
       <div className="space-y-2 border-t border-stone-200 px-3 py-3">
-        <p className="text-sm text-stone-700">{demo ? t('review.payload.demoNote') : t('review.payload.note')}</p>
+        <p className="text-sm text-stone-700">{note ?? (demo ? t('review.payload.demoNote') : t('review.payload.note'))}</p>
         <p className="text-xs text-stone-500">{t('review.payload.readable')}</p>
         <div className="relative">
           <button

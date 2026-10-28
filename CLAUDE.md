@@ -49,6 +49,11 @@ prospect, lead.
   `{{calendlyLink}}`, ...). Real values are substituted locally after the
   response arrives.
 - Unit tests must prove excluded fields cannot appear in the payload.
+- **AI column matching never sees contact data.** For each column it gets only the
+  heading and a value *shape* computed locally ("email-like", "short text (avg 12
+  chars)", "empty"), never a cell value, through `buildMappingRequest` in
+  `src/ai/mapColumns.ts` (an allowlist, tested with sentinel cells). Contact ID is
+  never offered as a field. No feature may send row-level contact data for import.
 - PRIVACY.md explains this in plain language; Settings shows a two-sentence version.
 
 ## Language resolution
@@ -506,3 +511,29 @@ README notes that swapping models is a one-line change.
 - **"Left open" gaps are intended.** Re-engagement without `openThread` returns a
   [WHAT WAS LEFT OPEN] placeholder; never relax this into guessing. The dialogs
   count such drafts before generating (`missingOpenThread`).
+
+### Smart import (recognised formats and AI column matching)
+- **Recognised format** (`isRecognisedFormat`): every non-empty heading maps via
+  `suggestMapping` and a name column is mapped. Then the column screen is skipped:
+  a confirmation with the ready/missing-name counts, an Import button and "Adjust
+  columns". Relance's own field labels (EN and FR), the sample CSV and the contacts
+  export are all recognised. Import always needs the click.
+- **AI column matching** is offered above the mapper when the format isn't
+  recognised. Only columns still unmatched are sent, with only the fields not yet
+  used; local matches are kept. The reply only pre-fills the mapper ("Suggested by
+  AI" label while unchanged); never auto-imported.
+- **Privacy guards on headings**: a heading that looks like an email, phone, date
+  or number, or is over 60 characters, is sent as null; if any heading looks like
+  an email/phone/date, the heading row is treated as a row of contacts and every
+  heading is withheld. No heading row = no headings.
+- **Shapes**: a kind (email-like, phone-like, date, country code/name, language,
+  contact type, number) when 80 % of filled values agree, else short/long text
+  (60+ chars) with the average length; "empty" when nothing is filled.
+- **Same retry engine as drafts** (`callWithRetries`, which `generateWithRetries`
+  now wraps). Offline fails at once instead of waiting (it's an interactive
+  click). No key = nothing sent, button disabled with a link to the API key guide.
+- **Cost**: estimated from the request size (~3 chars/token) at the draft prices,
+  shown before (always "less than €0.01" in practice) and after; added to the
+  running total, failures included.
+- **CSP unchanged**: the call goes to the same Anthropic endpoint.
+
